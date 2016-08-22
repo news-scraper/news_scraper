@@ -1,7 +1,7 @@
-require_relative 'news_scraper/extractors/google_news_rss'
+require 'httparty'
 
+require 'news_scraper/version'
+require 'news_scraper/errors'
 
 module NewsScraper
-  links = Extractors::GoogleNewsRss.new(query: 'Shopify').extract
-  binding.pry
 end

@@ -1,6 +1,3 @@
-require_relative 'errors'
-require 'pry'
-require 'httparty'
 require 'rss'
 require 'nokogiri'
 
@@ -33,15 +30,15 @@ module NewsScraper
         rss = RSS::Parser.parse(body)
 
         rss.items.flat_map do |rss_item|
-          Nokogiri::HTML(rss_item.description).xpath('//a').map do |a_elem|
-            a_elem.attributes['href'].value
+          Nokogiri::HTML(rss_item.description).xpath('//a').map do |link|
+            link['href']
           end
         end
       end
 
       def extract_article_links(google_links)
         google_links.map do |google_link|
-          regex = google_link.match(/&url=(https?.*)/)
+          regex = google_link.match(/&url=https?:\/\/(.*)/)
           regex.nil? ? nil : regex[1]
         end.compact.uniq
       end
