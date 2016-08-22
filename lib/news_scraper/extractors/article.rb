@@ -1,18 +1,18 @@
 module NewsScraper
   module Extractors
     class Article
-      include HTTPartyHelpers
+      include ExtractorsHelpers
 
       attr_accessor :uri
 
       def initialize(uri:)
-        @uri = uri.match(/(https?)?(.*)/)[2]
+        @uri = uri.gsub(/^https?:\/\//, '')
       end
 
       def extract
-        puts "Polling #{uri}"
-        response = HTTParty.get("http://#{uri}")
-        if response.code ==
+        http_request "http://#{uri}" do |response|
+          response.body
+        end
       end
     end
   end

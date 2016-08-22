@@ -4,6 +4,8 @@ require 'nokogiri'
 module NewsScraper
   module Extractors
     class GoogleNewsRss
+      include ExtractorsHelpers
+
       BASE_URL = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss'.freeze
 
       attr_accessor :query
@@ -13,14 +15,12 @@ module NewsScraper
       end
 
       def extract
-        puts "Querying Google News RSS feed for #{query}"
-        response = HTTParty.get("#{BASE_URL}&q=#{query}")
-        if response.code == 200
-          puts "200 OK Response. Parsing for links..."
+        http_request "#{BASE_URL}&q=#{query}" do |response|
           google_links = links_from_resp(response.body)
           article_links = extract_article_links(google_links)
-        else
-          raise ResponseError, "#{response.code} - #{response.message}"
+          article_links.map do |link|
+            Extractors::Article.new(uri: link).extract
+          end
         end
       end
 
