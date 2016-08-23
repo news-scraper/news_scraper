@@ -1,0 +1,39 @@
+presets:
+  description:
+    meta: &meta_description
+      type: "xpath"
+      pattern: "//meta[@name='description']/@content"
+    og: &og_description
+      type: "xpath"
+      pattern: "//meta[@property='og:description']/@content"
+  keywords:
+    meta: &meta_keywords
+      type: "xpath"
+      pattern: "//meta[@name='keywords']/@content"
+  section:
+    meta: &meta_section
+      type: "xpath"
+      pattern: "//meta[@property='article:section']/@content"
+  time:
+    published: &published_time
+      type: "xpath"
+      pattern: "//meta[@property='article:published_time']/@content"
+  title:
+    html: &html_title
+      type: "xpath"
+      pattern: "//title"
+    og: &og_title
+      type: "xpath"
+      pattern: "//meta[@property='og:title']/@content"
+
+
+domains:
+  investors.com:
+    body:
+      type: "css"
+      pattern: ".single-post-content"
+    description: *og_description
+    keywords: *meta_keywords
+    section: *meta_section
+    time: *published_time
+    title: *og_title
