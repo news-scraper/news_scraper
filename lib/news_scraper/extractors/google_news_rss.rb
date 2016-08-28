@@ -7,19 +7,20 @@ module NewsScraper
       include ExtractorsHelpers
 
       BASE_URL = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss'.freeze
-      TMP_DIR = 'tmp/google_news_rss'.freeze
+      ARTICLE_LINKS_DIR = TempDirs['extractors']['google_news_rss']['article_links'].freeze
 
       attr_accessor :query
 
-      def initialize(query:)
+      def initialize(query:, temp_write: false)
         @query = query
+        @temp_write = temp_write
       end
 
       def extract
         http_request "#{BASE_URL}&q=#{query}" do |response|
           google_links = links_from_resp(response.body)
           article_links = extract_article_links(google_links)
-          write_to_tmp(article_links)
+          write_to_temp(article_links) if temp_write
           article_links.map do |link|
             Extractors::Article.new(uri: link).extract
           end
@@ -45,7 +46,7 @@ module NewsScraper
         end.compact.uniq
       end
 
-      def write_to_tmp(article_links)
+      def write_to_temp(article_links)
         filename = "#{query.downcase.gsub(/\s/, '_')}_#{Time.now.to_i}.txt"
         puts "Writing article links to #{filename}"
         File.open(File.join(TMP_DIR, filename), 'w') do |file|

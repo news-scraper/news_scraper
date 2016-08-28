@@ -1,6 +1,7 @@
 require 'httparty'
 
-require 'news_scraper/active_support_lite/string.rb'
+require 'news_scraper/temp_dirs'
+require 'news_scraper/active_support_lite/string'
 
 require 'news_scraper/errors'
 require 'news_scraper/version'
