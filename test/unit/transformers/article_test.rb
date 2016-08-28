@@ -3,18 +3,13 @@ require 'yaml'
 
 class ArticleTest < Minitest::Test
   def test_correctly_transforms_responses_from_supported_sites
-    supported_sites = %w(investors.com)
-    required_data_types = YAML.load_file('config/article_scrape_patterns.yml')['data_types']['required'].map(&:to_sym)
+    supported_sites = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys
 
     supported_sites.each do |domain|
-      raw_response = File.read("test/data/articles/#{domain.gsub(/\./, '_')}.html")
+      raw_data = File.read("test/data/articles/#{domain.gsub(/\./, '_')}_raw.html")
+      expected_transformation = YAML.load_file("test/data/articles/#{domain.gsub(/\./, '_')}_transformed.yml")
 
-      expected_data = required_data_types.each_with_object({}) do |data_type, hash|
-        hash[data_type] = "#{domain} #{data_type}"
-      end
-      expected_data.update(uri: domain)
-
-      assert_equal expected_data, NewsScraper::Transformers::Article.new(uri: domain, payload: raw_response).transform
+      assert_equal expected_transformation, NewsScraper::Transformers::Article.new(uri: domain, payload: raw_data).transform
     end
   end
 end
