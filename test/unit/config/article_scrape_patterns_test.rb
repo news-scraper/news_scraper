@@ -23,4 +23,12 @@ class ArticleScrapePatternsTest < Minitest::Test
       end
     end
   end
+
+  def test_scrape_methods_must_be_css_or_xpath
+    @domains.each do |domain|
+      @scrape_patterns['domains'][domain].each_pair do |_data_type, spec|
+        assert %w(css xpath).include? spec['method']
+      end
+    end
+  end
 end

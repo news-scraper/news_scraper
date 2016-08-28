@@ -46,8 +46,6 @@ module NewsScraper
 
         noko_html = Nokogiri::HTML(payload)
 
-        raise ScrapeMethodNotSupported unless noko_html.respond_to?(scrape_method)
-
         Sanitize.fragment(
           noko_html.send(scrape_method, scrape_pattern)
         ).squish

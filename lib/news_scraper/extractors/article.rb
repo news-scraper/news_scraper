@@ -1,5 +1,4 @@
 require 'nokogiri'
-require 'yaml'
 
 module NewsScraper
   module Extractors
