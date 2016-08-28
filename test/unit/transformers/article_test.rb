@@ -9,7 +9,7 @@ class ArticleTest < Minitest::Test
       raw_data = File.read("test/data/articles/#{domain.gsub(/\./, '_')}_raw.html")
       expected_transformation = YAML.load_file("test/data/articles/#{domain.gsub(/\./, '_')}_transformed.yml")
 
-      assert_equal expected_transformation, NewsScraper::Transformers::Article.new(uri: domain, payload: raw_data).transform
+      assert_equal expected_transformation, NewsScraper::Transformers::Article.new(uri: "#{domain}/some_article", payload: raw_data).transform
     end
   end
 end
