@@ -7,7 +7,6 @@ class ArticleTest < Minitest::Test
     site = 'http://somesite.com'
     expected_body = 'somesite body response'
     stub_http_request(url: site, body: expected_body)
-
     extractor = NewsScraper::Extractors::Article.new(uri: site)
 
     assert_equal expected_body, extractor.extract
