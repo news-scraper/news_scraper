@@ -1,4 +1,3 @@
-require 'pry'
 require 'httparty'
 
 require 'news_scraper/active_support_lite/string.rb'

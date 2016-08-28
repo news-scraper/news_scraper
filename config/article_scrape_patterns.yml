@@ -9,6 +9,8 @@ data_types:
     - time
     - title
 
+# All data types must include :method and :pattern
+#
 presets:
   description:
     meta: &meta_description
@@ -36,7 +38,6 @@ presets:
     og: &og_title
       method: "xpath"
       pattern: "//meta[@property='og:title']/@content"
-
 
 domains:
   investors.com:
