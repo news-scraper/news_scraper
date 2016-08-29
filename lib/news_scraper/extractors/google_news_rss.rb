@@ -7,9 +7,9 @@ module NewsScraper
       include ExtractorsHelpers
 
       BASE_URL = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss'.freeze
-      ARTICLE_LINKS_DIR = TempDirs['extractors']['google_news_rss']['article_links'].freeze
+      ARTICLE_URIS_DIR = TempDirs['extractors']['google_news_rss']['article_uris'].freeze
 
-      attr_accessor :query
+      attr_reader :query, :temp_write
 
       def initialize(query:, temp_write: false)
         @query = query
@@ -18,39 +18,39 @@ module NewsScraper
 
       def extract
         http_request "#{BASE_URL}&q=#{query}" do |response|
-          google_links = links_from_resp(response.body)
-          article_links = extract_article_links(google_links)
-          write_to_temp(article_links) if temp_write
-          article_links.map do |link|
-            Extractors::Article.new(uri: link).extract
-          end
+          google_urls = google_urls_from_resp(response.body)
+          article_uris = extract_article_uris(google_urls)
+
+          write_to_temp(article_uris) if temp_write
+
+          article_uris
         end
       end
 
       private
 
-      def links_from_resp(body)
+      def google_urls_from_resp(body)
         rss = RSS::Parser.parse(body)
 
         rss.items.flat_map do |rss_item|
-          Nokogiri::HTML(rss_item.description).xpath('//a').map do |link|
-            link['href']
+          Nokogiri::HTML(rss_item.description).xpath('//a').map do |anchor|
+            anchor['href']
           end
         end
       end
 
-      def extract_article_links(google_links)
-        google_links.map do |google_link|
-          regex = google_link.match(/&url=https?:\/\/(.*)/)
+      def extract_article_uris(google_urls)
+        google_urls.map do |google_url|
+          regex = google_url.match(/&url=https?:\/\/(.*)/)
           regex.nil? ? nil : regex[1]
         end.compact.uniq
       end
 
-      def write_to_temp(article_links)
+      def write_to_temp(article_uris)
         filename = "#{query.downcase.gsub(/\s/, '_')}_#{Time.now.to_i}.txt"
-        puts "Writing article links to #{filename}"
+        puts "Writing article uris to #{filename}"
         File.open(File.join(TMP_DIR, filename), 'w') do |file|
-          article_links.each { |link| file.puts link }
+          article_uris.each { |uri| file.puts uri }
         end
       end
     end
