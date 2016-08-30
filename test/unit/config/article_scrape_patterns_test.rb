@@ -7,11 +7,11 @@ class ArticleScrapePatternsTest < Minitest::Test
     @domains = @scrape_patterns['domains'].keys
   end
 
-  def test_domains_should_specify_all_required_data_types
-    required_data_types = @scrape_patterns['data_types']['required']
+  def test_domains_should_specify_all_data_types
+    data_types = @scrape_patterns['data_types']
 
     @domains.each do |domain|
-      assert required_data_types.all? { |dt| @scrape_patterns['domains'][domain].keys.include? dt }
+      assert data_types.all? { |dt| @scrape_patterns['domains'][domain].keys.include? dt }
     end
   end
 

@@ -5,7 +5,7 @@ module NewsScraper
   module Transformers
     class Article
       SCRAPE_PATTERNS = YAML.load_file('config/article_scrape_patterns.yml').freeze
-      RESPONSE_DATA_TYPES = SCRAPE_PATTERNS['data_types']['required'].map(&:to_sym).freeze
+      DATA_TYPES = SCRAPE_PATTERNS['data_types'].freeze
       attr_reader :uri, :payload
 
       def initialize(uri:, payload:)
@@ -34,13 +34,12 @@ module NewsScraper
       end
 
       def transformed_response
-        RESPONSE_DATA_TYPES.each_with_object({}) do |data_type, response|
-          response[data_type] = parsed_data(data_type)
+        DATA_TYPES.each_with_object({}) do |data_type, response|
+          response[data_type.to_sym] = parsed_data(data_type)
         end
       end
 
       def parsed_data(data_type)
-        data_type = data_type.to_s
         scrape_pattern = scrape_details[data_type]['pattern']
         scrape_method = scrape_details[data_type]['method'].to_sym
 

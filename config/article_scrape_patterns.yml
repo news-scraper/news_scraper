@@ -1,13 +1,12 @@
-# All domains must include the scrape pattern for data_types: :required
+# All domains should include the scrape method/pattern for data_types
 
 data_types:
-  required:
-    - body
-    - description
-    - keywords
-    - section
-    - time
-    - title
+  - "body"
+  - "description"
+  - "keywords"
+  - "section"
+  - "time"
+  - "title"
 
 # All data types must include :method and :pattern
 #
