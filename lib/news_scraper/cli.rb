@@ -11,6 +11,12 @@ module NewsScraper
       $stdout.puts "#{color}┃\x1b[0m " + message
     end
 
+    def log_lines(message, color: DEFAULT_COLOR, new_line: false)
+      message.split("\n").each do |line|
+        log(line, color: color, new_line: new_line)
+      end
+    end
+
     def confirm(msg, color: DEFAULT_COLOR)
       print "#{color}┃\x1b[0m #{msg} (y/n) "
       $stdin.gets.chomp =~ /[Yy]/

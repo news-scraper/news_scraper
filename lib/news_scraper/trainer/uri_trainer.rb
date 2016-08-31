@@ -21,21 +21,23 @@ module NewsScraper
           NewsScraper::CLI.put_footer
           all_presets = current_presets
           selected_presets = NewsScraper::Trainer::DataType.train(uri, raw_html, all_presets)
-          NewsScraper::CLI.log(selected_presets.to_yaml)
 
+          NewsScraper::CLI.put_header('Save preset')
+          NewsScraper::CLI.log_lines(selected_presets.to_yaml)
           if NewsScraper::CLI.confirm("Save these scrape patterns for #{root_domain}?")
             save_selected_presets(root_domain, selected_presets)
           end
         else
           NewsScraper::CLI.log("Ignoring step-through for #{root_domain}", color: '\x1b[31m')
-          NewsScraper::CLI.put_footer
         end
+
+        NewsScraper::CLI.put_footer
       end
 
       def save_selected_presets(root_domain, selected_presets)
         save_domain_presets = if article_scrape_patterns['domains'].key?(root_domain)
           NewsScraper::CLI.log("YAML file already contains scrape pattern for #{root_domain}:")
-          NewsScraper::CLI.log(article_scrape_patterns['domains'][root_domain].to_yaml)
+          NewsScraper::CLI.log_lines(article_scrape_patterns['domains'][root_domain].to_yaml)
           NewsScraper::CLI.confirm("Overwrite?")
         else
           true
