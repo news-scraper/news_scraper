@@ -10,8 +10,10 @@ class GoogleNewsRssTest < Minitest::Test
     url = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss&q=shopify'
     expected_article_uris = YAML.load_file('test/data/google_news_rss/shopify_article_uris.yml').sort
     stub_http_request(url: url, body: raw_data)
-    extractor = NewsScraper::Extractors::GoogleNewsRss.new(query: 'shopify')
 
-    assert_equal expected_article_uris, extractor.extract.sort
+    capture_subprocess_io do
+      extractor = NewsScraper::Extractors::GoogleNewsRss.new(query: 'shopify')
+      assert_equal expected_article_uris, extractor.extract.sort
+    end
   end
 end

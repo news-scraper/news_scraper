@@ -19,7 +19,7 @@ module NewsScraper
       def no_scrape_defined(uri, raw_html, root_domain)
         if NewsScraper::CLI.confirm("Step through presets for #{root_domain}?")
           NewsScraper::CLI.put_footer
-          all_presets = current_presets
+          all_presets = Transformers::Article.scrape_patterns['presets']
           selected_presets = NewsScraper::Trainer::DataType.train(uri, raw_html, all_presets)
 
           NewsScraper::CLI.put_header('Save preset')
@@ -35,6 +35,7 @@ module NewsScraper
       end
 
       def save_selected_presets(root_domain, selected_presets)
+        article_scrape_patterns = Transformers::Article.scrape_patterns
         save_domain_presets = if article_scrape_patterns['domains'].key?(root_domain)
           NewsScraper::CLI.log("YAML file already contains scrape pattern for #{root_domain}:")
           NewsScraper::CLI.log_lines(article_scrape_patterns['domains'][root_domain].to_yaml)
@@ -50,14 +51,6 @@ module NewsScraper
         else
           NewsScraper::CLI.log("Did not write presets for #{root_domain} to file.")
         end
-      end
-
-      def current_presets
-        article_scrape_patterns['presets']
-      end
-
-      def article_scrape_patterns
-        YAML.load_file('config/article_scrape_patterns.yml')
       end
     end
   end

@@ -38,8 +38,8 @@ module NewsScraper
     def prompt_with_options(question, options)
       log(question)
       log("Your options are:")
-      options.each_with_index do |v, idx|
-        log("#{idx + 1}) #{v}")
+      options.each_with_index(1) do |v, idx|
+        log("#{idx}) #{v}")
       end
       log("Choose a number between 1 and #{options.length}")
 
@@ -83,8 +83,7 @@ module NewsScraper
       ptext = "#{color}#{prefix}#{text}"
       textwidth = printing_width(ptext)
 
-      console = IO.console
-      termwidth = console ? console.winsize[1] : 80
+      termwidth = IO.console ? IO.console.winsize[1] : 80
       termwidth = 30 if termwidth < 30
 
       if textwidth > termwidth

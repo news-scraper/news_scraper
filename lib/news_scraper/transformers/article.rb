@@ -4,8 +4,6 @@ require 'sanitize'
 module NewsScraper
   module Transformers
     class Article
-      SCRAPE_PATTERNS = YAML.load_file('config/article_scrape_patterns.yml').freeze
-      DATA_TYPES = SCRAPE_PATTERNS['data_types'].freeze
       attr_reader :uri, :payload
 
       def initialize(uri:, payload:, scrape_details: nil)
@@ -16,7 +14,16 @@ module NewsScraper
 
       def transform
         raise ScrapePatternNotDefined.new(root_domain: root_domain) unless scrape_pattern?
+
         transformed_response.merge(root_domain: root_domain)
+      end
+
+      def self.scrape_patterns
+        YAML.load_file('config/article_scrape_patterns.yml')
+      end
+
+      def self.data_types
+        scrape_patterns['data_types']
       end
 
       private
@@ -26,7 +33,7 @@ module NewsScraper
       end
 
       def scrape_details
-        @scrape_details ||= SCRAPE_PATTERNS['domains'][root_domain]
+        @scrape_details ||= self.class.scrape_patterns['domains'][root_domain]
       end
 
       def root_domain
@@ -34,7 +41,7 @@ module NewsScraper
       end
 
       def transformed_response
-        DATA_TYPES.each_with_object({}) do |data_type, response|
+        self.class.data_types.each_with_object({}) do |data_type, response|
           response[data_type.to_sym] = parsed_data(data_type)
         end
       end

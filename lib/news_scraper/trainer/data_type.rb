@@ -72,7 +72,7 @@ module NewsScraper
         end
 
         def data_types
-          Transformers::Article::DATA_TYPES
+          Transformers::Article.data_types
         end
       end
     end
