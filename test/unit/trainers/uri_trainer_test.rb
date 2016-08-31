@@ -85,7 +85,7 @@ module NewsScraper
       end
 
       def test_save_selected_presets_saves_overwrite
-        domain = NewsScraper::Transformers::Article.scrape_patterns['domains'].keys.first
+        domain = NewsScraper::Constants::SCRAPE_PATTERNS['domains'].keys.first
         presets = mock_presets
 
         domain_presets = write_domain_presets(domain, presets: presets, overwrite_confirm: true)
@@ -93,8 +93,8 @@ module NewsScraper
       end
 
       def test_save_selected_presets_no_overwrite
-        domain = NewsScraper::Transformers::Article.scrape_patterns['domains'].keys.first
-        original_presets = NewsScraper::Transformers::Article.scrape_patterns['domains'][domain]
+        domain = NewsScraper::Constants::SCRAPE_PATTERNS['domains'].keys.first
+        original_presets = NewsScraper::Constants::SCRAPE_PATTERNS['domains'][domain]
         domain_presets = write_domain_presets(domain, overwrite_confirm: false)
         assert_equal original_presets, domain_presets
       end

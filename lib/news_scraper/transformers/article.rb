@@ -6,10 +6,10 @@ module NewsScraper
     class Article
       attr_reader :uri, :payload
 
-      def initialize(uri:, payload:, scrape_details: nil)
+      def initialize(uri:, payload:, scrape_details: nil, scrape_patterns: NewsScraper::Constants::SCRAPE_PATTERNS)
         @uri = uri
         @payload = payload
-        @scrape_patterns = self.class.scrape_patterns
+        @scrape_patterns = scrape_patterns
         @scrape_details = scrape_details
       end
 
@@ -17,10 +17,6 @@ module NewsScraper
         raise ScrapePatternNotDefined.new(root_domain: root_domain) unless scrape_pattern?
 
         transformed_response.merge(root_domain: root_domain)
-      end
-
-      def self.scrape_patterns
-        YAML.load_file('config/article_scrape_patterns.yml')
       end
 
       private

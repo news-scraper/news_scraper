@@ -2,12 +2,16 @@ module NewsScraper
   module Trainer
     class UriTrainer
       def initialize(uri)
-        @article_scrape_patterns = Transformers::Article.scrape_patterns
+        @article_scrape_patterns = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_CONFIG_FILE)
         @data_type = NewsScraper::Trainer::PresetsSelector.new(uri)
 
         @uri = uri
         @raw_html = Extractors::Article.new(uri: uri).extract
-        @transformer = Transformers::Article.new(uri: uri, payload: @raw_html)
+        @transformer = Transformers::Article.new(
+          uri: uri,
+          payload: @raw_html,
+          scrape_patterns: @article_scrape_patterns
+        )
       end
 
       def train

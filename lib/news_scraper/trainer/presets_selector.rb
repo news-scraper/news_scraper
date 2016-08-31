@@ -3,18 +3,18 @@ module NewsScraper
     class PresetsSelector
       def initialize(uri)
         @uri = uri
-        @data_types = NewsScraper::Transformers::Article.scrape_patterns['data_types']
+        @scrape_patterns = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_CONFIG_FILE)
       end
 
       def select(payload)
         selected_presets = {}
-        all_presets = Transformers::Article.scrape_patterns['presets']
+        all_presets = @scrape_patterns['presets']
 
         NewsScraper::CLI.put_header(@uri)
         NewsScraper::CLI.log "Fetching information..."
         NewsScraper::CLI.put_footer
 
-        @data_types.each do |target_data_type|
+        @scrape_patterns['data_types'].each do |target_data_type|
           data_type_presets = all_presets[target_data_type]
           preset_results = preset_results(payload, data_type_presets, target_data_type)
 
@@ -37,12 +37,15 @@ module NewsScraper
         return {} unless presets
 
         scrape_details = blank_scrape_details
+        scrape_patterns = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_CONFIG_FILE)
+
         presets.each_with_object({}) do |(preset_name, preset_details), hash|
           scrape_details[data_type] = preset_details
           train_transformer = Transformers::Article.new(
             uri: @uri,
             payload: payload,
-            scrape_details: scrape_details
+            scrape_details: scrape_details,
+            scrape_patterns: scrape_patterns
           )
 
           hash[preset_name] = train_transformer.transform[data_type.to_sym]
@@ -50,7 +53,7 @@ module NewsScraper
       end
 
       def blank_scrape_details
-        @data_types.each_with_object({}) do |data_type, hash|
+        @scrape_patterns['data_types'].each_with_object({}) do |data_type, hash|
           hash[data_type] = nil
         end
       end
