@@ -17,8 +17,9 @@ module NewsScraper
         @expected_select_options = [
           "meta_description: #{@expected_transformation[:description]}",
           "og_description: #{@expected_transformation[:description]}",
-          'skip',
-          'I will provide an xpath'
+          'I will provide a pattern using xpath',
+          'I will provide a pattern using css',
+          'skip'
         ]
       end
 
@@ -121,12 +122,27 @@ module NewsScraper
       end
 
       def test_select_preset_with_xpath
-        NewsScraper::CLI.expects(:get_input).with('Provide the xpath:').returns("xpath")
+        NewsScraper::CLI.expects(:get_input).with('Provide the xpath pattern:').returns("xpath_pattern")
         NewsScraper::CLI.expects(:prompt_with_options).with(
           "Select which preset to use for #{@target_data_type}:",
           @expected_select_options
-        ).returns(@expected_select_options.last)
-        assert_equal 'xpath', NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type)
+        ).returns('I will provide a pattern using xpath')
+        assert_equal({
+          "method"=>"xpath",
+          "pattern"=>"xpath_pattern"
+        }, NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type))
+      end
+
+      def test_select_preset_with_css
+        NewsScraper::CLI.expects(:get_input).with('Provide the css pattern:').returns("css_pattern")
+        NewsScraper::CLI.expects(:prompt_with_options).with(
+          "Select which preset to use for #{@target_data_type}:",
+          @expected_select_options
+        ).returns('I will provide a pattern using css')
+        assert_equal({
+          "method"=>"css",
+          "pattern"=>"css_pattern"
+        }, NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type))
       end
 
       def test_select_preset_with_option

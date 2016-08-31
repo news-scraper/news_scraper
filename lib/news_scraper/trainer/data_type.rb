@@ -58,16 +58,24 @@ module NewsScraper
           extracted_text = results[1]
           options_hash["#{preset_name}: #{extracted_text}"] = index
         end
+        %w(xpath css).each do |pattern_provider|
+          options["I will provide a pattern using #{pattern_provider}"] = pattern_provider
+        end
         options['skip'] = 'skip'
-        options['I will provide an xpath'] = 'provide'
 
         selected_option = NewsScraper::CLI.prompt_with_options(
           "Select which preset to use for #{target_data_type}:",
           options.keys
         )
 
-        return NewsScraper::CLI.get_input("Provide the xpath:") if selected_option == 'I will provide an xpath'
-        return if selected_option == "skip"
+        if selected_option.start_with?('I will provide a pattern using')
+          pattern_type = options[selected_option]
+          return {
+            'method' => pattern_type,
+            'pattern' => NewsScraper::CLI.get_input("Provide the #{pattern_type} pattern:")
+          }
+        end
+        return if selected_option == 'skip'
 
         selected_preset_code = preset_results[options[selected_option]].first
         data_type_presets[selected_preset_code]
