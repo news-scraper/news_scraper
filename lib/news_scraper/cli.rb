@@ -38,7 +38,7 @@ module NewsScraper
     def prompt_with_options(question, options)
       log(question)
       log("Your options are:")
-      options.each_with_index(1) do |v, idx|
+      options.each.with_index(1) do |v, idx|
         log("#{idx}) #{v}")
       end
       log("Choose a number between 1 and #{options.length}")
