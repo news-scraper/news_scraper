@@ -35,7 +35,7 @@ module NewsScraper
 
       def test_no_scrape_defined_with_no_step_through
         NewsScraper::CLI.expects(:confirm).returns(false)
-        NewsScraper::Trainer::DataTypeExtractor.any_instance.expects(:train).never
+        NewsScraper::Trainer::PresetsSelector.any_instance.expects(:train).never
 
         capture_subprocess_io do
           trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
@@ -46,7 +46,7 @@ module NewsScraper
 
       def test_no_scrape_defined_with_no_save
         NewsScraper::CLI.expects(:confirm).twice.returns(true, false)
-        NewsScraper::Trainer::DataTypeExtractor.any_instance.expects(:train).returns({})
+        NewsScraper::Trainer::PresetsSelector.any_instance.expects(:train).returns({})
 
         capture_subprocess_io do
           trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
@@ -57,7 +57,7 @@ module NewsScraper
 
       def test_no_scrape_defined_with_save
         NewsScraper::CLI.expects(:confirm).twice.returns(true, true)
-        NewsScraper::Trainer::DataTypeExtractor.any_instance.expects(:train).returns('selected_presets' => 'selected_presets')
+        NewsScraper::Trainer::PresetsSelector.any_instance.expects(:train).returns('selected_presets' => 'selected_presets')
 
         capture_subprocess_io do
           trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')

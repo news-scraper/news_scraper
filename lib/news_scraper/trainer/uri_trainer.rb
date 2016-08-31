@@ -3,7 +3,7 @@ module NewsScraper
     class UriTrainer
       def initialize(uri)
         @article_scrape_patterns = Transformers::Article.scrape_patterns
-        @data_type = NewsScraper::Trainer::DataTypeExtractor.new(uri)
+        @data_type = NewsScraper::Trainer::PresetsSelector.new(uri)
 
         @uri = uri
         @raw_html = Extractors::Article.new(uri: uri).extract

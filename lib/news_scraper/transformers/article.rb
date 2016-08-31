@@ -9,8 +9,8 @@ module NewsScraper
       def initialize(uri:, payload:, scrape_details: nil)
         @uri = uri
         @payload = payload
-        @scrape_details = scrape_details
         @scrape_patterns = self.class.scrape_patterns
+        @scrape_details = scrape_details
       end
 
       def transform
@@ -30,7 +30,7 @@ module NewsScraper
       end
 
       def scrape_details
-        @scrape_details ||= self.class.scrape_patterns['domains'][root_domain]
+        @scrape_details ||= @scrape_patterns['domains'][root_domain]
       end
 
       def root_domain
