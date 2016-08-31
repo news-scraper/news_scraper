@@ -1,4 +1,3 @@
-require 'yaml'
 require 'news_scraper/trainer/data_type'
 require 'news_scraper/trainer/uri_trainer'
 

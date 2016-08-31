@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'yaml'
 
 module NewsScraper::Trainer
   class UriTrainerTest < Minitest::Test

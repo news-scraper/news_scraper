@@ -1,4 +1,5 @@
 require 'httparty'
+require 'yaml'
 
 require 'news_scraper/temp_dirs'
 require 'news_scraper/active_support_lite/string'

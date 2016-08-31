@@ -1,6 +1,4 @@
 require 'test_helper'
-require 'yaml'
-require 'pry'
 
 class GoogleNewsRssTest < Minitest::Test
   include ExtractorsTestHelpers

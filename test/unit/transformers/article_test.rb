@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'yaml'
 
 class ArticleTest < Minitest::Test
   def test_transform_returns_correct_json_transformation_for_supported_domains
