@@ -28,7 +28,7 @@ module NewsScraper
 
         capture_subprocess_io do
           trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
-          trainer.expects(:no_scrape_defined).with('google.ca', 'extract', 'google.ca')
+          trainer.expects(:no_scrape_defined).with('google.ca')
           trainer.train
         end
       end
@@ -40,7 +40,7 @@ module NewsScraper
         capture_subprocess_io do
           trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
           trainer.expects(:save_selected_presets).never
-          trainer.no_scrape_defined('google.ca', '', 'google.ca')
+          trainer.no_scrape_defined('google.ca')
         end
       end
 
@@ -51,7 +51,7 @@ module NewsScraper
         capture_subprocess_io do
           trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
           trainer.expects(:save_selected_presets).never
-          trainer.no_scrape_defined('google.ca', '', 'google.ca')
+          trainer.no_scrape_defined('google.ca')
         end
       end
 
@@ -65,7 +65,7 @@ module NewsScraper
             'google.ca',
             'selected_presets' => 'selected_presets'
           )
-          trainer.no_scrape_defined('google.ca', '', 'google.ca')
+          trainer.no_scrape_defined('google.ca')
         end
       end
 

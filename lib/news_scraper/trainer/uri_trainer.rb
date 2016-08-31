@@ -17,14 +17,14 @@ module NewsScraper
           NewsScraper::CLI.put_header
           NewsScraper::CLI.log("There is no scrape pattern defined for #{e.root_domain}"\
             " in config/article_scrape_patterns.yml")
-          no_scrape_defined(@uri, @raw_html, e.root_domain)
+          no_scrape_defined(e.root_domain)
         end
       end
 
-      def no_scrape_defined(uri, raw_html, root_domain)
+      def no_scrape_defined(root_domain)
         if NewsScraper::CLI.confirm("Step through presets for #{root_domain}?")
           NewsScraper::CLI.put_footer
-          selected_presets = @data_type.train(raw_html)
+          selected_presets = @data_type.train(@raw_html)
 
           NewsScraper::CLI.put_header('Save preset')
           NewsScraper::CLI.log_lines(selected_presets.to_yaml)
