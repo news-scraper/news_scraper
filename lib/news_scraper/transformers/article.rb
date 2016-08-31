@@ -16,7 +16,6 @@ module NewsScraper
 
       def transform
         raise ScrapePatternNotDefined.new(root_domain: root_domain) unless scrape_pattern?
-
         transformed_response.merge(root_domain: root_domain)
       end
 

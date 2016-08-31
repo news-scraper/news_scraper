@@ -2,6 +2,7 @@ require 'httparty'
 
 require 'news_scraper/temp_dirs'
 require 'news_scraper/active_support_lite/string'
+require 'news_scraper/cli'
 
 require 'news_scraper/errors'
 require 'news_scraper/version'
@@ -28,6 +29,6 @@ module NewsScraper
   # 5. Saves the selected :preset to config/article_scrape_patterns.yml
 
   def train(query:)
-    Trainer.new(query: query).train
+    Trainer.train(query: query)
   end
 end
