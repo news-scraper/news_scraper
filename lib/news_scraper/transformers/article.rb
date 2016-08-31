@@ -6,7 +6,7 @@ module NewsScraper
     class Article
       attr_reader :uri, :payload
 
-      def initialize(uri:, payload:, scrape_details: nil, scrape_patterns: NewsScraper::Constants::SCRAPE_PATTERNS)
+      def initialize(uri:, payload:, scrape_details: nil, scrape_patterns: Constants::SCRAPE_PATTERNS)
         @uri = uri
         @payload = payload
         @scrape_patterns = scrape_patterns
