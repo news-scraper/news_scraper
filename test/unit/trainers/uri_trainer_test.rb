@@ -70,27 +70,36 @@ module NewsScraper
       end
 
       def test_save_selected_presets_saves_config
-        assert_presets_written('totally-not-there.com')
+        presets = mock_presets
+        domain_presets = write_domain_presets('totally-not-there.com', presets: presets)
+        assert_equal presets, domain_presets
       end
 
-      def test_save_selected_presets_saves_config_twice
+      def test_save_selected_presets_overrides_the_config
         domain = 'totally-not-there.com'
-        assert_presets_written(domain)
-        assert_presets_written(domain, presets: mock_presets('.pattern2'), overwrite_confirm: true)
+        write_domain_presets(domain)
+
+        presets = mock_presets('.pattern2')
+        domain_presets = write_domain_presets(domain, presets: presets, overwrite_confirm: true)
+        assert_equal presets, domain_presets
       end
 
       def test_save_selected_presets_saves_overwrite
         domain = NewsScraper::Transformers::Article.scrape_patterns['domains'].keys.first
-        assert_presets_written(domain, overwrite_confirm: true)
+        presets = mock_presets
+
+        domain_presets = write_domain_presets(domain, presets: presets, overwrite_confirm: true)
+        assert_equal presets, domain_presets
       end
 
       def test_save_selected_presets_no_overwrite
         domain = NewsScraper::Transformers::Article.scrape_patterns['domains'].keys.first
         original_presets = NewsScraper::Transformers::Article.scrape_patterns['domains'][domain]
-        assert_equal original_presets, assert_presets_written(domain, overwrite_confirm: false)
+        domain_presets = write_domain_presets(domain, overwrite_confirm: false)
+        assert_equal original_presets, domain_presets
       end
 
-      def assert_presets_written(domain, presets: mock_presets('.pattern'), overwrite_confirm: false)
+      def write_domain_presets(domain, presets: mock_presets('.pattern'), overwrite_confirm: false)
         yaml_path = 'config/article_scrape_patterns.yml'
         NewsScraper::CLI.stubs(:confirm).returns(overwrite_confirm)
 
@@ -106,7 +115,6 @@ module NewsScraper
               trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
               trainer.save_selected_presets(domain, presets)
             end
-            assert_equal presets, YAML.load_file(tmp_yaml_path)['domains'][domain] if overwrite_confirm
             YAML.load_file(tmp_yaml_path)['domains'][domain]
           end
         end
