@@ -8,9 +8,10 @@ module NewsScraper
       DATA_TYPES = SCRAPE_PATTERNS['data_types'].freeze
       attr_reader :uri, :payload
 
-      def initialize(uri:, payload:)
+      def initialize(uri:, payload:, scrape_details: nil)
         @uri = uri
         @payload = payload
+        @scrape_details = scrape_details
       end
 
       def transform
@@ -22,7 +23,7 @@ module NewsScraper
       private
 
       def scrape_pattern?
-        SCRAPE_PATTERNS['domains'].key?(root_domain)
+        !!(scrape_details)
       end
 
       def scrape_details
@@ -40,6 +41,8 @@ module NewsScraper
       end
 
       def parsed_data(data_type)
+        return nil unless scrape_details[data_type]
+
         scrape_pattern = scrape_details[data_type]['pattern']
         scrape_method = scrape_details[data_type]['method'].to_sym
 
