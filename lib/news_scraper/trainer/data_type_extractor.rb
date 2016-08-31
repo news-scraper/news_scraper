@@ -1,19 +1,22 @@
 module NewsScraper
   module Trainer
-    module DataType
-      extend self
+    class DataTypeExtractor
+      def initialize(uri)
+        @uri = uri
+        @data_types = NewsScraper::Transformers::Article.scrape_patterns['data_types']
+      end
 
-      def train(uri, payload)
+      def train(payload)
         selected_presets = {}
         all_presets = Transformers::Article.scrape_patterns['presets']
 
-        NewsScraper::CLI.put_header(uri)
+        NewsScraper::CLI.put_header(@uri)
         NewsScraper::CLI.log "Fetching information..."
         NewsScraper::CLI.put_footer
 
-        data_types.each do |target_data_type|
+        @data_types.each do |target_data_type|
           data_type_presets = all_presets[target_data_type]
-          preset_results = preset_results(uri, payload, data_type_presets, target_data_type)
+          preset_results = preset_results(payload, data_type_presets, target_data_type)
 
           NewsScraper::CLI.put_header("Determining information for #{target_data_type}")
           if preset_results.empty?
@@ -30,14 +33,14 @@ module NewsScraper
         selected_presets
       end
 
-      def preset_results(uri, payload, presets, data_type)
+      def preset_results(payload, presets, data_type)
         return {} unless presets
 
         scrape_details = blank_scrape_details
         presets.each_with_object({}) do |(preset_name, preset_details), hash|
           scrape_details[data_type] = preset_details
           train_transformer = Transformers::Article.new(
-            uri: uri,
+            uri: @uri,
             payload: payload,
             scrape_details: scrape_details
           )
@@ -47,7 +50,7 @@ module NewsScraper
       end
 
       def blank_scrape_details
-        data_types.each_with_object({}) do |data_type, hash|
+        @data_types.each_with_object({}) do |data_type, hash|
           hash[data_type] = nil
         end
       end
@@ -79,10 +82,6 @@ module NewsScraper
 
         selected_preset_code = preset_results[options[selected_option]].first
         data_type_presets[selected_preset_code]
-      end
-
-      def data_types
-        NewsScraper::Transformers::Article.data_types
       end
     end
   end

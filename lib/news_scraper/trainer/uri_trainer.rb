@@ -3,6 +3,7 @@ module NewsScraper
     class UriTrainer
       def initialize(uri)
         @article_scrape_patterns = Transformers::Article.scrape_patterns
+        @data_type = NewsScraper::Trainer::DataTypeExtractor.new(uri)
 
         @uri = uri
         @raw_html = Extractors::Article.new(uri: uri).extract
@@ -23,7 +24,7 @@ module NewsScraper
       def no_scrape_defined(uri, raw_html, root_domain)
         if NewsScraper::CLI.confirm("Step through presets for #{root_domain}?")
           NewsScraper::CLI.put_footer
-          selected_presets = NewsScraper::Trainer::DataType.train(uri, raw_html)
+          selected_presets = @data_type.train(raw_html)
 
           NewsScraper::CLI.put_header('Save preset')
           NewsScraper::CLI.log_lines(selected_presets.to_yaml)

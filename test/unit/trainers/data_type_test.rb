@@ -2,7 +2,7 @@ require 'test_helper'
 
 module NewsScraper
   module Trainer
-    class DataTypeTest < Minitest::Test
+    class DataTypeExtractorTest < Minitest::Test
       def setup
         super
 
@@ -21,46 +21,47 @@ module NewsScraper
           'I will provide a pattern using css',
           'skip'
         ]
+        @data_type_extractor = NewsScraper::Trainer::DataTypeExtractor.new(@domain)
       end
 
       def test_train_without_preset_results
         payload = raw_data_fixture(@domain)
-        NewsScraper::Trainer::DataType.stubs(:preset_results).returns([])
+        @data_type_extractor.stubs(:preset_results).returns([])
 
-        expected_output = NewsScraper::Trainer::DataType.blank_scrape_details.each_with_object({}) do |(k, _), h|
+        expected_output = @data_type_extractor.blank_scrape_details.each_with_object({}) do |(k, _), h|
           h[k] = { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
         end
 
         capture_subprocess_io do
-          assert_equal expected_output, NewsScraper::Trainer::DataType.train(@domain, payload)
+          assert_equal expected_output, @data_type_extractor.train(payload)
         end
       end
 
       def test_train_with_all_select_presets
         payload = raw_data_fixture(@domain)
-        NewsScraper::Trainer::DataType.stubs(:preset_results).returns(@preset_results)
-        NewsScraper::Trainer::DataType.stubs(:select_preset).returns(@presets['meta'])
+        @data_type_extractor.stubs(:preset_results).returns(@preset_results)
+        @data_type_extractor.stubs(:select_preset).returns(@presets['meta'])
 
-        expected_output = NewsScraper::Trainer::DataType.blank_scrape_details.each_with_object({}) do |(k, _), h|
+        expected_output = @data_type_extractor.blank_scrape_details.each_with_object({}) do |(k, _), h|
           h[k] = @presets['meta']
         end
 
         capture_subprocess_io do
-          assert_equal expected_output, NewsScraper::Trainer::DataType.train(@domain, payload)
+          assert_equal expected_output, @data_type_extractor.train(payload)
         end
       end
 
       def test_train_without_select_preset
         payload = raw_data_fixture(@domain)
-        NewsScraper::Trainer::DataType.stubs(:preset_results).returns(@preset_results)
-        NewsScraper::Trainer::DataType.stubs(:select_preset).returns(nil)
+        @data_type_extractor.stubs(:preset_results).returns(@preset_results)
+        @data_type_extractor.stubs(:select_preset).returns(nil)
 
-        expected_output = NewsScraper::Trainer::DataType.blank_scrape_details.each_with_object({}) do |(k, _), h|
+        expected_output = @data_type_extractor.blank_scrape_details.each_with_object({}) do |(k, _), h|
           h[k] = { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
         end
 
         capture_subprocess_io do
-          assert_equal expected_output, NewsScraper::Trainer::DataType.train(@domain, payload)
+          assert_equal expected_output, @data_type_extractor.train(payload)
         end
       end
 
@@ -94,11 +95,11 @@ module NewsScraper
       def test_preset_results
         payload = raw_data_fixture(@domain)
         assert_equal @preset_results,
-          NewsScraper::Trainer::DataType.preset_results(@domain, payload, @presets, @target_data_type)
+          @data_type_extractor.preset_results(payload, @presets, @target_data_type)
       end
 
       def test_preset_results_no_presets
-        assert_equal({}, NewsScraper::Trainer::DataType.preset_results('google.ca', nil, nil, nil))
+        assert_equal({}, @data_type_extractor.preset_results(nil, nil, nil))
       end
 
       def test_blank_scrape_details
@@ -110,7 +111,7 @@ module NewsScraper
           "time" => nil,
           "title" => nil
         }
-        assert_equal(expected_details, NewsScraper::Trainer::DataType.blank_scrape_details)
+        assert_equal(expected_details, @data_type_extractor.blank_scrape_details)
       end
 
       def test_select_preset_with_skip
@@ -118,7 +119,7 @@ module NewsScraper
           "Select which preset to use for #{@target_data_type}:",
           @expected_select_options
         ).returns('skip')
-        assert_nil NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type)
+        assert_nil @data_type_extractor.select_preset(@preset_results, @presets, @target_data_type)
       end
 
       def test_select_preset_with_xpath
@@ -130,7 +131,7 @@ module NewsScraper
         assert_equal({
           "method"=>"xpath",
           "pattern"=>"xpath_pattern"
-        }, NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type))
+        }, @data_type_extractor.select_preset(@preset_results, @presets, @target_data_type))
       end
 
       def test_select_preset_with_css
@@ -142,7 +143,7 @@ module NewsScraper
         assert_equal({
           "method"=>"css",
           "pattern"=>"css_pattern"
-        }, NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type))
+        }, @data_type_extractor.select_preset(@preset_results, @presets, @target_data_type))
       end
 
       def test_select_preset_with_option
@@ -152,7 +153,7 @@ module NewsScraper
         ).returns(@expected_select_options.first)
 
         assert_equal @presets['meta'],
-          NewsScraper::Trainer::DataType.select_preset(@preset_results, @presets, @target_data_type)
+          @data_type_extractor.select_preset(@preset_results, @presets, @target_data_type)
       end
     end
   end

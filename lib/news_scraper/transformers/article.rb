@@ -10,6 +10,7 @@ module NewsScraper
         @uri = uri
         @payload = payload
         @scrape_details = scrape_details
+        @scrape_patterns = self.class.scrape_patterns
       end
 
       def transform
@@ -20,10 +21,6 @@ module NewsScraper
 
       def self.scrape_patterns
         YAML.load_file('config/article_scrape_patterns.yml')
-      end
-
-      def self.data_types
-        scrape_patterns['data_types']
       end
 
       private
@@ -41,7 +38,7 @@ module NewsScraper
       end
 
       def transformed_response
-        self.class.data_types.each_with_object({}) do |data_type, response|
+        @scrape_patterns['data_types'].each_with_object({}) do |data_type, response|
           response[data_type.to_sym] = parsed_data(data_type)
         end
       end
