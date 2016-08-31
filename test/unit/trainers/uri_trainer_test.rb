@@ -3,12 +3,21 @@ require 'test_helper'
 module NewsScraper
   module Trainer
     class UriTrainerTest < Minitest::Test
+      def setup
+        super
+        NewsScraper::Transformers::Article.any_instance.stubs(:transform)
+        NewsScraper::Extractors::Article.any_instance.stubs(:extract)
+      end
+
       def test_train_with_defined_scraper_pattern
         NewsScraper::Transformers::Article.any_instance.expects(:transform)
         NewsScraper::Extractors::Article.any_instance.expects(:extract)
-        NewsScraper::Trainer::UriTrainer.expects(:no_scrape_defined).never
 
-        NewsScraper::Trainer::UriTrainer.train('google.ca')
+        capture_subprocess_io do
+          trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
+          trainer.expects(:no_scrape_defined).never
+          trainer.train
+        end
       end
 
       def test_train_with_no_defined_scraper_pattern
@@ -16,43 +25,47 @@ module NewsScraper
           NewsScraper::Transformers::ScrapePatternNotDefined.new(root_domain: 'google.ca')
         )
         NewsScraper::Extractors::Article.any_instance.expects(:extract).returns('extract')
-        NewsScraper::Trainer::UriTrainer.expects(:no_scrape_defined).with('google.ca', 'extract', 'google.ca')
 
         capture_subprocess_io do
-          NewsScraper::Trainer::UriTrainer.train('google.ca')
+          trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
+          trainer.expects(:no_scrape_defined).with('google.ca', 'extract', 'google.ca')
+          trainer.train
         end
       end
 
       def test_no_scrape_defined_with_no_step_through
         NewsScraper::CLI.expects(:confirm).returns(false)
-        NewsScraper::Trainer::UriTrainer.expects(:save_selected_presets).never
         NewsScraper::Trainer::DataType.expects(:train).never
 
         capture_subprocess_io do
-          NewsScraper::Trainer::UriTrainer.no_scrape_defined('google.ca', '', 'google.ca')
+          trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
+          trainer.expects(:save_selected_presets).never
+          trainer.no_scrape_defined('google.ca', '', 'google.ca')
         end
       end
 
       def test_no_scrape_defined_with_no_save
         NewsScraper::CLI.expects(:confirm).twice.returns(true, false)
-        NewsScraper::Trainer::UriTrainer.expects(:save_selected_presets).never
         NewsScraper::Trainer::DataType.expects(:train).returns({})
 
         capture_subprocess_io do
-          NewsScraper::Trainer::UriTrainer.no_scrape_defined('google.ca', '', 'google.ca')
+          trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
+          trainer.expects(:save_selected_presets).never
+          trainer.no_scrape_defined('google.ca', '', 'google.ca')
         end
       end
 
       def test_no_scrape_defined_with_save
         NewsScraper::CLI.expects(:confirm).twice.returns(true, true)
-        NewsScraper::Trainer::UriTrainer.expects(:save_selected_presets).with(
-          'google.ca',
-          'selected_presets' => 'selected_presets'
-        )
         NewsScraper::Trainer::DataType.expects(:train).returns('selected_presets' => 'selected_presets')
 
         capture_subprocess_io do
-          NewsScraper::Trainer::UriTrainer.no_scrape_defined('google.ca', '', 'google.ca')
+          trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
+          trainer.expects(:save_selected_presets).with(
+            'google.ca',
+            'selected_presets' => 'selected_presets'
+          )
+          trainer.no_scrape_defined('google.ca', '', 'google.ca')
         end
       end
 
@@ -90,7 +103,8 @@ module NewsScraper
           # Chdir to the temp dir so we load the temp file
           Dir.chdir(dir) do
             capture_subprocess_io do
-              NewsScraper::Trainer::UriTrainer.save_selected_presets(domain, presets)
+              trainer = NewsScraper::Trainer::UriTrainer.new('google.ca')
+              trainer.save_selected_presets(domain, presets)
             end
             assert_equal presets, YAML.load_file(tmp_yaml_path)['domains'][domain] if overwrite_confirm
             YAML.load_file(tmp_yaml_path)['domains'][domain]
