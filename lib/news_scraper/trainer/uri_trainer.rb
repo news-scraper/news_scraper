@@ -15,13 +15,13 @@ module NewsScraper
       end
 
       def train
-        begin
+        if @article_scrape_patterns['domains'].key?(@transformer.root_domain)
           @transformer.transform
-        rescue Transformers::ScrapePatternNotDefined => e
+        else
           CLI.put_header
-          CLI.log("There is no scrape pattern defined for #{e.root_domain}"\
+          CLI.log("There is no scrape pattern defined for #{@transformer.root_domain}"\
             " in config/article_scrape_patterns.yml")
-          no_scrape_defined(e.root_domain)
+          no_scrape_defined(@transformer.root_domain)
         end
       end
 

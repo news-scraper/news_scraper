@@ -23,4 +23,14 @@ class ArticleTest < Minitest::Test
     end
     assert_equal unsupported_domain, err.root_domain
   end
+
+  def test_root_domain
+    domain = 'unsupported-domain.com'
+    transformer = NewsScraper::Transformers::Article.new(uri: domain, payload: '')
+    assert_equal domain, transformer.root_domain
+
+    domain_with_path_and_param = 'www.unsupported-domain.com/banana/apple/kiwi?param=1'
+    transformer = NewsScraper::Transformers::Article.new(uri: domain_with_path_and_param, payload: '')
+    assert_equal domain, transformer.root_domain
+  end
 end

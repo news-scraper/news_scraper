@@ -10,20 +10,18 @@ module NewsScraper
       end
 
       def test_train_with_defined_scraper_pattern
+        domain = Constants::SCRAPE_PATTERNS['domains'].keys.first
         Transformers::Article.any_instance.expects(:transform)
         Extractors::Article.any_instance.expects(:extract)
 
         capture_subprocess_io do
-          trainer = Trainer::UriTrainer.new('google.ca')
+          trainer = Trainer::UriTrainer.new(domain)
           trainer.expects(:no_scrape_defined).never
           trainer.train
         end
       end
 
       def test_train_with_no_defined_scraper_pattern
-        Transformers::Article.any_instance.expects(:transform).raises(
-          Transformers::ScrapePatternNotDefined.new(root_domain: 'google.ca')
-        )
         Extractors::Article.any_instance.expects(:extract).returns('extract')
 
         capture_subprocess_io do

@@ -19,6 +19,10 @@ module NewsScraper
         transformed_response.merge(root_domain: root_domain)
       end
 
+      def root_domain
+        @root_domain ||= uri.downcase.match(/^(?:[\w\d-]+\.)?([\w\d-]+\.\w{2,})/)[1]
+      end
+
       private
 
       def scrape_pattern?
@@ -27,10 +31,6 @@ module NewsScraper
 
       def scrape_details
         @scrape_details ||= @scrape_patterns['domains'][root_domain]
-      end
-
-      def root_domain
-        @root_domain ||= uri.downcase.match(/^(?:[\w\d-]+\.)?([\w\d-]+\.\w{2,})/)[1]
       end
 
       def transformed_response
