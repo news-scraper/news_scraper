@@ -65,33 +65,6 @@ module NewsScraper
         end
       end
 
-      def train(uri, payload)
-        selected_presets = {}
-        all_presets = Transformers::Article.scrape_patterns['presets']
-
-        NewsScraper::CLI.put_header(uri)
-        NewsScraper::CLI.log "Fetching information..."
-        NewsScraper::CLI.put_footer
-
-        data_types.each do |target_data_type|
-          data_type_presets = all_presets[target_data_type]
-          preset_results = preset_results(uri, payload, data_type_presets, target_data_type)
-
-          NewsScraper::CLI.put_header("Determining information for #{target_data_type}")
-          if preset_results.empty?
-            NewsScraper::CLI.log("No presets were found for #{target_data_type}. Skipping to next.")
-          else
-            selected_preset = select_preset(preset_results, data_type_presets, target_data_type)
-            selected_presets[target_data_type] = selected_preset if selected_preset
-          end
-          NewsScraper::CLI.put_footer
-
-          selected_presets[target_data_type] ||= { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
-        end
-
-        selected_presets
-      end
-
       def test_preset_results
         payload = raw_data_fixture(@domain)
         assert_equal @preset_results,
