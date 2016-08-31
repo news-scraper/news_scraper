@@ -1,15 +1,14 @@
 require 'test_helper'
-require 'yaml'
 
 class ArticleTest < Minitest::Test
   def test_transform_returns_correct_json_transformation_for_supported_domains
     supported_domains = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys
 
     supported_domains.each do |domain|
-      raw_data = File.read("test/data/articles/#{domain.gsub(/\./, '_')}_raw.html")
+      raw_data = raw_data_fixture(domain)
       transformer = NewsScraper::Transformers::Article.new(uri: "#{domain}/some_article", payload: raw_data)
 
-      expected_transformation = YAML.load_file("test/data/articles/#{domain.gsub(/\./, '_')}_transformed.yml")
+      expected_transformation = transformation_fixture(domain)
 
       assert_equal expected_transformation, transformer.transform
     end
