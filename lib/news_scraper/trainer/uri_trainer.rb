@@ -11,7 +11,8 @@ module NewsScraper
           transformer.transform
         rescue NewsScraper::Transformers::ScrapePatternNotDefined => e
           NewsScraper::CLI.put_header
-          NewsScraper::CLI.log("There is no scrape pattern defined for #{e.root_domain} in config/article_scrape_patterns.yml")
+          NewsScraper::CLI.log("There is no scrape pattern defined for #{e.root_domain}"\
+            " in config/article_scrape_patterns.yml")
           no_scrape_defined(uri, raw_html, e.root_domain)
         end
       end
@@ -19,8 +20,7 @@ module NewsScraper
       def no_scrape_defined(uri, raw_html, root_domain)
         if NewsScraper::CLI.confirm("Step through presets for #{root_domain}?")
           NewsScraper::CLI.put_footer
-          all_presets = Transformers::Article.scrape_patterns['presets']
-          selected_presets = NewsScraper::Trainer::DataType.train(uri, raw_html, all_presets)
+          selected_presets = NewsScraper::Trainer::DataType.train(uri, raw_html)
 
           NewsScraper::CLI.put_header('Save preset')
           NewsScraper::CLI.log_lines(selected_presets.to_yaml)
