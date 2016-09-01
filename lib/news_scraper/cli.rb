@@ -83,7 +83,7 @@ module NewsScraper
       ptext = "#{color}#{prefix}#{text}"
       textwidth = printing_width(ptext)
 
-      termwidth = IO.console ? IO.console.winsize[1] : 80
+      termwidth = IO.respond_to?(:console) && IO.console ? IO.console.winsize[1] : 80
       termwidth = 30 if termwidth < 30
 
       if textwidth > termwidth

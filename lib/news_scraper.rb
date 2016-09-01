@@ -2,8 +2,8 @@ require 'httparty'
 require 'yaml'
 
 require 'news_scraper/constants'
+require 'news_scraper/uri_parser'
 require 'news_scraper/active_support_lite/string'
-require 'news_scraper/cli'
 
 require 'news_scraper/errors'
 require 'news_scraper/version'
@@ -15,6 +15,7 @@ require 'news_scraper/extractors/article'
 
 require 'news_scraper/transformers/article'
 
+require 'news_scraper/cli'
 require 'news_scraper/trainer'
 
 module NewsScraper
