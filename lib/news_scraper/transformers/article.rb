@@ -7,20 +7,18 @@ module NewsScraper
       attr_reader :uri, :payload
 
       def initialize(uri:, payload:, scrape_details: nil, scrape_patterns: Constants::SCRAPE_PATTERNS)
-        @uri = uri
+        uri_parser = URIParser.new(uri)
+        @uri = uri_parser.without_scheme
+        @root_domain = uri_parser.host
         @payload = payload
         @scrape_patterns = scrape_patterns
         @scrape_details = scrape_details
       end
 
       def transform
-        raise ScrapePatternNotDefined.new(root_domain: root_domain) unless scrape_pattern?
+        raise ScrapePatternNotDefined.new(root_domain: @root_domain) unless scrape_pattern?
 
-        transformed_response.merge(root_domain: root_domain)
-      end
-
-      def root_domain
-        @root_domain ||= uri.downcase.match(/^(?:[\w\d-]+\.)?([\w\d-]+\.\w{2,})/)[1]
+        transformed_response.merge(root_domain: @root_domain)
       end
 
       private
@@ -30,7 +28,7 @@ module NewsScraper
       end
 
       def scrape_details
-        @scrape_details ||= @scrape_patterns['domains'][root_domain]
+        @scrape_details ||= @scrape_patterns['domains'][@root_domain]
       end
 
       def transformed_response

@@ -11,7 +11,6 @@ module NewsScraper
 
       def test_train_with_defined_scraper_pattern
         domain = Constants::SCRAPE_PATTERNS['domains'].keys.first
-        Transformers::Article.any_instance.expects(:transform)
         Extractors::Article.any_instance.expects(:extract)
 
         capture_subprocess_io do
@@ -26,45 +25,42 @@ module NewsScraper
 
         capture_subprocess_io do
           trainer = Trainer::UriTrainer.new('google.ca')
-          trainer.expects(:no_scrape_defined).with('google.ca')
+          trainer.expects(:no_scrape_defined)
           trainer.train
         end
       end
 
       def test_no_scrape_defined_with_no_step_through
         CLI.expects(:confirm).returns(false)
-        Trainer::PresetsSelector.any_instance.expects(:train).never
+        Trainer::PresetsSelector.any_instance.expects(:select).never
 
         capture_subprocess_io do
           trainer = Trainer::UriTrainer.new('google.ca')
           trainer.expects(:save_selected_presets).never
-          trainer.no_scrape_defined('google.ca')
+          trainer.no_scrape_defined
         end
       end
 
       def test_no_scrape_defined_with_no_save
         CLI.expects(:confirm).twice.returns(true, false)
-        Trainer::PresetsSelector.any_instance.expects(:train).returns({})
+        Trainer::PresetsSelector.any_instance.expects(:select).returns({})
 
         capture_subprocess_io do
           trainer = Trainer::UriTrainer.new('google.ca')
           trainer.expects(:save_selected_presets).never
-          trainer.no_scrape_defined('google.ca')
+          trainer.no_scrape_defined
         end
       end
 
       def test_no_scrape_defined_with_save
         CLI.expects(:confirm).twice.returns(true, true)
-        Trainer::PresetsSelector.any_instance.expects(:train).returns('selected_presets' => 'selected_presets')
+        Trainer::PresetsSelector.any_instance.expects(:select).returns('selected_presets' => 'selected_presets')
 
-        capture_subprocess_io do
           trainer = Trainer::UriTrainer.new('google.ca')
           trainer.expects(:save_selected_presets).with(
-            'google.ca',
             'selected_presets' => 'selected_presets'
           )
-          trainer.no_scrape_defined('google.ca')
-        end
+          trainer.no_scrape_defined
       end
 
       def test_save_selected_presets_saves_config
@@ -110,8 +106,8 @@ module NewsScraper
           # Chdir to the temp dir so we load the temp file
           Dir.chdir(dir) do
             capture_subprocess_io do
-              trainer = Trainer::UriTrainer.new('google.ca')
-              trainer.save_selected_presets(domain, presets)
+              trainer = Trainer::UriTrainer.new(domain)
+              trainer.save_selected_presets(presets)
             end
             YAML.load_file(tmp_yaml_path)['domains'][domain]
           end

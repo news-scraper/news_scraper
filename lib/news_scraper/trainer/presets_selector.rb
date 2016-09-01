@@ -1,21 +1,21 @@
 module NewsScraper
   module Trainer
     class PresetsSelector
-      def initialize(uri)
-        @uri = uri
+      def initialize(uri:)
+        uri_parser = URIParser.new(uri)
+        @uri = uri_parser.without_scheme
         @scrape_patterns = YAML.load_file(Constants::SCRAPE_PATTERN_FILEPATH)
       end
 
       def select(payload)
         selected_presets = {}
-        all_presets = @scrape_patterns['presets']
 
         CLI.put_header(@uri)
         CLI.log "Fetching information..."
         CLI.put_footer
 
         @scrape_patterns['data_types'].each do |target_data_type|
-          data_type_presets = all_presets[target_data_type]
+          data_type_presets = @scrape_patterns['presets'][target_data_type]
           preset_results = preset_results(payload, data_type_presets, target_data_type)
 
           CLI.put_header("Determining information for #{target_data_type}")

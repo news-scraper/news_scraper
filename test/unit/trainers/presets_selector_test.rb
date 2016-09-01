@@ -21,7 +21,7 @@ module NewsScraper
           'I will provide a pattern using css',
           'skip'
         ]
-        @presets_selector = NewsScraper::Trainer::PresetsSelector.new(@domain)
+        @presets_selector = NewsScraper::Trainer::PresetsSelector.new(uri: @domain)
       end
 
       def test_select_without_preset_results
