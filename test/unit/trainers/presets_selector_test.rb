@@ -6,9 +6,9 @@ module NewsScraper
       def setup
         super
 
-        @domain = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys.first
+        @domain = NewsScraper::Constants::SCRAPE_PATTERNS['domains'].keys.first
         @target_data_type = 'description'
-        @presets = NewsScraper::Transformers::Article.scrape_patterns['presets'][@target_data_type]
+        @presets = NewsScraper::Constants::SCRAPE_PATTERNS['presets'][@target_data_type]
         @expected_transformation = transformation_fixture(@domain)
         @preset_results = [
           ["meta", @expected_transformation[:description]],

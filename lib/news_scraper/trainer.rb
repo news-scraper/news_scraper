@@ -8,7 +8,7 @@ module NewsScraper
     def train(query: '')
       article_uris = Extractors::GoogleNewsRss.new(query: query).extract
       article_uris.each do |uri|
-        NewsScraper::Trainer::UriTrainer.new(uri).train
+        Trainer::UriTrainer.new(uri).train
       end
     end
   end

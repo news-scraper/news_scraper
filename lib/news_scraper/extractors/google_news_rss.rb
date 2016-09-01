@@ -7,7 +7,7 @@ module NewsScraper
       include ExtractorsHelpers
 
       BASE_URL = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss'.freeze
-      ARTICLE_URIS_DIR = TempDirs['extractors']['google_news_rss']['article_uris'].freeze
+      ARTICLE_URIS_DIR = Constants::TEMP_DIRS['extractors']['google_news_rss']['article_uris'].freeze
 
       attr_reader :query, :temp_write
 

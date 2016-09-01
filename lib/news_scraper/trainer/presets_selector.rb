@@ -3,29 +3,29 @@ module NewsScraper
     class PresetsSelector
       def initialize(uri)
         @uri = uri
-        @data_types = NewsScraper::Transformers::Article.scrape_patterns['data_types']
+        @scrape_patterns = YAML.load_file(Constants::SCRAPE_PATTERN_FILEPATH)
       end
 
       def select(payload)
         selected_presets = {}
-        all_presets = Transformers::Article.scrape_patterns['presets']
+        all_presets = @scrape_patterns['presets']
 
-        NewsScraper::CLI.put_header(@uri)
-        NewsScraper::CLI.log "Fetching information..."
-        NewsScraper::CLI.put_footer
+        CLI.put_header(@uri)
+        CLI.log "Fetching information..."
+        CLI.put_footer
 
-        @data_types.each do |target_data_type|
+        @scrape_patterns['data_types'].each do |target_data_type|
           data_type_presets = all_presets[target_data_type]
           preset_results = preset_results(payload, data_type_presets, target_data_type)
 
-          NewsScraper::CLI.put_header("Determining information for #{target_data_type}")
+          CLI.put_header("Determining information for #{target_data_type}")
           if preset_results.empty?
-            NewsScraper::CLI.log("No presets were found for #{target_data_type}. Skipping to next.")
+            CLI.log("No presets were found for #{target_data_type}. Skipping to next.")
           else
             selected_preset = select_preset(preset_results, data_type_presets, target_data_type)
             selected_presets[target_data_type] = selected_preset if selected_preset
           end
-          NewsScraper::CLI.put_footer
+          CLI.put_footer
 
           selected_presets[target_data_type] ||= { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
         end
@@ -42,7 +42,8 @@ module NewsScraper
           train_transformer = Transformers::Article.new(
             uri: @uri,
             payload: payload,
-            scrape_details: scrape_details
+            scrape_details: scrape_details,
+            scrape_patterns: @scrape_patterns
           )
 
           hash[preset_name] = train_transformer.transform[data_type.to_sym]
@@ -50,7 +51,7 @@ module NewsScraper
       end
 
       def blank_scrape_details
-        @data_types.each_with_object({}) do |data_type, hash|
+        @scrape_patterns['data_types'].each_with_object({}) do |data_type, hash|
           hash[data_type] = nil
         end
       end
@@ -66,7 +67,7 @@ module NewsScraper
         end
         options['skip'] = 'skip'
 
-        selected_option = NewsScraper::CLI.prompt_with_options(
+        selected_option = CLI.prompt_with_options(
           "Select which preset to use for #{target_data_type}:",
           options.keys
         )
@@ -75,7 +76,7 @@ module NewsScraper
           pattern_type = options[selected_option]
           return {
             'method' => pattern_type,
-            'pattern' => NewsScraper::CLI.get_input("Provide the #{pattern_type} pattern:")
+            'pattern' => CLI.get_input("Provide the #{pattern_type} pattern:")
           }
         end
         return if selected_option == 'skip'
