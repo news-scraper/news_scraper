@@ -7,12 +7,15 @@ module NewsScraper
       CLI.log "Beginning HTTP request for #{url}"
       response = HTTParty.get(url)
 
-      if response.code == 200
-        CLI.log "#{response.code} - #{response.message}. Request successful for #{url}"
-        CLI.put_footer
+      raise ResponseError.new("#{response.code} - #{response.message}") unless response.code == 200
+
+      CLI.log "#{response.code} - #{response.message}. Request successful for #{url}"
+      CLI.put_footer
+
+      if block_given?
         yield response
       else
-        raise ResponseError, "#{response.code} - #{response.message}"
+        response
       end
     end
   end

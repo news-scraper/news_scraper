@@ -43,6 +43,12 @@ Style/IndentHash:
 Style/WordArray:
   Enabled: true
 
+Style/ModuleFunction:
+  Enabled: false
+
+Style/RaiseArgs:
+  EnforcedStyle: compact
+
 Metrics/AbcSize:
   Enabled: false
 
@@ -72,7 +78,7 @@ Lint/EndAlignment:
   AlignWith: variable
 
 Style/FrozenStringLiteralComment:
-  Enabled: true
+  Enabled: false
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method

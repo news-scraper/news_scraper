@@ -7,7 +7,7 @@ module NewsScraper
     end
 
     def without_scheme
-      @uri.scheme ? @uri.to_s.gsub(%r(^#{@uri.scheme}://), '') : @uri.to_s
+      @uri.scheme ? @uri.to_s.gsub(%r{^#{@uri.scheme}://}, '') : @uri.to_s
     end
 
     def with_scheme
