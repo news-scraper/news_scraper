@@ -15,11 +15,11 @@ module NewsScraper
 
         selected_option = CLI.prompt_with_options(
           "Select which preset to use for #{@data_type}:",
-          options.keys
+          pattern_options.keys
         )
 
         if selected_option.start_with?(PROVIDER_PHRASE)
-          pattern_type = options[selected_option]
+          pattern_type = pattern_options[selected_option]
           return {
             'method' => pattern_type,
             'pattern' => CLI.get_input("Provide the #{pattern_type} pattern:")
@@ -27,17 +27,17 @@ module NewsScraper
         end
         return if selected_option == 'skip'
 
-        selected_index = options[selected_option]
+        selected_index = pattern_options[selected_option]
         selected_preset_code = transform_results[selected_index].first
         @data_type_presets[selected_preset_code]
       end
 
       private
 
-      def options
+      def pattern_options
         return {} unless @data_type_presets
 
-        @options ||= begin
+        @pattern_options ||= begin
            temp_options = transform_results.each_with_object({}).with_index do |(results, options_hash), index|
               preset_name = "#{results[0]}_#{@data_type}"
               extracted_text = results[1]
@@ -51,11 +51,10 @@ module NewsScraper
       end
 
       def transform_results
-        return @results if @results
         return {} unless @data_type_presets
 
         scrape_details = blank_scrape_details
-        @results = @data_type_presets.each_with_object({}) do |(preset_name, preset_details), hash|
+        @results ||= @data_type_presets.each_with_object({}) do |(preset_name, preset_details), hash|
           scrape_details[@data_type] = preset_details
           train_transformer = Transformers::Article.new(
             uri: @uri,
