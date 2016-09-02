@@ -20,7 +20,6 @@ module NewsScraper
         end
 
         save_selected_presets(selected_presets)
-        selected_presets
       end
 
       private
