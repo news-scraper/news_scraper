@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.3
 
 ClassLength:
   Max: 500
@@ -17,7 +17,7 @@ Style/Documentation:
   Enabled: false
 
 Style/MultilineOperationIndentation:
-  Enabled: false
+  Enabled: true
 
 Style/AlignParameters:
   EnforcedStyle: with_fixed_indentation
@@ -32,7 +32,7 @@ Style/SignalException:
   EnforcedStyle: only_raise
 
 Style/NumericLiterals:
-  Enabled: false
+  Enabled: true
 
 Style/CaseIndentation:
   IndentWhenRelativeTo: end
@@ -41,7 +41,7 @@ Style/IndentHash:
   EnforcedStyle: consistent
 
 Style/WordArray:
-  Enabled: false
+  Enabled: true
 
 Metrics/AbcSize:
   Enabled: false
@@ -72,16 +72,16 @@ Lint/EndAlignment:
   AlignWith: variable
 
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method
 
 Style/MutableConstant:
-  Enabled: false
+  Enabled: true
 
 Performance/Casecmp:
-  Enabled: false
+  Enabled: true
 
 Style/GuardClause:
-  Enabled: false
+  Enabled: true
