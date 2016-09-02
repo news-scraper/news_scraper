@@ -1,17 +1,18 @@
 module NewsScraper
   module Trainer
-    class Preset
+    class PresetSelector
       PROVIDER_PHRASE = 'I will provide a pattern using'
 
-      def initialize(uri:, scrape_patterns:, payload:, data_type_presets:, data_type:)
+      def initialize(data_type:, data_type_presets:, uri:, payload:)
         @uri = uri
-        @scrape_patterns = scrape_patterns
         @payload = payload
         @data_type_presets = data_type_presets
         @data_type = data_type
       end
 
       def select
+        return unless @data_type_presets
+
         selected_option = CLI.prompt_with_options(
           "Select which preset to use for #{@data_type}:",
           options.keys
@@ -34,18 +35,19 @@ module NewsScraper
       private
 
       def options
-        return @options if @options
+        return {} unless @data_type_presets
 
-        @options = transform_results.each_with_object({}).with_index do |(results, options_hash), index|
-          preset_name = "#{results[0]}_#{@data_type}"
-          extracted_text = results[1]
-          options_hash["#{preset_name}: #{extracted_text}"] = index
+        @options ||= begin
+           temp_options = transform_results.each_with_object({}).with_index do |(results, options_hash), index|
+              preset_name = "#{results[0]}_#{@data_type}"
+              extracted_text = results[1]
+              options_hash["#{preset_name}: #{extracted_text}"] = index
+            end
+            %w(xpath css).each do |pattern_provider|
+              temp_options["#{PROVIDER_PHRASE} #{pattern_provider}"] = pattern_provider
+            end
+           temp_options.merge('skip' => 'skip')
         end
-        %w(xpath css).each do |pattern_provider|
-          @options["#{PROVIDER_PHRASE} #{pattern_provider}"] = pattern_provider
-        end
-        @options['skip'] = 'skip'
-        @options
       end
 
       def transform_results
@@ -59,7 +61,6 @@ module NewsScraper
             uri: @uri,
             payload: @payload,
             scrape_details: scrape_details,
-            scrape_patterns: @scrape_patterns
           )
 
           hash[preset_name] = train_transformer.transform[@data_type.to_sym]
@@ -67,7 +68,7 @@ module NewsScraper
       end
 
       def blank_scrape_details
-        @scrape_patterns['data_types'].each_with_object({}) do |data_type, hash|
+        @blank_scrape_details ||= Constants::SCRAPE_PATTERNS.each_with_object({}) do |data_type, hash|
           hash[data_type] = nil
         end
       end
