@@ -1,4 +1,4 @@
-require 'news_scraper/trainer/presets_selector'
+require 'news_scraper/trainer/preset_selector'
 require 'news_scraper/trainer/uri_trainer'
 
 module NewsScraper
