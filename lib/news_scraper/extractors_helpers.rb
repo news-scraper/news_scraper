@@ -1,6 +1,8 @@
 module NewsScraper
   module ExtractorsHelpers
     def http_request(url)
+      url = URIParser.new(url).with_scheme
+
       CLI.put_header(url)
       CLI.log "Beginning HTTP request for #{url}"
       response = HTTParty.get(url)

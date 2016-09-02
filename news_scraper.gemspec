@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.9.0"
   spec.add_development_dependency "pry", "~> 0.10.4"
   spec.add_development_dependency "mocha", "~> 1.1.0"
+  spec.add_development_dependency "timecop", "~> 0.8.0"
 end

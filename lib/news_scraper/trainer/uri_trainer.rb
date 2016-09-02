@@ -6,7 +6,7 @@ module NewsScraper
         uri_parser = URIParser.new(uri)
         @uri = uri_parser.without_scheme
         @root_domain = uri_parser.host
-        @raw_html = Extractors::Article.new(uri: @uri).extract
+        @raw_html = Extractors::Article.new(url: @uri).extract
       end
 
       def train
