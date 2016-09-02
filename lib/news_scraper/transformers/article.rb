@@ -16,16 +16,12 @@ module NewsScraper
       end
 
       def transform
-        raise ScrapePatternNotDefined.new(root_domain: @root_domain) unless scrape_pattern?
+        raise ScrapePatternNotDefined.new(root_domain: @root_domain) unless scrape_details
 
         transformed_response.merge(root_domain: @root_domain)
       end
 
       private
-
-      def scrape_pattern?
-        !!(scrape_details)
-      end
 
       def scrape_details
         @scrape_details ||= @scrape_patterns['domains'][@root_domain]

@@ -1,7 +1,7 @@
 module NewsScraper
   module Trainer
     class PresetSelector
-      PROVIDER_PHRASE = 'I will provide a pattern using'
+      PROVIDER_PHRASE = 'I will provide a pattern using'.freeze
 
       def initialize(data_type:, data_type_presets:, uri:, payload:)
         @uri = uri
@@ -38,15 +38,15 @@ module NewsScraper
         return {} unless @data_type_presets
 
         @pattern_options ||= begin
-           temp_options = transform_results.each_with_object({}).with_index do |(results, options_hash), index|
-              preset_name = "#{results[0]}_#{@data_type}"
-              extracted_text = results[1]
-              options_hash["#{preset_name}: #{extracted_text}"] = index
-            end
-            %w(xpath css).each do |pattern_provider|
-              temp_options["#{PROVIDER_PHRASE} #{pattern_provider}"] = pattern_provider
-            end
-           temp_options.merge('skip' => 'skip')
+          temp_options = transform_results.each_with_object({}).with_index do |(results, options_hash), index|
+            preset_name = "#{results[0]}_#{@data_type}"
+            extracted_text = results[1]
+            options_hash["#{preset_name}: #{extracted_text}"] = index
+          end
+          %w(xpath css).each do |pattern_provider|
+            temp_options["#{PROVIDER_PHRASE} #{pattern_provider}"] = pattern_provider
+          end
+          temp_options.merge('skip' => 'skip')
         end
       end
 

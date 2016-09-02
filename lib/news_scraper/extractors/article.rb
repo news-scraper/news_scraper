@@ -10,9 +10,7 @@ module NewsScraper
       end
 
       def extract
-        http_request @url do |response|
-          response.body
-        end
+        http_request(@url).body
       end
     end
   end

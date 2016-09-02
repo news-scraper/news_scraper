@@ -39,7 +39,7 @@ module NewsScraper
 
       def extract_article_urls(google_urls)
         google_urls.map do |google_url|
-          regex = google_url.match(%r(&url=(?<url>https?://.*)))
+          regex = google_url.match(%r{&url=(?<url>https?://.*)})
           regex.nil? ? nil : regex['url']
         end.compact.uniq
       end
