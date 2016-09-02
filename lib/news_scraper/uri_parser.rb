@@ -1,11 +1,17 @@
+require 'uri'
+
 module NewsScraper
   class URIParser
     def initialize(url)
-      @url = url
+      @uri = URI.parse(url)
     end
 
     def without_scheme
-      @url.gsub(%r(^https?://), '')
+      @uri.scheme ? @uri.to_s.gsub(%r(^#{@uri.scheme}://), '') : @uri.to_s
+    end
+
+    def with_scheme
+      @uri.scheme ? @uri.to_s : "http://#{@uri}"
     end
 
     def host

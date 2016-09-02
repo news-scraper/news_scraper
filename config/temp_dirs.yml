@@ -1,4 +1,4 @@
 extractors:
   google_news_rss:
-    article_uris: "tmp/google_news_rss/article_uris"
+    article_urls: "tmp/google_news_rss/article_urls"
 

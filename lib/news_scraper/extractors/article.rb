@@ -5,14 +5,12 @@ module NewsScraper
     class Article
       include ExtractorsHelpers
 
-      attr_reader :uri
-
-      def initialize(uri:)
-        @uri = uri.gsub(/^https?:\/\//, '')
+      def initialize(url:)
+        @url = url
       end
 
       def extract
-        http_request "http://#{uri}" do |response|
+        http_request @url do |response|
           response.body
         end
       end
