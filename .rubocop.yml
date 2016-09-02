@@ -28,6 +28,9 @@ Style/FirstParameterIndentation:
 Style/TrailingCommaInLiteral:
   Enabled: false
 
+Style/TrailingCommaInArguments:
+  Enabled: false
+
 Style/SignalException:
   EnforcedStyle: only_raise
 
