@@ -81,7 +81,7 @@ presets:
     publish_date: &publish_date
       method: xpath
       pattern: //meta[@name='PublishDate']/@content
-    rnews_datePublished: &rnews_datePublished
+    rnews_date_published: &rnews_date_published
       method: xpath
       pattern: //meta[@property='rnews:datePublished']/@content
     sailthru_date: &sailthru_date

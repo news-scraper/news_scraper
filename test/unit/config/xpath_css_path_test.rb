@@ -6,7 +6,24 @@ class XpathCssPathTest < Minitest::Test
     @presets = @scrape_patterns['presets']
   end
 
-  def test_class_author
+  def test_all_valid_methods_are_tested
+    # all instance methods for this class, other than this test method
+    # and the assert_methods_spec should be methods that test presets
+    methods = self.class.instance_methods - Minitest::Test.instance_methods - [__method__, :assert_matches_spec]
+    expected_methods = @presets.flat_map do |preset, specs|
+      specs.collect do |spec_name, spec|
+        ['test', preset, spec_name].join('_') if %w(xpath css).include?(spec['method'])
+      end.compact
+    end
+
+    expected_methods.each do |expected_method|
+      _, preset, pattern = expected_method.split('_')
+      assert methods.include?(expected_method.to_sym),
+        " preset=#{preset} // pattern=#{pattern} was not tested, make sure to test it"
+    end
+  end
+
+  def test_author_class
     assert_matches_spec(
       spec: @presets['author']['class'],
       input_html: "<div class='author'>author_test</div>",
@@ -14,7 +31,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_id_author
+  def test_author_id
     assert_matches_spec(
       spec: @presets['author']['id'],
       input_html: "<div id='author'>author_test</div>",
@@ -22,7 +39,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_name_author
+  def test_author_name
     assert_matches_spec(
       spec: @presets['author']['name'],
       input_html: "<div class='author-name'>author_test</div>",
@@ -30,7 +47,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_link_author
+  def test_author_link
     assert_matches_spec(
       spec: @presets['author']['link'],
       input_html: "<a href='http://yolo.com/author/bob'>author_test</a>",
@@ -38,7 +55,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_meta_author
+  def test_author_meta
     assert_matches_spec(
       spec: @presets['author']['meta'],
       input_html: "<meta name='author' content='author_test' />",
@@ -46,7 +63,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_rel_link_author
+  def test_author_rel_link
     assert_matches_spec(
       spec: @presets['author']['rel_link'],
       input_html: "<a rel='author'>author_test</a>",
@@ -54,7 +71,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_vcard_author
+  def test_author_vcard
     assert_matches_spec(
       spec: @presets['author']['vcard'],
       input_html: "<div class='vcard'><div class='fn'>author_test</div></div>",
@@ -62,7 +79,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_meta_description
+  def test_description_meta
     assert_matches_spec(
       spec: @presets['description']['meta'],
       input_html: "<meta name='description' content='description_test' />",
@@ -70,7 +87,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_og_description
+  def test_description_og
     assert_matches_spec(
       spec: @presets['description']['og'],
       input_html: "<meta property='og:description' content='description_test' />",
@@ -78,7 +95,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_meta_keywords
+  def test_keywords_meta
     assert_matches_spec(
       spec: @presets['keywords']['meta'],
       input_html: "<meta name='keywords' content='keywords_1, keywords_2' />",
@@ -86,7 +103,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_article_tag_keywords
+  def test_keywords_article_tag
     assert_matches_spec(
       spec: @presets['keywords']['article_tag'],
       input_html: "<meta property='article:tag' content='keywords_1, keywords_2' />",
@@ -94,7 +111,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_meta_section
+  def test_section_meta
     assert_matches_spec(
       spec: @presets['section']['meta'],
       input_html: "<meta property='article:section' content='section' />",
@@ -102,7 +119,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_article_date_original
+  def test_datetime_article_date_original
     assert_matches_spec(
       spec: @presets['datetime']['article_date_original'],
       input_html: "<meta name='article_date_original' content='Sept 1, 2016' />",
@@ -110,7 +127,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_article_published_time
+  def test_datetime_article_published_time
     assert_matches_spec(
       spec: @presets['datetime']['article_published_time'],
       input_html: "<meta property='article:published_time' content='11am' />",
@@ -118,7 +135,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_date
+  def test_datetime_date
     assert_matches_spec(
       spec: @presets['datetime']['date'],
       input_html: "<meta name='date' content='Sept 1, 2016' />",
@@ -126,7 +143,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_date_published
+  def test_datetime_date_published
     assert_matches_spec(
       spec: @presets['datetime']['date_published'],
       input_html: "<meta itemprop='datePublished' datetime='Sept 1, 2016' />",
@@ -134,7 +151,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_og_published_time
+  def test_datetime_og_published_time
     assert_matches_spec(
       spec: @presets['datetime']['og_published_time'],
       input_html: "<meta property='og:published_time' content='Sept 1, 2016' />",
@@ -142,7 +159,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_original_publication_date
+  def test_datetime_original_publication_date
     assert_matches_spec(
       spec: @presets['datetime']['original_publication_date'],
       input_html: "<meta name='OriginalPublicationDate' content='Sept 1, 2016' />",
@@ -150,7 +167,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_publication_date
+  def test_datetime_publication_date
     assert_matches_spec(
       spec: @presets['datetime']['publication_date'],
       input_html: "<meta name='publication_date' content='Sept 1, 2016' />",
@@ -158,7 +175,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_publish_date
+  def test_datetime_publish_date
     assert_matches_spec(
       spec: @presets['datetime']['publish_date'],
       input_html: "<meta name='PublishDate' content='Sept 1, 2016' />",
@@ -166,15 +183,15 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_rnews_date_published
+  def test_datetime_rnews_date_published
     assert_matches_spec(
-      spec: @presets['datetime']['rnews_datePublished'],
+      spec: @presets['datetime']['rnews_date_published'],
       input_html: "<meta property='rnews:datePublished' content='Sept 1, 2016' />",
       expected_result: 'Sept 1, 2016'
     )
   end
 
-  def test_sailthru_date
+  def test_datetime_sailthru_date
     assert_matches_spec(
       spec: @presets['datetime']['sailthru_date'],
       input_html: "<meta name='sailthru.date' content='Sept 1, 2016' />",
@@ -182,7 +199,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_html_title
+  def test_title_html
     assert_matches_spec(
       spec: @presets['title']['html'],
       input_html: "<head><title>title_test</title></head>",
@@ -190,7 +207,7 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_og_title
+  def test_title_og
     assert_matches_spec(
       spec: @presets['title']['og'],
       input_html: "<meta property='og:title' content='title_test' />",
