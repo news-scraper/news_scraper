@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ArticleScrapePatternsTest < Minitest::Test
+  VALID_METHODS = %w(css xpath).freeze
+
   def setup
     @scrape_patterns = YAML.load_file('config/article_scrape_patterns.yml')
     @domains = @scrape_patterns['domains'].keys
@@ -29,7 +31,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   def test_scrape_methods_must_be_a_valid_method
     @domains.each do |domain|
       @scrape_patterns['domains'][domain].each_pair do |data_type, spec|
-        assert %w(css xpath readability).include?(spec['method']),
+        assert VALID_METHODS.include?(spec['method']),
           "#{spec['method']} is not a supported scrape method for #{data_type} for #{domain}"\
           " Must be one of #{VALID_METHODS}"
       end
@@ -37,11 +39,10 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_scrape_methods_presets_are_valid
-    valid_methods = %w(css xpath)
     @scrape_patterns['presets'].each_pair do |data_type, presets|
       presets.each_pair do |preset_type, spec|
-        assert valid_methods.include?(spec['method']),
-          "#{spec['method']} was not a valid method for #{preset_type} in #{data_type}. Must be one of #{valid_methods}"
+        assert VALID_METHODS.include?(spec['method']),
+          "#{spec['method']} was not a valid method for #{preset_type} in #{data_type}. Must be one of #{VALID_METHODS}"
         refute_match(
           /(.*)[1]/,
           spec['pattern'],
