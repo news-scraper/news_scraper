@@ -30,7 +30,7 @@ module NewsScraper
   #   N.B: User may ignore all presets and manually configure it in the YAML file
   # 5. Saves the selected :preset to config/article_scrape_patterns.yml
 
-  def train(query:)
-    Trainer.train(query: query)
+  def train(query:, automated: false)
+    Trainer.train(query: query, automated: automated)
   end
 end

@@ -5,10 +5,10 @@ module NewsScraper
   module Trainer
     extend self
 
-    def train(query: '')
+    def train(query: '', automated: false)
       article_uris = Extractors::GoogleNewsRss.new(query: query).extract
       article_uris.each do |uri|
-        Trainer::UriTrainer.new(uri).train
+        Trainer::UriTrainer.new(uri).train(automated: automated)
       end
     end
   end

@@ -5,11 +5,11 @@ module NewsScraper
         uri_parser = URIParser.new(uri)
         @uri = uri_parser.without_scheme
         @root_domain = uri_parser.host
-        @payload = Extractors::Article.new(url: @uri).extract
       end
 
-      def train
+      def train(automated: false)
         return if article_scrape_patterns['domains'].key?(@root_domain)
+        @payload = Extractors::Article.new(url: @uri).extract
 
         CLI.put_header(@root_domain)
         CLI.log("There is no scrape pattern defined for #{@root_domain} in #{Constants::SCRAPE_PATTERN_FILEPATH}")
@@ -18,7 +18,9 @@ module NewsScraper
 
         selected_presets = {}
         article_scrape_patterns['data_types'].each do |data_type|
-          selected_presets[data_type] = selected_pattern(data_type)
+          selected = selected_pattern(data_type, automated: automated)
+          return if selected.nil?
+          selected_presets[data_type] = selected
         end
 
         save_selected_presets(selected_presets)
@@ -26,9 +28,10 @@ module NewsScraper
 
       private
 
-      def selected_pattern(data_type)
+      def selected_pattern(data_type, automated: false)
         CLI.put_header("Determining information for #{data_type}")
         data_type_presets = article_scrape_patterns['presets'][data_type]
+
         pattern = if data_type_presets.nil?
           CLI.log("No presets were found for #{data_type}. Skipping to next.")
           nil
@@ -37,11 +40,19 @@ module NewsScraper
             uri: @uri,
             payload: @payload,
             data_type_presets: data_type_presets,
-            data_type: data_type
+            data_type: data_type,
+            automated: automated
           ).select
         end
-        CLI.put_footer
 
+        if pattern
+          CLI.log("Determined #{pattern} for #{data_type} for domain #{@root_domain}")
+          # Log the domain? Try again later with more presets? manual?
+          return
+        else
+          CLI.log("Could not find pattern for #{data_type} for domain #{@root_domain}")
+        end
+        CLI.put_footer
         pattern || { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
       end
 
