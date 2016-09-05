@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ArticleScrapePatternsTest < Minitest::Test
-  VALID_METHODS = %w(css xpath).freeze
+  VALID_METHODS = %w(css xpath readability).freeze
 
   def setup
     @scrape_patterns = YAML.load_file('config/article_scrape_patterns.yml')
@@ -12,7 +12,10 @@ class ArticleScrapePatternsTest < Minitest::Test
     data_types = @scrape_patterns['data_types']
 
     @domains.each do |domain|
-      assert data_types.all? { |dt| @scrape_patterns['domains'][domain].keys.include? dt }
+      data_types.each do |dt|
+        assert @scrape_patterns['domains'][domain].keys.include?(dt),
+          "#{domain} did not include #{dt}"
+      end
     end
   end
 

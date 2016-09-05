@@ -107,6 +107,7 @@ domains:
     datetime: *article_published_time
     title: *og_title
   fool.com:
+    author: *meta_author
     body: *readability
     description: *meta_description
     keywords: *article_tag
