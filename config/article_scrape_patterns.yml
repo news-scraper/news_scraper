@@ -24,7 +24,7 @@ presets:
       pattern: "//*[@class='author-name']"
     link: &link_author
       method: xpath
-      pattern: "(//a[contains(concat(' ', @href, ' '), 'author')])[1]"
+      pattern: "//a[contains(concat(' ', @href, ' '), 'author')"
     meta: &meta_author
       method: xpath
       pattern: "//meta[@name='author']/@content"
