@@ -13,25 +13,25 @@ data_types:
 #
 presets:
   author:
-    author_class: &author_class
+    class: &class_author
       method: xpath
       pattern: "//*[contains(concat(' ', @class, ' '), 'author')]"
-    author_id: &author_id
+    id: &id_author
       method: xpath
       pattern: "//*[@id='author']"
-    author_name: &author_name
+    name: &name_author
       method: xpath
       pattern: "//*[@class='author-name']"
-    author_rel_link: &author_rel_link
-      method: xpath
-      pattern: "//a[@rel='author']"
-    author_link: &author_link
+    link: &link_author
       method: xpath
       pattern: "(//a[contains(concat(' ', @href, ' '), 'author')])[1]"
-    author_meta: &author_meta
+    meta: &meta_author
       method: xpath
       pattern: "//meta[@name='author']/@content"
-    vcard: &author_vcard
+    rel_link: &rel_link_author
+      method: xpath
+      pattern: "//a[@rel='author']"
+    vcard: &vcard_author
       method: xpath
       pattern: "//*[contains(@class, 'vcard')]//*[contains(@class, 'fn')]"
   body:
@@ -97,7 +97,7 @@ presets:
 
 domains:
   investors.com:
-    author: *author_rel_link
+    author: *rel_link_author
     body:
       method: "css"
       pattern: ".single-post-content"

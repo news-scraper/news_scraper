@@ -16,9 +16,12 @@ class ArticleScrapePatternsTest < Minitest::Test
 
   def test_domains_should_specify_method_and_pattern_for_all_data_types
     @domains.each do |domain|
-      @scrape_patterns['domains'][domain].each_pair do |_data_type, spec|
-        assert spec.include? 'method'
-        assert spec.include? 'pattern'
+      @scrape_patterns['domains'][domain].each_pair do |data_type, spec|
+        refute_nil spec, "Spec was nil for #{data_type} for domain #{domain}"
+        assert spec.include?('method'),
+          "Spec did not include method for #{data_type} for domain #{domain}, was #{spec}"
+        assert spec.include?('pattern'),
+          "Spec did not include pattern for #{data_type}  for domain #{domain}, was #{spec}"
       end
     end
   end
@@ -27,7 +30,8 @@ class ArticleScrapePatternsTest < Minitest::Test
     @domains.each do |domain|
       @scrape_patterns['domains'][domain].each_pair do |data_type, spec|
         assert %w(css xpath readability).include?(spec['method']),
-          "#{spec['method']} is not a supported scrape method for #{data_type} in #{domain}"
+          "#{spec['method']} is not a supported scrape method for #{data_type} in #{domain}"\
+          " Must be one of #{VALID_METHODS}"
       end
     end
   end
