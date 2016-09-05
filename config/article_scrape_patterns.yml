@@ -15,7 +15,7 @@ presets:
   author:
     class: &class_author
       method: xpath
-      pattern: "//*[concat(' ', normalize-space(@class), ' '), ' author ')]"
+      pattern: "//*[contains(concat(' ', @class, ' '), ' author ')]"
     id: &id_author
       method: xpath
       pattern: "//*[@id='author']"
@@ -24,7 +24,7 @@ presets:
       pattern: "//*[@class='author-name']"
     link: &link_author
       method: xpath
-      pattern: "//a[contains(@href, 'author')"
+      pattern: "//a[contains(@href, 'author')]"
     meta: &meta_author
       method: xpath
       pattern: "//meta[@name='author']/@content"
