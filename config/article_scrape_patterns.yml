@@ -80,7 +80,7 @@ domains:
     description: *og_description
     keywords: *meta_keywords
     section: *meta_section
-    datetime: *published_time
+    datetime: *article_published_time
     title: *og_title
   fool.com:
     body: *readability

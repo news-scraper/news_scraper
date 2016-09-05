@@ -46,11 +46,11 @@ module NewsScraper
       end
 
       def test_select_with_preset
-        CLI.expects(:prompt_with_options).returns("og_description: ")
+        CLI.expects(:prompt_with_options).returns("og_description: description")
 
         preset = PresetSelector.new(
           uri: @domain,
-          payload: "",
+          payload: "<meta content='description' property='og:description'>",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type
         )

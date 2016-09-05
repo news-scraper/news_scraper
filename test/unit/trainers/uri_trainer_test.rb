@@ -35,6 +35,15 @@ module NewsScraper
           end
         end
       end
+
+      def test_train_on_trained_domain
+        domain = Constants::SCRAPE_PATTERNS['domains'].keys.first
+        capture_subprocess_io do
+          assert_nil Trainer::UriTrainer.new(domain).train
+          assert_equal Constants::SCRAPE_PATTERNS['domains'][domain],
+            YAML.load_file(Constants::SCRAPE_PATTERN_FILEPATH)['domains'][domain]
+        end
+      end
     end
   end
 end
