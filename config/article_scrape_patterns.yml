@@ -33,7 +33,7 @@ presets:
     meta: &meta_section
       method: "xpath"
       pattern: "//meta[@property='article:section']/@content"
-  time:
+  datetime:
     published: &published_time
       method: "xpath"
       pattern: "//meta[@property='article:published_time']/@content"
@@ -56,12 +56,12 @@ domains:
     description: *og_description
     keywords: *meta_keywords
     section: *meta_section
-    time: *published_time
+    datetime: *published_time
     title: *og_title
   fool.com:
     body: *readability
     description: *meta_description
     keywords: *article_tag
     section: *meta_section
-    time: *date
+    datetime: *date
     title: *og_title

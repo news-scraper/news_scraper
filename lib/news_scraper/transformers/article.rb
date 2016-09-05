@@ -58,7 +58,7 @@ module NewsScraper
             attributes: %w(src href colspan rowspan)
           ).content
           # Remove any newlines in the text
-          content = content.gsub(/\n+|\r+/, "\n").squeeze("\n").strip
+          content = content.squeeze("\n").strip
           HtmlBeautifier.beautify(content)
         end
       end

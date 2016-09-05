@@ -23,10 +23,11 @@ class ArticleScrapePatternsTest < Minitest::Test
     end
   end
 
-  def test_scrape_methods_must_be_css_or_xpath
+  def test_scrape_methods_must_be_a_valid_method
     @domains.each do |domain|
-      @scrape_patterns['domains'][domain].each_pair do |_data_type, spec|
-        assert %w(css xpath readability).include?(spec['method']), "Did not include #{spec['method']}"
+      @scrape_patterns['domains'][domain].each_pair do |data_type, spec|
+        assert %w(css xpath readability).include?(spec['method']),
+          "#{spec['method']} is not a supported scrape method for #{data_type} in #{domain}"
       end
     end
   end
