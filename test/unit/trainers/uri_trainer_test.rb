@@ -36,7 +36,7 @@ module NewsScraper
         end
       end
 
-      def test_train_on_trained_domain
+      def test_train_on_trained_domain_returns_without_stepping_through_presets
         domain = Constants::SCRAPE_PATTERNS['domains'].keys.first
         capture_subprocess_io do
           assert_nil Trainer::UriTrainer.new(domain).train
