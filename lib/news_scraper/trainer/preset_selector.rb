@@ -62,7 +62,8 @@ module NewsScraper
             scrape_details: scrape_details,
           )
 
-          hash[preset_name] = train_transformer.transform[@data_type.to_sym]
+          transformed_result = train_transformer.transform[@data_type.to_sym]
+          hash[preset_name] = transformed_result if transformed_result && !transformed_result.empty?
         end.to_a
       end
 
