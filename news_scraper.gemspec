@@ -30,6 +30,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'nokogiri', '~> 1.6.8'
   spec.add_dependency 'httparty', '~> 0.14.0'
   spec.add_dependency 'sanitize', '~> 4.2.0'
+  spec.add_dependency 'ruby-readability'
+  spec.add_dependency 'htmlbeautifier'
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"
