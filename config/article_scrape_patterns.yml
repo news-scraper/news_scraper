@@ -1,6 +1,7 @@
 # All domains should include the scrape method/pattern for data_types
 
 data_types:
+  - "author"
   - "body"
   - "description"
   - "keywords"
@@ -11,6 +12,28 @@ data_types:
 # All data types must include :method and :pattern
 #
 presets:
+  author:
+    author_class: &author_class
+      method: xpath
+      pattern: "//*[contains(concat(' ', @class, ' '), 'author')]"
+    author_id: &author_id
+      method: xpath
+      pattern: "//*[@id='author']"
+    author_name: &author_name
+      method: xpath
+      pattern: "//*[@class='author-name']"
+    author_rel_link: &author_rel_link
+      method: xpath
+      pattern: "//a[@rel='author']"
+    author_link: &author_link
+      method: xpath
+      pattern: "(//a[contains(concat(' ', @href, ' '), 'author')])[1]"
+    author_meta: &author_meta
+      method: xpath
+      pattern: "//meta[@name='author']/@content"
+    vcard: &author_vcard
+      method: xpath
+      pattern: "//*[contains(@class, 'vcard')]//*[contains(@class, 'fn')]"
   body:
     readability: &readability
       method: "readability"
@@ -74,6 +97,7 @@ presets:
 
 domains:
   investors.com:
+    author: *author_rel_link
     body:
       method: "css"
       pattern: ".single-post-content"
