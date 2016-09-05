@@ -40,11 +40,15 @@ module NewsScraper
 
         scrape_method = scrape_details[data_type]['method'].to_sym
         case scrape_method
-        when :xpath, :css
-          scrape_pattern = scrape_details[data_type]['pattern']
+        when :xpath
           noko_html = Nokogiri::HTML(payload)
           Sanitize.fragment(
-            noko_html.send(scrape_method, scrape_pattern)
+            noko_html.send(scrape_method, "(#{scrape_details[data_type]['pattern']})[1]")
+          ).squish
+        when :css
+          noko_html = Nokogiri::HTML(payload)
+          Sanitize.fragment(
+            noko_html.send(scrape_method, scrape_details[data_type]['pattern'])
           ).squish
         when :readability
           content = Readability::Document.new(

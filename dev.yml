@@ -8,5 +8,5 @@ commands:
   rubocop:
     desc:   'Lint the Ruby code with Rubocop'
     run:    bundle exec rubocop
-    aliases: [r, rubo, lint, l]
+    aliases: [rubo, lint, l]
   test: bundle exec rake test
