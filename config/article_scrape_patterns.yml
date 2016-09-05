@@ -14,14 +14,14 @@ data_types:
 presets:
   author:
     class: &class_author
-      method: xpath
-      pattern: "//*[contains(concat(' ', @class, ' '), ' author ')]"
+      method: css
+      pattern: ".author"
     id: &id_author
-      method: xpath
-      pattern: "//*[@id='author']"
+      method: css
+      pattern: "#author"
     name: &name_author
-      method: xpath
-      pattern: "//*[@class='author-name']"
+      method: css
+      pattern: ".author-name"
     link: &link_author
       method: xpath
       pattern: "//a[contains(@href, 'author')]"
@@ -32,8 +32,8 @@ presets:
       method: xpath
       pattern: "//a[@rel='author']"
     vcard: &vcard_author
-      method: xpath
-      pattern: "//*[contains(@class, 'vcard')]//*[contains(@class, 'fn')]"
+      method: css
+      pattern: ".vcard .fn"
   body:
     readability: &readability
       method: "readability"
