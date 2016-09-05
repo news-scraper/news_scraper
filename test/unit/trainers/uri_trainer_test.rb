@@ -16,7 +16,7 @@ module NewsScraper
           'description' => 'pattern_mock',
           'keywords' => 'pattern_mock',
           'section' => 'pattern_mock',
-          'time' => 'pattern_mock',
+          'datetime' => 'pattern_mock',
           'title' => 'pattern_mock'
         }
 

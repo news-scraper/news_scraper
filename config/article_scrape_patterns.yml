@@ -5,7 +5,7 @@ data_types:
   - "description"
   - "keywords"
   - "section"
-  - "time"
+  - "datetime"
   - "title"
 
 # All data types must include :method and :pattern
