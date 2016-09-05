@@ -9,6 +9,8 @@ module NewsScraper
       end
 
       def train
+        return if article_scrape_patterns['domains'].key?(@root_domain)
+
         CLI.put_header(@root_domain)
         CLI.log("There is no scrape pattern defined for #{@root_domain} in #{Constants::SCRAPE_PATTERN_FILEPATH}")
         CLI.log "Fetching information..."

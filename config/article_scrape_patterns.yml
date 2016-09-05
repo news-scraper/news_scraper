@@ -34,12 +34,36 @@ presets:
       method: "xpath"
       pattern: "//meta[@property='article:section']/@content"
   datetime:
-    published: &published_time
+    article_date_original: &article_date_original
+      method: xpath
+      pattern: //meta[@name='article_date_original']/@content
+    article_published_time: &article_published_time
       method: "xpath"
       pattern: "//meta[@property='article:published_time']/@content"
     date: &date
       method: xpath
       pattern: //meta[@name='date']/@content
+    date_published: &date_published
+      method: xpath
+      pattern: //meta[@itemprop='datePublished']/@datetime
+    og_published_time: &og_published_time
+      method: xpath
+      pattern: //meta[@property='og:published_time']/@content
+    original_publication_date: &original_publication_date
+      method: xpath
+      pattern: //meta[@name='OriginalPublicationDate']/@content
+    publication_date: &publication_date
+      method: xpath
+      pattern: //meta[@name='publication_date']/@content
+    publish_date: &publish_date
+      method: xpath
+      pattern: //meta[@name='PublishDate']/@content
+    rnews_datePublished: &rnews_datePublished
+      method: xpath
+      pattern: //meta[@property='rnews:datePublished']/@content
+    sailthru_date: &sailthru_date
+      method: xpath
+      pattern: //meta[@name='sailthru.date']/@content
   title:
     html: &html_title
       method: "xpath"
@@ -56,7 +80,7 @@ domains:
     description: *og_description
     keywords: *meta_keywords
     section: *meta_section
-    datetime: *published_time
+    datetime: *article_published_time
     title: *og_title
   fool.com:
     body: *readability
