@@ -12,14 +12,11 @@ module NewsScraper
       def test_train
         PresetSelector.any_instance.stubs(:select).returns('pattern_mock')
         expected_patterns = {
-          'body' => {
-            'method' => '<<<<< TODO >>>>>',
-            'pattern' => '<<<<< TODO >>>>>'
-          },
+          'body' => 'pattern_mock',
           'description' => 'pattern_mock',
           'keywords' => 'pattern_mock',
           'section' => 'pattern_mock',
-          'time' => 'pattern_mock',
+          'datetime' => 'pattern_mock',
           'title' => 'pattern_mock'
         }
 

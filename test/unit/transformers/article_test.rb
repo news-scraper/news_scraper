@@ -9,6 +9,8 @@ class ArticleTest < Minitest::Test
       transformer = NewsScraper::Transformers::Article.new(uri: "#{domain}/some_article", payload: raw_data)
 
       expected_transformation = transformation_fixture(domain)
+      # Yaml has a hard time with new lines on a multi-line string
+      expected_transformation.map { |_, v| v.strip! }
 
       assert_equal expected_transformation, transformer.transform
     end

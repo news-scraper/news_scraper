@@ -1,5 +1,7 @@
 require 'nokogiri'
 require 'sanitize'
+require 'readability'
+require 'htmlbeautifier'
 
 module NewsScraper
   module Transformers
@@ -36,14 +38,25 @@ module NewsScraper
       def parsed_data(data_type)
         return nil unless scrape_details[data_type]
 
-        scrape_pattern = scrape_details[data_type]['pattern']
         scrape_method = scrape_details[data_type]['method'].to_sym
-
-        noko_html = Nokogiri::HTML(payload)
-
-        Sanitize.fragment(
-          noko_html.send(scrape_method, scrape_pattern)
-        ).squish
+        case scrape_method
+        when :xpath, :css
+          scrape_pattern = scrape_details[data_type]['pattern']
+          noko_html = Nokogiri::HTML(payload)
+          Sanitize.fragment(
+            noko_html.send(scrape_method, scrape_pattern)
+          ).squish
+        when :readability
+          content = Readability::Document.new(
+            @payload,
+            remove_empty_nodes: true,
+            tags: %w(div p img a table tr th tbody td h1 h2 h3 h4 h5 h6),
+            attributes: %w(src href colspan rowspan)
+          ).content
+          # Remove any newlines in the text
+          content = content.squeeze("\n").strip
+          HtmlBeautifier.beautify(content)
+        end
       end
     end
   end
