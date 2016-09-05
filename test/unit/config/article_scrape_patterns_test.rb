@@ -55,4 +55,40 @@ class ArticleScrapePatternsTest < Minitest::Test
       end
     end
   end
+
+  def test_all_preset_xpaths_are_valid
+    supported_domains = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys
+    noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
+
+    @scrape_patterns['presets'].each_pair do |data_type, presets|
+      presets.each_pair do |preset_type, spec|
+        next unless spec['method'] == 'xpath'
+
+        begin
+          noko_html.xpath("(#{spec['pattern']})[1]")
+        rescue => e
+          flunk "#{spec['pattern']} was not valid for preset #{preset_type}"\
+            " as an xpath for #{data_type}. (Error #{e})"
+        end
+      end
+    end
+  end
+
+  def test_all_preset_css_paths_are_valid
+    supported_domains = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys
+    noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
+
+    @scrape_patterns['presets'].each_pair do |data_type, presets|
+      presets.each_pair do |preset_type, spec|
+        next unless spec['method'] == 'css'
+
+        begin
+          noko_html.css(spec['pattern'])
+        rescue => e
+          flunk "#{spec['pattern']} was not valid for preset #{preset_type}"\
+            " as a css path for #{data_type}. (Error #{e})"
+        end
+      end
+    end
+  end
 end
