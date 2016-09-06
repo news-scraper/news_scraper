@@ -16,5 +16,21 @@ module MiniTest
     def transformation_fixture(domain)
       YAML.load_file("test/data/articles/#{domain.tr('.', '_')}_transformed.yml")
     end
+
+    def temporary_scrape_patterns_test
+      original_content = File.read(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)
+      # Use a tmp dir so as not to override the actual config/article_scrape_patterns.yml
+      Dir.mktmpdir do |dir|
+        config_path = File.join(dir, NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)
+        FileUtils.mkpath(File.dirname(config_path))
+
+        Dir.chdir(dir) do
+          File.write(config_path, original_content)
+          capture_subprocess_io do
+            yield(config_path)
+          end
+        end
+      end
+    end
   end
 end

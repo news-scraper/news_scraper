@@ -46,9 +46,25 @@ module NewsScraper
       end
 
       def save_selected_presets(selected_presets)
-        article_scrape_patterns['domains'][@root_domain] = selected_presets
-        File.write(Constants::SCRAPE_PATTERN_FILEPATH, article_scrape_patterns.to_yaml)
+        current_content = File.read(Constants::SCRAPE_PATTERN_FILEPATH).chomp
+        new_content = "#{current_content}\n#{build_domain_yaml(selected_presets)}\n"
+
+        File.write(Constants::SCRAPE_PATTERN_FILEPATH, new_content)
         CLI.log("Successfully wrote presets for #{@root_domain} to #{Constants::SCRAPE_PATTERN_FILEPATH}.")
+      end
+
+      def build_domain_yaml(selected_presets)
+        spacer = "  "
+        output_string = ["#{spacer}#{@root_domain}:"]
+        selected_presets.each do |data_type, spec|
+          if spec.include?('variable')
+            output_string << (spacer * 2) + "#{data_type}: *#{spec['variable']}"
+          else
+            output_string << (spacer * 2) + "#{data_type}:"
+            spec.each { |k, v| output_string << (spacer * 3) + "#{k}: #{v}" }
+          end
+        end
+        output_string.join("\n")
       end
 
       def article_scrape_patterns

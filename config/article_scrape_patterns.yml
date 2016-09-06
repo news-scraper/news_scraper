@@ -35,7 +35,7 @@ presets:
       method: css
       pattern: ".vcard .fn"
   body:
-    readability: &readability
+    readability: &readability_body
       method: "readability"
       pattern: ""
   description:
@@ -49,7 +49,7 @@ presets:
     meta: &meta_keywords
       method: "xpath"
       pattern: "//meta[@name='keywords']/@content"
-    article_tag: &article_tag
+    article_tag: &article_tag_keywords
       method: "xpath"
       pattern: "//meta[@property='article:tag']/@content"
   section:
@@ -57,34 +57,34 @@ presets:
       method: "xpath"
       pattern: "//meta[@property='article:section']/@content"
   datetime:
-    article_date_original: &article_date_original
+    article_date_original: &article_date_original_datetime
       method: xpath
       pattern: //meta[@name='article_date_original']/@content
-    article_published_time: &article_published_time
+    article_published_time: &article_published_time_datetime
       method: "xpath"
       pattern: "//meta[@property='article:published_time']/@content"
-    date: &date
+    date: &date_datetime
       method: xpath
       pattern: //meta[@name='date']/@content
-    date_published: &date_published
+    date_published: &date_published_datetime
       method: xpath
-      pattern: //meta[@itemprop='datePublished']/@datetime
-    og_published_time: &og_published_time
+      pattern: //*[@itemprop='datePublished']/@datetime
+    og_published_time: &og_published_time_datetime
       method: xpath
       pattern: //meta[@property='og:published_time']/@content
-    original_publication_date: &original_publication_date
+    original_publication_date: &original_publication_date_datetime
       method: xpath
       pattern: //meta[@name='OriginalPublicationDate']/@content
-    publication_date: &publication_date
+    publication_date: &publication_date_datetime
       method: xpath
       pattern: //meta[@name='publication_date']/@content
-    publish_date: &publish_date
+    publish_date: &publish_date_datetime
       method: xpath
       pattern: //meta[@name='PublishDate']/@content
-    rnews_date_published: &rnews_date_published
+    rnews_date_published: &rnews_date_published_datetime
       method: xpath
       pattern: //meta[@property='rnews:datePublished']/@content
-    sailthru_date: &sailthru_date
+    sailthru_date: &sailthru_date_datetime
       method: xpath
       pattern: //meta[@name='sailthru.date']/@content
   title:
@@ -104,13 +104,13 @@ domains:
     description: *og_description
     keywords: *meta_keywords
     section: *meta_section
-    datetime: *article_published_time
+    datetime: *article_published_time_datetime
     title: *og_title
   fool.com:
     author: *meta_author
-    body: *readability
+    body: *readability_body
     description: *meta_description
-    keywords: *article_tag
+    keywords: *article_tag_keywords
     section: *meta_section
-    datetime: *date
+    datetime: *date_datetime
     title: *og_title

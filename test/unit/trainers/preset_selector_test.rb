@@ -55,7 +55,10 @@ module NewsScraper
           data_type: @target_data_type
         )
 
-        assert_equal(NewsScraper::Constants::SCRAPE_PATTERNS['presets']['description']['og'], preset.select)
+        assert_equal(
+          NewsScraper::Constants::SCRAPE_PATTERNS['presets']['description']['og'].merge("variable" => "og_description"),
+          preset.select
+        )
       end
     end
   end
