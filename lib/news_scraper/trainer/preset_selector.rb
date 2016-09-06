@@ -29,7 +29,7 @@ module NewsScraper
 
         selected_index = pattern_options[selected_option]
         selected_preset_code = transform_results[selected_index].first
-        @data_type_presets[selected_preset_code]
+        @data_type_presets[selected_preset_code].merge('variable' => [selected_preset_code, @data_type].join('_'))
       end
 
       private

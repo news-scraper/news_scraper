@@ -4,7 +4,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   VALID_METHODS = %w(css xpath readability).freeze
 
   def setup
-    @scrape_patterns = YAML.load_file('config/article_scrape_patterns.yml')
+    @scrape_patterns = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)
     @domains = @scrape_patterns['domains'].keys
   end
 
@@ -56,8 +56,28 @@ class ArticleScrapePatternsTest < Minitest::Test
     end
   end
 
+  def test_scrape_methods_have_proper_variable_names
+    article_scrape_patterns = File.read(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH).split("\n").map(&:strip)
+    @scrape_patterns['presets'].each_pair do |data_type, presets|
+      # Find the first occurence of data_type:, then we search from there
+      section_index = article_scrape_patterns.index("#{data_type}:")
+      section_to_search = article_scrape_patterns[section_index..-1]
+      presets.each_pair do |preset_type, _|
+        # Find the first occurence of preset_type: since we started at the data_type:
+        # This will always work as the YAML cannot be a valid hash if we have any duplicates
+        # and we start our search from the beginning of this preset section
+        actual_name = section_to_search.detect { |p| p.start_with?("#{preset_type}: ") }
+        valid_variable_name = [preset_type, data_type].join('_')
+        expected_name = "#{preset_type}: &#{valid_variable_name}"
+        assert_equal expected_name, actual_name,
+          "Did not include a proper variable name for #{preset_type} under #{data_type}."\
+          " Should be #{expected_name}, was #{actual_name}"
+      end
+    end
+  end
+
   def test_all_preset_xpaths_are_valid
-    supported_domains = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys
+    supported_domains = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)['domains'].keys
     noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
 
     @scrape_patterns['presets'].each_pair do |data_type, presets|
@@ -75,7 +95,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_all_preset_css_paths_are_valid
-    supported_domains = YAML.load_file('config/article_scrape_patterns.yml')['domains'].keys
+    supported_domains = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)['domains'].keys
     noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
 
     @scrape_patterns['presets'].each_pair do |data_type, presets|

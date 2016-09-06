@@ -6,23 +6,6 @@ class XpathCssPathTest < Minitest::Test
     @presets = @scrape_patterns['presets']
   end
 
-  def test_all_valid_methods_are_tested
-    # all instance methods for this class, other than this test method
-    # and the assert_methods_spec should be methods that test presets
-    methods = self.class.instance_methods - Minitest::Test.instance_methods - [__method__, :assert_matches_spec]
-    expected_methods = @presets.flat_map do |preset, specs|
-      specs.collect do |spec_name, spec|
-        ['test', preset, spec_name].join('_') if %w(xpath css).include?(spec['method'])
-      end.compact
-    end
-
-    expected_methods.each do |expected_method|
-      _, preset, pattern = expected_method.split('_')
-      assert methods.include?(expected_method.to_sym),
-        " preset=#{preset} // pattern=#{pattern} was not tested, make sure to test it"
-    end
-  end
-
   def test_author_class
     assert_matches_spec(
       spec: @presets['author']['class'],
