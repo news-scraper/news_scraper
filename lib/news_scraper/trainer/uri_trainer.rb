@@ -47,10 +47,10 @@ module NewsScraper
 
         if pattern
           CLI.log("Determined #{pattern} for #{data_type} for domain #{@root_domain}")
-          # Log the domain? Try again later with more presets? manual?
-          return
         else
           CLI.log("Could not find pattern for #{data_type} for domain #{@root_domain}")
+          # Log the domain? Try again later with more presets? manual?
+          return
         end
         CLI.put_footer
         pattern || { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
