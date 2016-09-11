@@ -3,8 +3,7 @@ module NewsScraper
     class UrlTrainer
       def initialize(url)
         @url = url
-        uri_parser = URIParser.new(@url)
-        @root_domain = uri_parser.host
+        @root_domain = URIParser.new(@url).host
         @payload = Extractors::Article.new(url: @url).extract
       end
 
