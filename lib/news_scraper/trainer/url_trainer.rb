@@ -1,11 +1,11 @@
 module NewsScraper
   module Trainer
-    class UriTrainer
-      def initialize(uri)
-        uri_parser = URIParser.new(uri)
-        @uri = uri_parser.without_scheme
+    class UrlTrainer
+      def initialize(url)
+        @url = url
+        uri_parser = URIParser.new(@url)
         @root_domain = uri_parser.host
-        @payload = Extractors::Article.new(url: @uri).extract
+        @payload = Extractors::Article.new(url: @url).extract
       end
 
       def train
@@ -34,7 +34,7 @@ module NewsScraper
           nil
         else
           PresetSelector.new(
-            uri: @uri,
+            url: @url,
             payload: @payload,
             data_type_presets: data_type_presets,
             data_type: data_type

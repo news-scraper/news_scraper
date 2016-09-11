@@ -6,7 +6,7 @@ class ArticleTest < Minitest::Test
 
     supported_domains.each do |domain|
       raw_data = raw_data_fixture(domain)
-      transformer = NewsScraper::Transformers::Article.new(uri: "#{domain}/some_article", payload: raw_data)
+      transformer = NewsScraper::Transformers::Article.new(url: "#{domain}/some_article", payload: raw_data)
 
       expected_transformation = transformation_fixture(domain)
       # Yaml has a hard time with new lines on a multi-line string
@@ -18,7 +18,7 @@ class ArticleTest < Minitest::Test
 
   def test_transform_raises_scrape_pattern_not_defined_for_unsupported_domain
     unsupported_domain = 'unsupported-domain.com'
-    transformer = NewsScraper::Transformers::Article.new(uri: unsupported_domain, payload: '')
+    transformer = NewsScraper::Transformers::Article.new(url: unsupported_domain, payload: '')
 
     err = assert_raises NewsScraper::Transformers::ScrapePatternNotDefined do
       transformer.transform

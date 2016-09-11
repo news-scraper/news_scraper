@@ -2,7 +2,7 @@ require 'test_helper'
 
 module NewsScraper
   module Trainer
-    class UriTrainerTest < Minitest::Test
+    class UrlTrainerTest < Minitest::Test
       def setup
         super
         Transformers::Article.any_instance.stubs(:transform)
@@ -22,7 +22,7 @@ module NewsScraper
         }
 
         stub_temp_file_with_path(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH) do |config_path|
-          Trainer::UriTrainer.new('yolo.com').train
+          Trainer::UrlTrainer.new('yolo.com').train
           assert_equal expected_patterns, YAML.load_file(config_path)['domains']['yolo.com']
         end
       end
@@ -40,7 +40,7 @@ module NewsScraper
     title: *link_author
 EOF
         stub_temp_file_with_path(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH) do |config_path|
-          Trainer::UriTrainer.new('yolo.com').train
+          Trainer::UrlTrainer.new('yolo.com').train
           assert_equal expected_output, File.readlines(config_path).last(expected_output.count("\n")).join
         end
       end
@@ -48,7 +48,7 @@ EOF
       def test_train_on_trained_domain_returns_without_stepping_through_presets
         domain = Constants::SCRAPE_PATTERNS['domains'].keys.first
         capture_subprocess_io do
-          assert_nil Trainer::UriTrainer.new(domain).train
+          assert_nil Trainer::UrlTrainer.new(domain).train
           assert_equal Constants::SCRAPE_PATTERNS['domains'][domain],
             YAML.load_file(Constants::SCRAPE_PATTERN_FILEPATH)['domains'][domain]
         end

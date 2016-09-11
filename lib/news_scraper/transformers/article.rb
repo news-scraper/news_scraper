@@ -8,8 +8,8 @@ module NewsScraper
     class Article
       attr_reader :uri, :payload
 
-      def initialize(uri:, payload:, scrape_details: nil, scrape_patterns: Constants::SCRAPE_PATTERNS)
-        uri_parser = URIParser.new(uri)
+      def initialize(url:, payload:, scrape_details: nil, scrape_patterns: Constants::SCRAPE_PATTERNS)
+        uri_parser = URIParser.new(url)
         @uri = uri_parser.without_scheme
         @root_domain = uri_parser.host
         @payload = payload
