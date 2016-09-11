@@ -15,6 +15,8 @@ require 'news_scraper/extractors/article'
 
 require 'news_scraper/transformers/article'
 
+require 'news_scraper/scraper'
+
 require 'news_scraper/cli'
 require 'news_scraper/trainer'
 
