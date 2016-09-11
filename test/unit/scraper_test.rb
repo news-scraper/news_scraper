@@ -6,14 +6,14 @@ module NewsScraper
       NewsScraper::Extractors::GoogleNewsRss.any_instance.expects(:extract).returns(['somearticle.com/shopify'])
       NewsScraper::Extractors::Article.any_instance.expects(:extract).returns('some payload')
       @transformed_data = {
-       author: 'Richard Wu',
-       body: 'Shopify is the greatest! 10/10 would recommend',
-       description: 'Shopify is the greatest!',
-       keywords: 'shopify,greatest',
-       section: 'Technology',
-       datetime: '1997-02-06T12:00:00+00:00:00',
-       title: 'Shopify is Great',
-       root_domain: 'somearticle.com'
+        author: 'Richard Wu',
+        body: 'Shopify is the greatest! 10/10 would recommend',
+        description: 'Shopify is the greatest!',
+        keywords: 'shopify,greatest',
+        section: 'Technology',
+        datetime: '1997-02-06T12:00:00+00:00:00',
+        title: 'Shopify is Great',
+        root_domain: 'somearticle.com'
       }
       NewsScraper::Transformers::Article.any_instance.expects(:transform).returns(@transformed_data)
 
@@ -35,7 +35,7 @@ module NewsScraper
     end
 
     def test_scrape_also_returns_array_of_transformed_articles_if_block_is_given
-      assert_equal [@transformed_data],  @scraper.scrape { |_| }
+      assert_equal [@transformed_data], @scraper.scrape { |_| }
     end
   end
 end
