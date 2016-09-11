@@ -13,7 +13,7 @@ module NewsScraper
 
       def test_select_without_data_type_presets
         assert_nil PresetSelector.new(
-          uri: @domain,
+          url: @domain,
           payload: "",
           data_type_presets: nil,
           data_type: @target_data_type
@@ -23,7 +23,7 @@ module NewsScraper
       def test_select_with_skip
         CLI.expects(:prompt_with_options).returns("skip")
         preset = PresetSelector.new(
-          uri: @domain,
+          url: @domain,
           payload: "",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type
@@ -36,7 +36,7 @@ module NewsScraper
         CLI.expects(:get_input).returns('mock_xpath')
 
         preset = PresetSelector.new(
-          uri: @domain,
+          url: @domain,
           payload: "",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type
@@ -49,7 +49,7 @@ module NewsScraper
         CLI.expects(:prompt_with_options).returns("og_description: description")
 
         preset = PresetSelector.new(
-          uri: @domain,
+          url: @domain,
           payload: "<meta content='description' property='og:description'>",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type

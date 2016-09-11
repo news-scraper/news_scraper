@@ -3,8 +3,8 @@ module NewsScraper
     class PresetSelector
       PROVIDER_PHRASE = 'I will provide a pattern using'.freeze
 
-      def initialize(data_type:, data_type_presets:, uri:, payload:)
-        @uri = uri
+      def initialize(data_type:, data_type_presets:, url:, payload:)
+        @url = url
         @payload = payload
         @data_type_presets = data_type_presets
         @data_type = data_type
@@ -57,7 +57,7 @@ module NewsScraper
         @results ||= @data_type_presets.each_with_object({}) do |(preset_name, preset_details), hash|
           scrape_details[@data_type] = preset_details
           train_transformer = Transformers::Article.new(
-            uri: @uri,
+            url: @url,
             payload: @payload,
             scrape_details: scrape_details,
           )
