@@ -24,9 +24,11 @@ Or install it yourself as:
 
 ### Scraping
 
-`NewsScraper::Scraper#scrape` will allow either yields the transformed data or returns an array of the transformed data for all Google News RSS articles for a query.
+`NewsScraper::Scraper#scrape` will return an array of the transformed data for all Google News RSS articles for the given query.
 
-It takes in 1 parameter `:query`.
+Optionally, you can pass in a block and it will yield the transformed data on a per-article basis.
+
+It takes in 1 parameter `query:`.
 
 Array notation
 ```
@@ -69,11 +71,11 @@ Extracting each `:data_type` (see Example under **Transformed Data**) requires a
 
 Since each news site (identified with `:root_domain`) uses a different markup, scrape patterns are defined on a per-`:root_domain` basis.
 
-Specifying scrape patterns for additional (undefined) `:root_domains` is called training (see **Training**).
+Specifying scrape patterns for new, undefined `:root_domains` is called training (see **Training**).
 
 ### Training
 
-For each `:root_domain`, it is necesary to specify a grep/scrape pattern for each of the `:data_type`s. A rake task was written to provide a CLI for appending new `:root_domain`s using `:preset` scrape patterns.
+For each `:root_domain`, it is neccesary to specify a grep/scrape pattern for each of the `:data_type`s. A rake task was written to provide a CLI for appending new `:root_domain`s using `:preset` scrape patterns.
 
 Simply run
 ```
