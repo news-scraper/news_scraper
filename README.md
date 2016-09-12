@@ -67,7 +67,9 @@ Example
 
 ### Scrape Patterns
 
-Extracting each `:data_type` (see Example under **Transformed Data**) requires a grep pattern. A few `:presets` are specified in [`article_scrape_patterns.yml`](https://github.com/richardwu/news_scraper/blob/master/config/article_scrape_patterns.yml).
+Scrape patterns are xpath or CSS patterns used by Nokogiri to extract relevant HTML elements.
+
+Extracting each `:data_type` (see Example under **Transformed Data**) requires a scrape pattern. A few `:presets` are specified in [`article_scrape_patterns.yml`](https://github.com/richardwu/news_scraper/blob/master/config/article_scrape_patterns.yml).
 
 Since each news site (identified with `:root_domain`) uses a different markup, scrape patterns are defined on a per-`:root_domain` basis.
 
@@ -75,7 +77,7 @@ Specifying scrape patterns for new, undefined `:root_domains` is called training
 
 ### Training
 
-For each `:root_domain`, it is neccesary to specify a grep/scrape pattern for each of the `:data_type`s. A rake task was written to provide a CLI for appending new `:root_domain`s using `:preset` scrape patterns.
+For each `:root_domain`, it is neccesary to specify a scrape pattern for each of the `:data_type`s. A rake task was written to provide a CLI for appending new `:root_domain`s using `:preset` scrape patterns.
 
 Simply run
 ```
