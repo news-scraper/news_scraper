@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["richardwu1997@gmail.com"]
 
   spec.summary       = 'Simple ETL news scraper in Ruby'
-  spec.description   = 'A collection of extractors, transformers and loaders for a variety of news feeds and outlets.'
+  spec.description   = 'A collection of extractors, transformers and loaders for scraping news websites and syndicates.'
   spec.homepage      = 'https://github.com/richardwu/news_scraper'
   spec.license       = "MIT"
 
