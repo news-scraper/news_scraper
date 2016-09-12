@@ -5,10 +5,10 @@ module NewsScraper
     # Initialize a URIParser
     #
     # *Params*
-    # - <code>uri</code>: the uri to parse
+    # - <code>url</code>: the url to parse to a uri
     #
-    def initialize(uri)
-      @uri = URI.parse(uri)
+    def initialize(url)
+      @uri = URI.parse(url)
     end
 
     # Removes the scheme from the URI

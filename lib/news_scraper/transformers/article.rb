@@ -13,7 +13,7 @@ module NewsScraper
       # *Params*
       # - <code>url</code>: keyword arg - the url on which scraping was done
       # - <code>payload</code>: keyword arg - the result of the scrape
-      # - <code>scrape_details</code>: keyword arg - The pattern details for the root_domain to use in the transformation
+      # - <code>scrape_details</code>: keyword arg - The pattern/methods for the domain to use in the transformation
       # - <code>scrape_patterns</code>: keyword arg - The patterns available to use in transformation
       #
       def initialize(url:, payload:, scrape_details: nil, scrape_patterns: Constants::SCRAPE_PATTERNS)
