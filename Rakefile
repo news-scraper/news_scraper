@@ -11,7 +11,7 @@ end
 namespace :scraper do
   desc 'CLI that steps through articles for a given query and displays preset scrape pattern results; parameters: QUERY'
   task :train do
-    query = ENV['QUERY'] || ''
-    NewsScraper::Trainer.train(query: query)
+    raise 'QUERY param not given. Usage: bundle exec rake scraper:train QUERY=<query>' unless ENV['QUERY']
+    NewsScraper::Trainer.train(query: ENV['QUERY'])
   end
 end
