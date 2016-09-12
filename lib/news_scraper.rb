@@ -14,6 +14,7 @@ require 'news_scraper/extractors/google_news_rss'
 require 'news_scraper/extractors/article'
 
 require 'news_scraper/transformers/article'
+require 'news_scraper/transformers/trainer_article'
 
 require 'news_scraper/scraper'
 

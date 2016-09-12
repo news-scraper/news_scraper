@@ -5,7 +5,7 @@ module NewsScraper
     class UrlTrainerTest < Minitest::Test
       def setup
         super
-        Transformers::Article.any_instance.stubs(:transform)
+        Transformers::TrainerArticle.any_instance.stubs(:transform)
         Extractors::Article.any_instance.stubs(:extract)
       end
 
