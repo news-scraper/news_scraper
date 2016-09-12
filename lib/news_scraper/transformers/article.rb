@@ -20,7 +20,7 @@ module NewsScraper
       def transform
         raise ScrapePatternNotDefined.new(root_domain: @root_domain) unless scrape_details
 
-        transformed_response.merge(root_domain: @root_domain)
+        transformed_response.merge(uri: @uri, root_domain: @root_domain)
       end
 
       private
