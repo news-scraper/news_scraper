@@ -1,5 +1,10 @@
 module NewsScraper
   module ExtractorsHelpers
+    # Perform an HTTP request with a standardized response
+    #
+    # *Params*
+    # - <code>url</code>: the url on which to perform a get request
+    #
     def http_request(url)
       url = URIParser.new(url).with_scheme
 

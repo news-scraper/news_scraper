@@ -8,6 +8,14 @@ module NewsScraper
     class Article
       attr_reader :uri, :payload
 
+      # Initialize a Article object
+      #
+      # *Params*
+      # - <code>url</code>: keyword arg - the url on which scraping was done
+      # - <code>payload</code>: keyword arg - the result of the scrape
+      # - <code>scrape_details</code>: keyword arg - The pattern/methods for the domain to use in the transformation
+      # - <code>scrape_patterns</code>: keyword arg - The patterns available to use in transformation
+      #
       def initialize(url:, payload:, scrape_details: nil, scrape_patterns: Constants::SCRAPE_PATTERNS)
         uri_parser = URIParser.new(url)
         @uri = uri_parser.without_scheme
@@ -17,6 +25,14 @@ module NewsScraper
         @scrape_details = scrape_details
       end
 
+      # Transform the article
+      #
+      # *Raises*
+      # - ScrapePatternNotDefined: will raise this error if the root domain is not in the article_scrape_patterns.yml
+      #
+      # *Returns*
+      # - <code>transformed_response</code>: the response that has been parsed and transformed to a hash
+      #
       def transform
         raise ScrapePatternNotDefined.new(root_domain: @root_domain) unless scrape_details
 

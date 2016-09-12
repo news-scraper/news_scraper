@@ -29,9 +29,12 @@ module NewsScraper
   # 2. Grep for :data_types using :presets in config/article_scrape_patterns.yml
   # 3. Displays the results of each :preset grep for a given :data_type
   # 4. Prompts the user to select one of the :presets to use as the default for a domain's :data_type
-  #   N.B: User may ignore all presets and manually configure it in the YAML file
+  # N.B: User may ignore all presets and manually configure it in the YAML file
   # 5. Saves the selected :preset to config/article_scrape_patterns.yml
-
+  #
+  # *Params*
+  # - <code>query</code>: a keyword arugment specifying the query to train on
+  #
   def train(query:)
     Trainer.train(query: query)
   end

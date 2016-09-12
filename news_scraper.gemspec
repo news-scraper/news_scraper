@@ -37,4 +37,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mocha", "~> 1.1.0"
   spec.add_development_dependency "timecop", "~> 0.8.0"
   spec.add_development_dependency "rubocop", "~> 0.42.0"
+  spec.add_development_dependency "rdoc", "~> 4.2.2"
 end
