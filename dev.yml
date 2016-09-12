@@ -10,3 +10,4 @@ commands:
     run:    bundle exec rubocop
     aliases: [rubo, lint, l]
   test: bundle exec rake test
+  docs: bundle exec rake rdoc

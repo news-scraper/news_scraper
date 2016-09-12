@@ -7,10 +7,9 @@ module NewsScraper
 
     # Fetches articles from Extraction sources and trains on the results
     #
-    # *Training*
-    # Training is a process where we take an untrained url (root domain
-    # is not in article_scrape_patterns.yml) and determine patterns and methods
-    # to match the data_types listed in article_scrape_patterns.yml, then record
+    # *Training* is a process where we take an untrained url (root domain
+    # is not in <code>article_scrape_patterns.yml</code>) and determine patterns and methods
+    # to match the data_types listed in <code>article_scrape_patterns.yml</code>, then record
     # them to the article_scrape_patterns.yml file
     #
     # *Params*
