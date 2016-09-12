@@ -22,7 +22,65 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Scraping
+
+`NewsScraper::Scraper#scrape` will allow either yields the transformed data or returns an array of the transformed data for all Google News RSS articles for a query.
+
+It takes in 1 parameter `:query`.
+
+Array notation
+```
+article_hashes = NewsScraper::Scraper.new(query: 'Shopify').scrape # [ { author: ... }, { author: ... } ... ]
+```
+
+Block notation
+```
+NewsScraper::Scraper.new(query: 'Shopify').scrape do |article_hash|
+  # { author: ... }
+end
+```
+
+How the `Scraper` extracts and parses for the information is determined by scrape patterns (see **Scrape Patterns**).
+
+### Transformed Data
+
+Calling `NewsScraper::Scraper#scrape` with either the array or block notation will yield `transformed_data` hashes. [`article_scrape_patterns.yml`](https://github.com/richardwu/news_scraper/blob/master/config/article_scrape_patterns.yml) defines the data types that will be scraped for.
+
+In addition, the `uri` and `root_domain`(hostname) of the article will be returned in the hash too.
+
+Example
+```
+{
+  author: 'Linus Torvald',
+  body: 'The Linux kernel developed by Linus Torvald has become the backbone of most electronic devices we use to-date. It powers mobile phones, laptops, embedded devices, and even rockets...',
+  description: 'The Linux kernel is one of the most important contributions to the world of technology.',
+  keywords: 'linux,kernel,linus,torvald',
+  section: 'technology',
+  datetime: '1991-10-05T12:00:00+00:00',
+  title: 'Linus Linux',
+  uri: 'linusworld.com/the-linux-kernel',
+  root_domain: 'linusworld.com'
+}
+```
+
+### Scrape Patterns
+
+Extracting each `:data_type` (see Example under **Transformed Data**) requires a grep pattern. A few `:presets` are specified in [`article_scrape_patterns.yml`](https://github.com/richardwu/news_scraper/blob/master/config/article_scrape_patterns.yml).
+
+Since each news site (identified with `:root_domain`) uses a different markup, scrape patterns are defined on a per-`:root_domain` basis.
+
+Specifying scrape patterns for additional (undefined) `:root_domains` is called training (see **Training**).
+
+### Training
+
+For each `:root_domain`, it is necesary to specify a grep/scrape pattern for each of the `:data_type`s. A rake task was written to provide a CLI for appending new `:root_domain`s using `:preset` scrape patterns.
+
+Simply run
+```
+bundle exec rake scraper:train QUERY=<query>
+```
+
+where the CLI will step through the articles and `:root_domain`s of the articles relevant to `<query>`.
 
 ## Development
 
