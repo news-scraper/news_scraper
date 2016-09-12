@@ -1,5 +1,6 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
+require 'rdoc/task'
 
 require 'news_scraper'
 
@@ -14,4 +15,10 @@ namespace :scraper do
     raise "QUERY param not given.\n\tUsage: bundle exec rake scraper:train QUERY=<query>" unless ENV['QUERY']
     NewsScraper::Trainer.train(query: ENV['QUERY'])
   end
+end
+
+RDoc::Task.new do |rdoc|
+  rdoc.main = "README.md"
+  rdoc.rdoc_files.include("README.md", "lib/*.rb", "lib/**/*.rb")
+  rdoc.rdoc_dir = "doc"
 end
