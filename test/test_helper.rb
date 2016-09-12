@@ -32,5 +32,15 @@ module MiniTest
         end
       end
     end
+
+    def stub_scrape_pattern_file_path(file_path)
+      original_path = NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH.dup
+      begin
+        NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH.replace(file_path)
+        yield
+      ensure
+        NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH.replace(original_path)
+      end
+    end
   end
 end

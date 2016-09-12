@@ -22,8 +22,10 @@ module NewsScraper
         }
 
         stub_temp_file_with_path(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH) do |config_path|
-          Trainer::UrlTrainer.new('yolo.com').train
-          assert_equal expected_patterns, YAML.load_file(config_path)['domains']['yolo.com']
+          stub_scrape_pattern_file_path(config_path) do
+            Trainer::UrlTrainer.new('yolo.com').train
+            assert_equal expected_patterns, YAML.load_file(config_path)['domains']['yolo.com']
+          end
         end
       end
 
@@ -40,8 +42,10 @@ module NewsScraper
     title: *link_author
 EOF
         stub_temp_file_with_path(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH) do |config_path|
-          Trainer::UrlTrainer.new('yolo.com').train
-          assert_equal expected_output, File.readlines(config_path).last(expected_output.count("\n")).join
+          stub_scrape_pattern_file_path(config_path) do
+            Trainer::UrlTrainer.new('yolo.com').train
+            assert_equal expected_output, File.readlines(config_path).last(expected_output.count("\n")).join
+          end
         end
       end
 
