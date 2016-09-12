@@ -17,12 +17,14 @@ class ArticleTest < Minitest::Test
   end
 
   def test_transform_raises_scrape_pattern_not_defined_for_unsupported_domain
+    unsupported_url = 'unsupported-domain.com/article'
     unsupported_domain = 'unsupported-domain.com'
-    transformer = NewsScraper::Transformers::Article.new(url: unsupported_domain, payload: '')
+    transformer = NewsScraper::Transformers::Article.new(url: unsupported_url, payload: '')
 
     err = assert_raises NewsScraper::Transformers::ScrapePatternNotDefined do
       transformer.transform
     end
+    assert_equal unsupported_url, err.uri
     assert_equal unsupported_domain, err.root_domain
   end
 end

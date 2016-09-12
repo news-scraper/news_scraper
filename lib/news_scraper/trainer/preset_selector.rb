@@ -56,7 +56,7 @@ module NewsScraper
         scrape_details = blank_scrape_details
         @results ||= @data_type_presets.each_with_object({}) do |(preset_name, preset_details), hash|
           scrape_details[@data_type] = preset_details
-          train_transformer = Transformers::Article.new(
+          train_transformer = Transformers::TrainerArticle.new(
             url: @url,
             payload: @payload,
             scrape_details: scrape_details,
