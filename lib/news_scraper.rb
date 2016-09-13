@@ -24,14 +24,14 @@ require 'news_scraper/trainer'
 module NewsScraper
   extend self
 
-  # NewsScraper.train is an interactive command-line prompt that:
+  # <code>NewsScraper::train</code> is an interactive command-line prompt that:
   #
   # 1. Collates all articles for the given :query
-  # 2. Grep for :data_types using :presets in config/article_scrape_patterns.yml
-  # 3. Displays the results of each :preset grep for a given :data_type
-  # 4. Prompts the user to select one of the :presets to use as the default for a domain's :data_type
+  # 2. Grep for <code>:data_types</code> using <code>:presets</code> in <code>config/article_scrape_patterns.yml</code>
+  # 3. Displays the results of each <code>:preset</code> grep for a given <code>:data_type</code>
+  # 4. Prompts to select one of the <code>:presets</code> or define a pattern for that domain's <code>:data_type</code>
   # N.B: User may ignore all presets and manually configure it in the YAML file
-  # 5. Saves the selected :preset to config/article_scrape_patterns.yml
+  # 5. Saves the selected <code>:preset</code> to <code>config/article_scrape_patterns.yml</code>
   #
   # *Params*
   # - <code>query</code>: a keyword arugment specifying the query to train on
