@@ -24,18 +24,18 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'nokogiri', '~> 1.6.8'
-  spec.add_dependency 'httparty', '~> 0.14.0'
-  spec.add_dependency 'sanitize', '~> 4.2.0'
-  spec.add_dependency 'ruby-readability', '~> 0.7.0'
-  spec.add_dependency 'htmlbeautifier', '~> 1.1.1'
+  spec.add_dependency 'nokogiri', '~>1.6', '>= 1.6.8'
+  spec.add_dependency 'httparty', '~> 0.14', '>= 0.14.0'
+  spec.add_dependency 'sanitize', '~> 4.2', '>= 4.2.0'
+  spec.add_dependency 'ruby-readability', '~> 0.7', '>= 0.7.0'
+  spec.add_dependency 'htmlbeautifier', '~> 1.1', '>= 1.1.1'
 
-  spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "minitest", "~> 5.9.0"
-  spec.add_development_dependency "pry", "~> 0.10.4"
-  spec.add_development_dependency "mocha", "~> 1.1.0"
-  spec.add_development_dependency "timecop", "~> 0.8.0"
-  spec.add_development_dependency "rubocop", "~> 0.42.0"
-  spec.add_development_dependency "rdoc", "~> 4.2.2"
+  spec.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.0'
+  spec.add_development_dependency 'rake', '~> 10.0', '>= 10.0.0'
+  spec.add_development_dependency 'minitest', '~> 5.9', '>= 5.9.0'
+  spec.add_development_dependency 'pry', '~> 0.10', '>= 0.10.4'
+  spec.add_development_dependency 'mocha', '~> 1.1', '>= 1.1.0'
+  spec.add_development_dependency 'timecop', '~> 0.8', '>= 0.8.0'
+  spec.add_development_dependency 'rubocop', '~> 0.42', '>= 0.42.0'
+  spec.add_development_dependency 'rdoc', '~> 4.2', '>= 4.2.2'
 end
