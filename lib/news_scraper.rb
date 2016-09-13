@@ -24,7 +24,7 @@ require 'news_scraper/trainer'
 module NewsScraper
   extend self
 
-  # NewsScraper.train is an interactive command-line prompt that:
+  # <code>NewsScraper::train</code> is an interactive command-line prompt that:
   #
   # 1. Collates all articles for the given :query
   # 2. Grep for <code>:data_types</code> using <code>:presets</code> in <code>config/article_scrape_patterns.yml</code>
