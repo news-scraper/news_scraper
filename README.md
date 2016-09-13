@@ -2,6 +2,8 @@
 
 ### Simple ETL news scraper in Ruby
 
+[RubyGems](https://rubygems.org/gems/news_scraper)
+
 A collection of extractors, transformers and loaders for a variety of news feeds and outlets.
 
 ## Installation
