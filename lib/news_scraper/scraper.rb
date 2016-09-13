@@ -12,11 +12,13 @@ module NewsScraper
     # Fetches articles from Extraction sources and scrapes the results
     #
     # *Yields*
-    # - Will yield individually extracted sources
+    # - Will yield individually extracted articles
     #
     # *Raises*
-    # - Will raise a `Transformers::ScrapePatternNotDefined` if an article is not in the root domains
-    # - This root domain will need to be trained, it would be helpful to have a PR created to add this
+    # - Will raise a <code>Transformers::ScrapePatternNotDefined</code> if an article is not in the root domains
+    #   - Root domains are specified by the <code>article_scrape_patterns.yml</code> file
+    #   - This root domain will need to be trained, it would be helpful to have a PR created to train the domain
+    #   - You can train the domain by running <code>NewsScraper::Trainer::UrlTrainer.new(URL_TO_TRAIN).train</code>
     #
     # *Returns*
     # - <code>transformed_articles</code>: The transformed articles fetched from the extracted sources
