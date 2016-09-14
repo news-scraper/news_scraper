@@ -10,7 +10,7 @@ require_relative 'helpers/extractors_test_helpers'
 module MiniTest
   class Test
     def raw_data_fixture(domain)
-      File.read("test/data/articles/#{domain.tr('.', '_')}_raw.html")
+      File.read("test/data/articles/#{domain.tr('.', '_')}_raw")
     end
 
     def transformation_fixture(domain)
