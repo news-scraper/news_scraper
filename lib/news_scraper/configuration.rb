@@ -1,10 +1,11 @@
 module NewsScraper
   class Configuration
     DEFAULT_SCRAPE_PATTERNS_FILEPATH = File.expand_path('../../../config/article_scrape_patterns.yml', __FILE__)
-    attr_accessor :scrape_patterns, :scrape_patterns_filepath
+    attr_accessor :scrape_patterns_filepath
+    attr_reader :scrape_patterns
 
-    def initialize(scrape_patterns_filepath: nil)
-      self.scrape_patterns_filepath = scrape_patterns_filepath if scrape_patterns_filepath
+    def initialize(scrape_patterns_filepath: DEFAULT_SCRAPE_PATTERNS_FILEPATH)
+      self.scrape_patterns_filepath = scrape_patterns_filepath
     end
 
     def scrape_patterns_filepath=(file_path)
