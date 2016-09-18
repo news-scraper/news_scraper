@@ -19,20 +19,6 @@ module NewScraper
           assert_equal @expected_article_urls, @extractor.extract.sort
         end
       end
-
-      def test_extract_writes_to_file_of_extracted_article_urls
-        capture_subprocess_io do
-          Timecop.freeze do
-            expected_filename = "#{@query}_#{Time.now.to_i}.txt"
-            expected_path = File.join(NewsScraper::Extractors::GoogleNewsRss::ARTICLE_URLS_DIR, expected_filename)
-            file_handle = mock
-            file_handle.stubs(:puts)
-            File.expects(:open).with(expected_path, 'w').yields(file_handle)
-
-            NewsScraper::Extractors::GoogleNewsRss.new(query: @query, temp_write: true).extract
-          end
-        end
-      end
     end
   end
 end
