@@ -6,8 +6,8 @@ require 'news_scraper/version'
 Gem::Specification.new do |spec|
   spec.name          = "news_scraper"
   spec.version       = NewsScraper::VERSION
-  spec.authors       = ["Richard Wu"]
-  spec.email         = ["richardwu1997@gmail.com"]
+  spec.authors       = ["Richard Wu", "Julian Nadeau"]
+  spec.email         = ["me@rwu1997.com", "julian@jnadeau.ca"]
 
   spec.summary       = 'Simple ETL news scraper in Ruby'
   spec.description   = 'A collection of extractors, transformers and loaders for scraping news websites and syndicates.'
