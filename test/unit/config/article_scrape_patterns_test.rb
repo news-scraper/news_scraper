@@ -4,7 +4,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   VALID_METHODS = %w(css xpath readability).freeze
 
   def setup
-    @scrape_patterns = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)
+    @scrape_patterns = YAML.load_file(default_configuration.scrape_patterns_filepath)
     @domains = @scrape_patterns['domains'].keys
   end
 
@@ -57,7 +57,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_scrape_methods_have_proper_variable_names
-    article_scrape_patterns = File.read(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH).split("\n").map(&:strip)
+    article_scrape_patterns = File.read(default_configuration.scrape_patterns_filepath).split("\n").map(&:strip)
     @scrape_patterns['presets'].each_pair do |data_type, presets|
       # Find the first occurence of data_type:, then we search from there
       section_index = article_scrape_patterns.index("#{data_type}:")
@@ -77,7 +77,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_all_preset_xpaths_are_valid
-    supported_domains = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)['domains'].keys
+    supported_domains = YAML.load_file(default_configuration.scrape_patterns_filepath)['domains'].keys
     noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
 
     @scrape_patterns['presets'].each_pair do |data_type, presets|
@@ -95,7 +95,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_all_preset_css_paths_are_valid
-    supported_domains = YAML.load_file(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH)['domains'].keys
+    supported_domains = YAML.load_file(default_configuration.scrape_patterns_filepath)['domains'].keys
     noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
 
     @scrape_patterns['presets'].each_pair do |data_type, presets|

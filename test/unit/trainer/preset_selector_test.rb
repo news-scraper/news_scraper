@@ -6,9 +6,9 @@ module NewsScraper
       def setup
         super
 
-        @domain = NewsScraper::Constants::SCRAPE_PATTERNS['domains'].keys.first
+        @domain = default_configuration.scrape_patterns['domains'].keys.first
         @target_data_type = 'description'
-        @data_type_presets = NewsScraper::Constants::SCRAPE_PATTERNS['presets'][@target_data_type]
+        @data_type_presets = default_configuration.scrape_patterns['presets'][@target_data_type]
       end
 
       def test_select_without_data_type_presets
@@ -16,7 +16,8 @@ module NewsScraper
           url: @domain,
           payload: "",
           data_type_presets: nil,
-          data_type: @target_data_type
+          data_type: @target_data_type,
+          configuration: default_configuration
         ).select
       end
 
@@ -26,7 +27,8 @@ module NewsScraper
           url: @domain,
           payload: "",
           data_type_presets: @data_type_presets,
-          data_type: @target_data_type
+          data_type: @target_data_type,
+          configuration: default_configuration
         )
         assert_nil preset.select
       end
@@ -39,7 +41,8 @@ module NewsScraper
           url: @domain,
           payload: "",
           data_type_presets: @data_type_presets,
-          data_type: @target_data_type
+          data_type: @target_data_type,
+          configuration: default_configuration
         )
 
         assert_equal({ 'method' => 'xpath', 'pattern' => 'mock_xpath' }, preset.select)
@@ -52,11 +55,12 @@ module NewsScraper
           url: @domain,
           payload: "<meta content='description' property='og:description'>",
           data_type_presets: @data_type_presets,
-          data_type: @target_data_type
+          data_type: @target_data_type,
+          configuration: default_configuration
         )
 
         assert_equal(
-          NewsScraper::Constants::SCRAPE_PATTERNS['presets']['description']['og'].merge("variable" => "og_description"),
+          default_configuration.scrape_patterns['presets']['description']['og'].merge("variable" => "og_description"),
           preset.select
         )
       end
