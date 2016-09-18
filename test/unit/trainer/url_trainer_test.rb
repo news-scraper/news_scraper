@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'tempfile'
 
 module NewsScraper
   module Trainer
@@ -23,7 +22,7 @@ module NewsScraper
         }
 
         capture_subprocess_io do
-          Trainer::UrlTrainer.new(url: 'yolo.com').train
+          Trainer::UrlTrainer.new('yolo.com').train
         end
         assert_equal expected_patterns,
           YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains']['yolo.com']
@@ -42,7 +41,7 @@ module NewsScraper
     title: *link_author
 EOF
         capture_subprocess_io do
-          Trainer::UrlTrainer.new(url: 'yolo.com').train
+          Trainer::UrlTrainer.new('yolo.com').train
         end
         assert_equal expected_output,
           File.readlines(NewsScraper.configuration.scrape_patterns_filepath).last(expected_output.count("\n")).join
@@ -51,7 +50,7 @@ EOF
       def test_train_on_trained_domain_returns_without_stepping_through_presets
         domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         capture_subprocess_io do
-          assert_nil Trainer::UrlTrainer.new(url: domain).train
+          assert_nil Trainer::UrlTrainer.new(domain).train
           assert_equal NewsScraper.configuration.scrape_patterns['domains'][domain],
             YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains'][domain]
         end

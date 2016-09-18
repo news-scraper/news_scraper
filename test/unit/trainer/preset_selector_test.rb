@@ -16,7 +16,7 @@ module NewsScraper
           url: @domain,
           payload: "",
           data_type_presets: nil,
-          data_type: @target_data_type,
+          data_type: @target_data_type
         ).select
       end
 
@@ -26,7 +26,7 @@ module NewsScraper
           url: @domain,
           payload: "",
           data_type_presets: @data_type_presets,
-          data_type: @target_data_type,
+          data_type: @target_data_type
         )
         assert_nil preset.select
       end
@@ -39,7 +39,7 @@ module NewsScraper
           url: @domain,
           payload: "",
           data_type_presets: @data_type_presets,
-          data_type: @target_data_type,
+          data_type: @target_data_type
         )
 
         assert_equal({ 'method' => 'xpath', 'pattern' => 'mock_xpath' }, preset.select)
@@ -52,11 +52,15 @@ module NewsScraper
           url: @domain,
           payload: "<meta content='description' property='og:description'>",
           data_type_presets: @data_type_presets,
-          data_type: @target_data_type,
+          data_type: @target_data_type
         )
 
+        expected_select = NewsScraper.configuration
+                                     .scrape_patterns['presets']['description']['og']
+                                     .merge("variable" => "og_description")
+
         assert_equal(
-          NewsScraper.configuration.scrape_patterns['presets']['description']['og'].merge("variable" => "og_description"),
+          expected_select,
           preset.select
         )
       end

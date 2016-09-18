@@ -30,10 +30,7 @@ module NewsScraper
       article_urls.each do |article_url|
         payload = Extractors::Article.new(url: article_url).extract
 
-        transformed_article = Transformers::Article.new(
-          url: article_url,
-          payload: payload
-        ).transform
+        transformed_article = Transformers::Article.new(url: article_url, payload: payload).transform
         transformed_articles << transformed_article
 
         yield transformed_article if block_given?

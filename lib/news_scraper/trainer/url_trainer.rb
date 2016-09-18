@@ -1,7 +1,7 @@
 module NewsScraper
   module Trainer
     class UrlTrainer
-      def initialize(url:)
+      def initialize(url)
         @url = url
         @root_domain = URIParser.new(@url).host
         @payload = Extractors::Article.new(url: @url).extract
@@ -11,7 +11,8 @@ module NewsScraper
         return if NewsScraper.configuration.scrape_patterns['domains'].key?(@root_domain)
 
         CLI.put_header(@root_domain)
-        CLI.log("There is no scrape pattern defined for #{@root_domain} in #{NewsScraper.configuration.scrape_patterns_filepath}")
+        CLI.log("There is no scrape pattern defined for #{@root_domain} in"\
+          " #{NewsScraper.configuration.scrape_patterns_filepath}")
         CLI.log "Fetching information..."
         CLI.put_footer
 
@@ -49,7 +50,8 @@ module NewsScraper
         new_content = "#{current_content}\n#{build_domain_yaml(selected_presets)}\n"
 
         File.write(NewsScraper.configuration.scrape_patterns_filepath, new_content)
-        CLI.log("Successfully wrote presets for #{@root_domain} to #{NewsScraper.configuration.scrape_patterns_filepath}.")
+        CLI.log("Successfully wrote presets for #{@root_domain} to"\
+          " #{NewsScraper.configuration.scrape_patterns_filepath}.")
       end
 
       def build_domain_yaml(selected_presets)
