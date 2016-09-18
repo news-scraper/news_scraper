@@ -7,7 +7,7 @@ module NewsScraper
       include ExtractorsHelpers
 
       BASE_URL = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss'.freeze
-      def initialize(query:, temp_write: false)
+      def initialize(query:)
         @query = query
       end
 
