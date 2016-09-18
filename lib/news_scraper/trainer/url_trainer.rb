@@ -12,7 +12,7 @@ module NewsScraper
         return if @configuration.scrape_patterns['domains'].key?(@root_domain)
 
         CLI.put_header(@root_domain)
-        CLI.log("There is no scrape pattern defined for #{@root_domain} in #{@configuration.source}")
+        CLI.log("There is no scrape pattern defined for #{@root_domain} in #{@configuration.scrape_patterns_filepath}")
         CLI.log "Fetching information..."
         CLI.put_footer
 
