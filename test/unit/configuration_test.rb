@@ -9,7 +9,7 @@ module NewsScraper
     end
 
     def test_scrape_patterns_loaded_from_filepath
-      tmp_file = Tempfile.new
+      tmp_file = Tempfile.new('test_scrape_patterns_loaded_from_filepath')
       tmp_file.write("domains:\n  test")
       tmp_file.rewind
 

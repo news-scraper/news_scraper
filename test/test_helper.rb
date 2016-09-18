@@ -19,7 +19,7 @@ module MiniTest
 
     def default_configuration
       @configuration ||= begin
-        tmp_file = Tempfile.new
+        tmp_file = Tempfile.new('default_configuration')
         tmp_file.write(File.read(NewsScraper::Configuration::DEFAULT_SCRAPE_PATTERNS_FILEPATH))
         tmp_file.rewind
         NewsScraper::Configuration.new(scrape_patterns_filepath: tmp_file.path)
