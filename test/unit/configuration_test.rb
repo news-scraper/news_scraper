@@ -15,5 +15,11 @@ module NewsScraper
 
       assert_equal({ 'domains' => 'test' }, Configuration.new(scrape_patterns_filepath: tmp_file.path).scrape_patterns)
     end
+
+    def test_configuration_block
+      NewsScraper.configure do |config|
+        config.scrape_patterns_filepath = Tempfile.new('Tempfile')
+      end
+    end
   end
 end

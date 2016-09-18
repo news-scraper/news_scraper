@@ -23,11 +23,12 @@ require 'news_scraper/trainer'
 
 module NewsScraper
   extend self
+  attr_writer :configuration
 
   # <code>NewsScraper::train</code> is an interactive command-line prompt that:
   #
   # 1. Collates all articles for the given :query
-  # 2. Grep for <code>:data_types</code> using <code>:presets</code> in <code>config/article_scrape_patterns.yml</code>
+  # 2. Grep for <code>:data_types</code> using <code>:presets</code> in the config <code>scrape_patterns_filepath</code>
   # 3. Displays the results of each <code>:preset</code> grep for a given <code>:data_type</code>
   # 4. Prompts to select one of the <code>:presets</code> or define a pattern for that domain's <code>:data_type</code>
   # N.B: User may ignore all presets and manually configure it in the YAML file
@@ -38,5 +39,17 @@ module NewsScraper
   #
   def train(query:)
     Trainer.train(query: query)
+  end
+
+  def configuration
+    @configuration ||= Configuration.new
+  end
+
+  def reset_configuration
+    @configuration = Configuration.new
+  end
+
+  def configure
+    yield(configuration)
   end
 end

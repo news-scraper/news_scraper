@@ -4,8 +4,12 @@ module NewsScraper
     attr_accessor :scrape_patterns, :scrape_patterns_filepath
 
     def initialize(scrape_patterns_filepath: nil)
-      @scrape_patterns_filepath = scrape_patterns_filepath || DEFAULT_SCRAPE_PATTERNS_FILEPATH
-      raise ScrapePatternsFilePathDoesNotExist unless File.exist?(@scrape_patterns_filepath)
+      self.scrape_patterns_filepath = scrape_patterns_filepath if scrape_patterns_filepath
+    end
+
+    def scrape_patterns_filepath=(file_path)
+      @scrape_patterns_filepath = file_path || DEFAULT_SCRAPE_PATTERNS_FILEPATH
+      raise ScrapePatternsFilePathDoesNotExist.new(file_path) unless File.exist?(@scrape_patterns_filepath)
       @scrape_patterns = YAML.load_file(@scrape_patterns_filepath)
     end
   end

@@ -6,9 +6,9 @@ module NewsScraper
       def setup
         super
 
-        @domain = default_configuration.scrape_patterns['domains'].keys.first
+        @domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         @target_data_type = 'description'
-        @data_type_presets = default_configuration.scrape_patterns['presets'][@target_data_type]
+        @data_type_presets = NewsScraper.configuration.scrape_patterns['presets'][@target_data_type]
       end
 
       def test_select_without_data_type_presets
@@ -17,7 +17,6 @@ module NewsScraper
           payload: "",
           data_type_presets: nil,
           data_type: @target_data_type,
-          configuration: default_configuration
         ).select
       end
 
@@ -28,7 +27,6 @@ module NewsScraper
           payload: "",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type,
-          configuration: default_configuration
         )
         assert_nil preset.select
       end
@@ -42,7 +40,6 @@ module NewsScraper
           payload: "",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type,
-          configuration: default_configuration
         )
 
         assert_equal({ 'method' => 'xpath', 'pattern' => 'mock_xpath' }, preset.select)
@@ -56,11 +53,10 @@ module NewsScraper
           payload: "<meta content='description' property='og:description'>",
           data_type_presets: @data_type_presets,
           data_type: @target_data_type,
-          configuration: default_configuration
         )
 
         assert_equal(
-          default_configuration.scrape_patterns['presets']['description']['og'].merge("variable" => "og_description"),
+          NewsScraper.configuration.scrape_patterns['presets']['description']['og'].merge("variable" => "og_description"),
           preset.select
         )
       end

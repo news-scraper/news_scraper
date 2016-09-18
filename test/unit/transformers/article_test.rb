@@ -9,7 +9,6 @@ class ArticleTest < Minitest::Test
       transformer = NewsScraper::Transformers::Article.new(
         url: "#{domain}/some_article",
         payload: raw_data,
-        configuration: default_configuration
       )
 
       expected_transformation = transformation_fixture(domain)
@@ -26,7 +25,6 @@ class ArticleTest < Minitest::Test
     transformer = NewsScraper::Transformers::Article.new(
       url: unsupported_url,
       payload: '',
-      configuration: default_configuration
     )
 
     err = assert_raises NewsScraper::Transformers::ScrapePatternNotDefined do

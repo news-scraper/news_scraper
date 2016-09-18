@@ -23,10 +23,10 @@ module NewsScraper
         }
 
         capture_subprocess_io do
-          Trainer::UrlTrainer.new(url: 'yolo.com', configuration: default_configuration).train
+          Trainer::UrlTrainer.new(url: 'yolo.com').train
         end
         assert_equal expected_patterns,
-          YAML.load_file(default_configuration.scrape_patterns_filepath)['domains']['yolo.com']
+          YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains']['yolo.com']
       end
 
       def test_train_will_append_with_correct_yaml_anchors
@@ -42,18 +42,18 @@ module NewsScraper
     title: *link_author
 EOF
         capture_subprocess_io do
-          Trainer::UrlTrainer.new(url: 'yolo.com', configuration: default_configuration).train
+          Trainer::UrlTrainer.new(url: 'yolo.com').train
         end
         assert_equal expected_output,
-          File.readlines(default_configuration.scrape_patterns_filepath).last(expected_output.count("\n")).join
+          File.readlines(NewsScraper.configuration.scrape_patterns_filepath).last(expected_output.count("\n")).join
       end
 
       def test_train_on_trained_domain_returns_without_stepping_through_presets
-        domain = default_configuration.scrape_patterns['domains'].keys.first
+        domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         capture_subprocess_io do
-          assert_nil Trainer::UrlTrainer.new(url: domain, configuration: default_configuration).train
-          assert_equal default_configuration.scrape_patterns['domains'][domain],
-            YAML.load_file(default_configuration.scrape_patterns_filepath)['domains'][domain]
+          assert_nil Trainer::UrlTrainer.new(url: domain).train
+          assert_equal NewsScraper.configuration.scrape_patterns['domains'][domain],
+            YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains'][domain]
         end
       end
     end

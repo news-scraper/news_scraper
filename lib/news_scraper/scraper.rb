@@ -25,7 +25,6 @@ module NewsScraper
     #
     def scrape
       article_urls = Extractors::GoogleNewsRss.new(query: @query).extract
-      configuration = Configuration.new
 
       transformed_articles = []
       article_urls.each do |article_url|
@@ -33,8 +32,7 @@ module NewsScraper
 
         transformed_article = Transformers::Article.new(
           url: article_url,
-          payload: payload,
-          configuration: configuration
+          payload: payload
         ).transform
         transformed_articles << transformed_article
 

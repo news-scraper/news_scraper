@@ -12,12 +12,11 @@ module NewsScraper
       # - <code>url</code>: keyword arg - the url on which scraping was done
       # - <code>payload</code>: keyword arg - the result of the scrape
       #
-      def initialize(url:, payload:, configuration:)
+      def initialize(url:, payload:)
         uri_parser = URIParser.new(url)
         @uri = uri_parser.without_scheme
         @root_domain = uri_parser.host
         @payload = payload
-        @configuration = configuration
       end
 
       # Transform the article
@@ -37,11 +36,11 @@ module NewsScraper
       private
 
       def scrape_details
-        @scrape_details ||= @configuration.scrape_patterns['domains'][@root_domain]
+        @scrape_details ||= NewsScraper.configuration.scrape_patterns['domains'][@root_domain]
       end
 
       def transformed_response
-        @configuration.scrape_patterns['data_types'].each_with_object({}) do |data_type, response|
+        NewsScraper.configuration.scrape_patterns['data_types'].each_with_object({}) do |data_type, response|
           response[data_type.to_sym] = parsed_data(data_type)
         end
       end
