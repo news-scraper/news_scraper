@@ -8,9 +8,9 @@ module NewsScraper
       # - <code>payload</code>: keyword arg - the result of the scrape
       # - <code>scrape_details</code>: keyword arg - The pattern/methods for the domain to use in the transformation
       #
-      def initialize(url:, payload:, scrape_details:)
+      def initialize(url:, payload:, scrape_details:, configuration:)
         @scrape_details = scrape_details
-        super(url: url, payload: payload)
+        super(url: url, payload: payload, configuration: configuration)
       end
     end
   end

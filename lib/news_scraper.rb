@@ -1,7 +1,7 @@
 require 'httparty'
 require 'yaml'
 
-require 'news_scraper/constants'
+require 'news_scraper/configuration'
 require 'news_scraper/uri_parser'
 require 'news_scraper/active_support_lite/string'
 

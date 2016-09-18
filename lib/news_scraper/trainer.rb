@@ -17,8 +17,10 @@ module NewsScraper
     #
     def train(query: '')
       article_urls = Extractors::GoogleNewsRss.new(query: query).extract
+      configuration = Configuration.new
+
       article_urls.each do |url|
-        Trainer::UrlTrainer.new(url).train
+        Trainer::UrlTrainer.new(url: url, configuration: configuration).train
       end
     end
   end
