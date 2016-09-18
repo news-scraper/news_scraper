@@ -13,7 +13,7 @@ module NewsScraper
       end
     end
 
-    class ScrapePatternsFilePathDoesntExist < StandardError
+    class ScrapePatternsFilePathDoesNotExist < StandardError
       def message
         'Scrape Patterns File Path was not set in configuration'
       end

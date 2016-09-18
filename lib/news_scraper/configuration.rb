@@ -5,7 +5,7 @@ module NewsScraper
 
     def initialize(scrape_patterns_filepath: nil)
       @scrape_patterns_filepath = scrape_patterns_filepath || DEFAULT_SCRAPE_PATTERNS_FILEPATH
-      raise ScrapePatternsFilePathDoesntExist unless File.exist?(@scrape_patterns_filepath)
+      raise ScrapePatternsFilePathDoesNotExist unless File.exist?(@scrape_patterns_filepath)
       @scrape_patterns = YAML.load_file(@scrape_patterns_filepath)
     end
   end
