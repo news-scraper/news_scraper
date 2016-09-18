@@ -12,9 +12,11 @@ module MiniTest
     def setup
       super
 
+      NewsScraper.reset_configuration
+
       path = "/tmp/#{location.tr('#', '_')}"
       FileUtils.touch(path)
-      File.write(path, File.read(NewsScraper::Configuration::DEFAULT_SCRAPE_PATTERNS_FILEPATH))
+      File.write(path, NewsScraper.configuration.scrape_patterns.to_yaml)
 
       NewsScraper.configure do |config|
         config.scrape_patterns_filepath = path

@@ -2,8 +2,7 @@ require 'test_helper'
 
 class XpathCssPathTest < Minitest::Test
   def setup
-    @scrape_patterns = YAML.load_file(NewsScraper::Configuration::DEFAULT_SCRAPE_PATTERNS_FILEPATH)
-    @presets = @scrape_patterns['presets']
+    @presets = NewsScraper.configuration.scrape_patterns['presets']
   end
 
   def test_author_class
