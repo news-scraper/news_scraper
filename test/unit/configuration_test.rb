@@ -15,10 +15,6 @@ module NewsScraper
 
     def test_raises_when_file_doesnt_exist
       assert_raises do
-        Configuration.new(scrape_patterns_filepath: "nope")
-      end
-
-      assert_raises do
         NewsScraper.configure do |config|
           config.scrape_patterns_filepath = "nope"
         end

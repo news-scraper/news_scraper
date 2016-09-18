@@ -4,8 +4,8 @@ module NewsScraper
     attr_accessor :scrape_patterns_filepath
     attr_reader :scrape_patterns
 
-    def initialize(scrape_patterns_filepath: DEFAULT_SCRAPE_PATTERNS_FILEPATH)
-      self.scrape_patterns_filepath = scrape_patterns_filepath
+    def initialize
+      self.scrape_patterns_filepath = DEFAULT_SCRAPE_PATTERNS_FILEPATH
     end
 
     def scrape_patterns_filepath=(file_path)
