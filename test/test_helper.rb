@@ -13,14 +13,21 @@ module MiniTest
       super
 
       NewsScraper.reset_configuration
-
-      path = "/tmp/#{location.tr('#', '_')}"
-      FileUtils.touch(path)
-      File.write(path, NewsScraper.configuration.scrape_patterns.to_yaml)
+      FileUtils.touch(scrape_patterns_path)
+      File.write(scrape_patterns_path, NewsScraper.configuration.scrape_patterns.to_yaml)
 
       NewsScraper.configure do |config|
-        config.scrape_patterns_filepath = path
+        config.scrape_patterns_filepath = scrape_patterns_path
       end
+    end
+
+    def teardown
+      FileUtils.rm_rf(scrape_patterns_path)
+      super
+    end
+
+    def scrape_patterns_path
+      "/tmp/#{location.tr('#', '_')}"
     end
 
     def raw_data_fixture(domain)

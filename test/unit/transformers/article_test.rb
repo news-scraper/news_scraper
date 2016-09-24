@@ -4,7 +4,7 @@ module NewsScraper
   module Transformers
     class ArticleTest < Minitest::Test
       def test_transform_returns_correct_json_transformation_for_supported_domains
-        supported_domains = YAML.load_file(Configuration::DEFAULT_SCRAPE_PATTERNS_FILEPATH)['domains'].keys
+        supported_domains = NewsScraper.configuration.scrape_patterns['domains'].keys
 
         supported_domains.each do |domain|
           raw_data = raw_data_fixture(domain)
