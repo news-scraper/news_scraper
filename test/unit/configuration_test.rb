@@ -21,6 +21,13 @@ module NewsScraper
       end
     end
 
+    def test_setting_scrape_patterns_directly
+      NewsScraper.configure do |config|
+        config.scrape_patterns = { "banana" => "kiwi" }
+      end
+      assert_equal({ "banana" => "kiwi" }, NewsScraper.configuration.scrape_patterns)
+    end
+
     def test_scrape_patterns_loaded_from_filepath
       assert_equal(@tmp_file.path, NewsScraper.configuration.scrape_patterns_filepath)
       assert_equal({ 'domains' => 'test' }, NewsScraper.configuration.scrape_patterns)
