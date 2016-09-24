@@ -5,6 +5,7 @@ module NewScraper
     class GoogleNewsRssTest < Minitest::Test
       include ExtractorsTestHelpers
       def setup
+        super
         raw_data = File.read('test/data/google_news_rss/shopify_raw.rss')
         @query = "shopify"
         url = "https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&output=rss&q=#{@query}"

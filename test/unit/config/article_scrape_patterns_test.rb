@@ -4,6 +4,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   VALID_METHODS = %w(css xpath readability).freeze
 
   def setup
+    super
     @domains = NewsScraper.configuration.scrape_patterns['domains'].keys
   end
 
@@ -80,8 +81,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_all_preset_xpaths_are_valid
-    supported_domains = NewsScraper.configuration.scrape_patterns['domains'].keys
-    noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
+    noko_html = Nokogiri::HTML(raw_data_fixture(@domains.first))
 
     NewsScraper.configuration.scrape_patterns['presets'].each_pair do |data_type, presets|
       presets.each_pair do |preset_type, spec|
@@ -98,8 +98,7 @@ class ArticleScrapePatternsTest < Minitest::Test
   end
 
   def test_all_preset_css_paths_are_valid
-    supported_domains = NewsScraper.configuration.scrape_patterns['domains'].keys
-    noko_html = Nokogiri::HTML(raw_data_fixture(supported_domains.first))
+    noko_html = Nokogiri::HTML(raw_data_fixture(@domains.first))
 
     NewsScraper.configuration.scrape_patterns['presets'].each_pair do |data_type, presets|
       presets.each_pair do |preset_type, spec|

@@ -2,6 +2,7 @@ require 'test_helper'
 
 class XpathCssPathTest < Minitest::Test
   def setup
+    super
     @presets = NewsScraper.configuration.scrape_patterns['presets']
   end
 

@@ -3,6 +3,7 @@ require 'test_helper'
 module NewsScraper
   class ScraperTest < Minitest::Test
     def setup
+      super
       NewsScraper::Extractors::GoogleNewsRss.any_instance.expects(:extract).returns(['somearticle.com/shopify'])
       NewsScraper::Extractors::Article.any_instance.expects(:extract).returns('some payload')
       @transformed_data = {

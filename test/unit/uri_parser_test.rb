@@ -3,6 +3,7 @@ require 'test_helper'
 module NewsScraper
   class URIParserTest < Minitest::Test
     def setup
+      super
       @http_uri = URIParser.new("http://www.yolo.com/is?cool=1")
       @https_uri = URIParser.new("https://www.yolo.com/is?cool=1")
       @schemeless_uri = URIParser.new("www.yolo.com/is?cool=1")
