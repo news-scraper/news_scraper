@@ -68,7 +68,7 @@ module NewsScraper
       end
 
       def blank_scrape_details
-        @blank_scrape_details ||= Constants::SCRAPE_PATTERNS.each_with_object({}) do |data_type, hash|
+        @blank_scrape_details ||= NewsScraper.configuration.scrape_patterns.each_with_object({}) do |data_type, hash|
           hash[data_type] = nil
         end
       end

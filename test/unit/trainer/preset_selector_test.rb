@@ -6,9 +6,9 @@ module NewsScraper
       def setup
         super
 
-        @domain = NewsScraper::Constants::SCRAPE_PATTERNS['domains'].keys.first
+        @domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         @target_data_type = 'description'
-        @data_type_presets = NewsScraper::Constants::SCRAPE_PATTERNS['presets'][@target_data_type]
+        @data_type_presets = NewsScraper.configuration.scrape_patterns['presets'][@target_data_type]
       end
 
       def test_select_without_data_type_presets
@@ -55,8 +55,12 @@ module NewsScraper
           data_type: @target_data_type
         )
 
+        expected_select = NewsScraper.configuration
+                                     .scrape_patterns['presets']['description']['og']
+                                     .merge("variable" => "og_description")
+
         assert_equal(
-          NewsScraper::Constants::SCRAPE_PATTERNS['presets']['description']['og'].merge("variable" => "og_description"),
+          expected_select,
           preset.select
         )
       end

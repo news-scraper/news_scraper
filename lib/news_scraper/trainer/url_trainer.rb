@@ -8,15 +8,16 @@ module NewsScraper
       end
 
       def train
-        return if article_scrape_patterns['domains'].key?(@root_domain)
+        return if NewsScraper.configuration.scrape_patterns['domains'].key?(@root_domain)
 
         CLI.put_header(@root_domain)
-        CLI.log("There is no scrape pattern defined for #{@root_domain} in #{Constants::SCRAPE_PATTERN_FILEPATH}")
+        CLI.log("There is no scrape pattern defined for #{@root_domain} in"\
+          " #{NewsScraper.configuration.scrape_patterns_filepath}")
         CLI.log "Fetching information..."
         CLI.put_footer
 
         selected_presets = {}
-        article_scrape_patterns['data_types'].each do |data_type|
+        NewsScraper.configuration.scrape_patterns['data_types'].each do |data_type|
           selected_presets[data_type] = selected_pattern(data_type)
         end
 
@@ -27,7 +28,7 @@ module NewsScraper
 
       def selected_pattern(data_type)
         CLI.put_header("Determining information for #{data_type}")
-        data_type_presets = article_scrape_patterns['presets'][data_type]
+        data_type_presets = NewsScraper.configuration.scrape_patterns['presets'][data_type]
         pattern = if data_type_presets.nil?
           CLI.log("No presets were found for #{data_type}. Skipping to next.")
           nil
@@ -45,11 +46,12 @@ module NewsScraper
       end
 
       def save_selected_presets(selected_presets)
-        current_content = File.read(Constants::SCRAPE_PATTERN_FILEPATH).chomp
+        current_content = File.read(NewsScraper.configuration.scrape_patterns_filepath).chomp
         new_content = "#{current_content}\n#{build_domain_yaml(selected_presets)}\n"
 
-        File.write(Constants::SCRAPE_PATTERN_FILEPATH, new_content)
-        CLI.log("Successfully wrote presets for #{@root_domain} to #{Constants::SCRAPE_PATTERN_FILEPATH}.")
+        File.write(NewsScraper.configuration.scrape_patterns_filepath, new_content)
+        CLI.log("Successfully wrote presets for #{@root_domain} to"\
+          " #{NewsScraper.configuration.scrape_patterns_filepath}.")
       end
 
       def build_domain_yaml(selected_presets)
@@ -64,10 +66,6 @@ module NewsScraper
           end
         end
         output_string.join("\n")
-      end
-
-      def article_scrape_patterns
-        @article_scrape_patterns ||= YAML.load_file(Constants::SCRAPE_PATTERN_FILEPATH)
       end
     end
   end

@@ -9,38 +9,33 @@ require_relative 'helpers/extractors_test_helpers'
 
 module MiniTest
   class Test
+    def setup
+      super
+
+      NewsScraper.reset_configuration
+      FileUtils.touch(scrape_patterns_path)
+      File.write(scrape_patterns_path, NewsScraper.configuration.scrape_patterns.to_yaml)
+
+      NewsScraper.configure do |config|
+        config.scrape_patterns_filepath = scrape_patterns_path
+      end
+    end
+
+    def teardown
+      FileUtils.rm_rf(scrape_patterns_path)
+      super
+    end
+
+    def scrape_patterns_path
+      "/tmp/#{location.tr('#', '_')}"
+    end
+
     def raw_data_fixture(domain)
       File.read("test/data/articles/#{domain.tr('.', '_')}_raw")
     end
 
     def transformation_fixture(domain)
       YAML.load_file("test/data/articles/#{domain.tr('.', '_')}_transformed.yml")
-    end
-
-    def stub_temp_file_with_path(file_path)
-      original_content = File.read(file_path)
-      # Use a tmp dir so as not to override the actual config/article_scrape_patterns.yml
-      Dir.mktmpdir do |dir|
-        temp_path = File.join(dir, file_path)
-        FileUtils.mkpath(File.dirname(temp_path))
-
-        Dir.chdir(dir) do
-          File.write(temp_path, original_content)
-          capture_subprocess_io do
-            yield(temp_path)
-          end
-        end
-      end
-    end
-
-    def stub_scrape_pattern_file_path(file_path)
-      original_path = NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH.dup
-      begin
-        NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH.replace(file_path)
-        yield
-      ensure
-        NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH.replace(original_path)
-      end
     end
   end
 end

@@ -21,12 +21,11 @@ module NewsScraper
           'title' => { 'pattern_mock' => 'pattern_mock' }
         }
 
-        stub_temp_file_with_path(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH) do |config_path|
-          stub_scrape_pattern_file_path(config_path) do
-            Trainer::UrlTrainer.new('yolo.com').train
-            assert_equal expected_patterns, YAML.load_file(config_path)['domains']['yolo.com']
-          end
+        capture_subprocess_io do
+          Trainer::UrlTrainer.new('yolo.com').train
         end
+        assert_equal expected_patterns,
+          YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains']['yolo.com']
       end
 
       def test_train_will_append_with_correct_yaml_anchors
@@ -41,20 +40,19 @@ module NewsScraper
     datetime: *link_author
     title: *link_author
 EOF
-        stub_temp_file_with_path(NewsScraper::Constants::SCRAPE_PATTERN_FILEPATH) do |config_path|
-          stub_scrape_pattern_file_path(config_path) do
-            Trainer::UrlTrainer.new('yolo.com').train
-            assert_equal expected_output, File.readlines(config_path).last(expected_output.count("\n")).join
-          end
+        capture_subprocess_io do
+          Trainer::UrlTrainer.new('yolo.com').train
         end
+        assert_equal expected_output,
+          File.readlines(NewsScraper.configuration.scrape_patterns_filepath).last(expected_output.count("\n")).join
       end
 
       def test_train_on_trained_domain_returns_without_stepping_through_presets
-        domain = Constants::SCRAPE_PATTERNS['domains'].keys.first
+        domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         capture_subprocess_io do
           assert_nil Trainer::UrlTrainer.new(domain).train
-          assert_equal Constants::SCRAPE_PATTERNS['domains'][domain],
-            YAML.load_file(Constants::SCRAPE_PATTERN_FILEPATH)['domains'][domain]
+          assert_equal NewsScraper.configuration.scrape_patterns['domains'][domain],
+            YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains'][domain]
         end
       end
     end

@@ -36,11 +36,11 @@ module NewsScraper
       private
 
       def scrape_details
-        @scrape_details ||= Constants::SCRAPE_PATTERNS['domains'][@root_domain]
+        @scrape_details ||= NewsScraper.configuration.scrape_patterns['domains'][@root_domain]
       end
 
       def transformed_response
-        Constants::SCRAPE_PATTERNS['data_types'].each_with_object({}) do |data_type, response|
+        NewsScraper.configuration.scrape_patterns['data_types'].each_with_object({}) do |data_type, response|
           response[data_type.to_sym] = parsed_data(data_type)
         end
       end
