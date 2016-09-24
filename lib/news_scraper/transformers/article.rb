@@ -28,37 +28,36 @@ module NewsScraper
       # - <code>transformed_response</code>: the response that has been parsed and transformed to a hash
       #
       def transform
+        scrape_details = NewsScraper.configuration.scrape_patterns['domains'][@root_domain]
         raise ScrapePatternNotDefined.new(uri: @uri, root_domain: @root_domain) unless scrape_details
-
-        transformed_response.merge(uri: @uri, root_domain: @root_domain)
+        transformed_response(scrape_details).merge(uri: @uri, root_domain: @root_domain)
       end
 
       private
 
-      def scrape_details
-        @scrape_details ||= NewsScraper.configuration.scrape_patterns['domains'][@root_domain]
-      end
-
-      def transformed_response
+      def transformed_response(scrape_details)
         NewsScraper.configuration.scrape_patterns['data_types'].each_with_object({}) do |data_type, response|
-          response[data_type.to_sym] = parsed_data(data_type)
+          response[data_type.to_sym] = nil
+          next unless scrape_details[data_type]
+
+          response[data_type.to_sym] = parsed_data(
+            scrape_details[data_type]['method'].to_sym,
+            scrape_details[data_type]['pattern']
+          )
         end
       end
 
-      def parsed_data(data_type)
-        return nil unless scrape_details[data_type]
-
-        scrape_method = scrape_details[data_type]['method'].to_sym
+      def parsed_data(scrape_method, scrape_pattern)
         case scrape_method
         when :xpath
           noko_html = Nokogiri::HTML(@payload)
           Sanitize.fragment(
-            noko_html.send(scrape_method, "(#{scrape_details[data_type]['pattern']})[1]")
+            noko_html.send(scrape_method, "(#{scrape_pattern})[1]")
           ).squish
         when :css
           noko_html = Nokogiri::HTML(@payload)
           Sanitize.fragment(
-            noko_html.send(scrape_method, scrape_details[data_type]['pattern'])
+            noko_html.send(scrape_method, scrape_pattern)
           ).squish
         when :readability
           content = Readability::Document.new(

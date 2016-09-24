@@ -8,27 +8,15 @@ module NewsScraper
 
         @domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         @target_data_type = 'description'
-        @data_type_presets = NewsScraper.configuration.scrape_patterns['presets'][@target_data_type]
-      end
-
-      def test_select_without_data_type_presets
-        assert_nil PresetSelector.new(
-          url: @domain,
-          payload: "",
-          data_type_presets: nil,
-          data_type: @target_data_type
-        ).select
       end
 
       def test_select_with_skip
         CLI.expects(:prompt_with_options).returns("skip")
         preset = PresetSelector.new(
           url: @domain,
-          payload: "",
-          data_type_presets: @data_type_presets,
-          data_type: @target_data_type
+          payload: ""
         )
-        assert_nil preset.select
+        assert_nil preset.select(@target_data_type)
       end
 
       def test_select_with_custom_provider
@@ -37,22 +25,23 @@ module NewsScraper
 
         preset = PresetSelector.new(
           url: @domain,
-          payload: "",
-          data_type_presets: @data_type_presets,
-          data_type: @target_data_type
+          payload: ""
         )
 
-        assert_equal({ 'method' => 'xpath', 'pattern' => 'mock_xpath' }, preset.select)
+        assert_equal({ 'method' => 'xpath', 'pattern' => 'mock_xpath' }, preset.select(@target_data_type))
       end
 
       def test_select_with_preset
-        CLI.expects(:prompt_with_options).returns("og_description: description")
+        option = Terminal::Table.new do |t|
+          t << %w(method xpath)
+          t << ['pattern', "//meta[@property='og:description']/@content"]
+          t << %w(data description)
+        end
+        CLI.expects(:prompt_with_options).returns("\n#{option}")
 
         preset = PresetSelector.new(
           url: @domain,
-          payload: "<meta content='description' property='og:description'>",
-          data_type_presets: @data_type_presets,
-          data_type: @target_data_type
+          payload: "<meta content='description' property='og:description'>"
         )
 
         expected_select = NewsScraper.configuration
@@ -61,7 +50,7 @@ module NewsScraper
 
         assert_equal(
           expected_select,
-          preset.select
+          preset.select(@target_data_type)
         )
       end
     end

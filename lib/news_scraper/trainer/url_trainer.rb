@@ -20,7 +20,6 @@ module NewsScraper
         NewsScraper.configuration.scrape_patterns['data_types'].each do |data_type|
           selected_presets[data_type] = selected_pattern(data_type)
         end
-
         save_selected_presets(selected_presets)
       end
 
@@ -28,21 +27,18 @@ module NewsScraper
 
       def selected_pattern(data_type)
         CLI.put_header("Determining information for #{data_type}")
-        data_type_presets = NewsScraper.configuration.scrape_patterns['presets'][data_type]
-        pattern = if data_type_presets.nil?
+        pattern = if NewsScraper.configuration.scrape_patterns['presets'][data_type].nil?
           CLI.log("No presets were found for #{data_type}. Skipping to next.")
-          nil
+          selected_presets[data_type] = nil
         else
-          PresetSelector.new(
-            url: @url,
-            payload: @payload,
-            data_type_presets: data_type_presets,
-            data_type: data_type
-          ).select
+          preset_selector.select(data_type)
         end
         CLI.put_footer
-
         pattern || { 'method' => "<<<<< TODO >>>>>", 'pattern' => "<<<<< TODO >>>>>" }
+      end
+
+      def preset_selector
+        @preset_selector ||= PresetSelector.new(url: @url, payload: @payload)
       end
 
       def save_selected_presets(selected_presets)

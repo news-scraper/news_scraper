@@ -11,7 +11,6 @@ module MiniTest
   class Test
     def setup
       super
-
       NewsScraper.reset_configuration
       FileUtils.touch(scrape_patterns_path)
       File.write(scrape_patterns_path, NewsScraper.configuration.scrape_patterns.to_yaml)
@@ -32,6 +31,10 @@ module MiniTest
 
     def raw_data_fixture(domain)
       File.read("test/data/articles/#{domain.tr('.', '_')}_raw")
+    end
+
+    def trainer_transformation_fixture(domain)
+      YAML.load_file("test/data/articles/trainer_#{domain.tr('.', '_')}_transformed.yml")
     end
 
     def transformation_fixture(domain)
