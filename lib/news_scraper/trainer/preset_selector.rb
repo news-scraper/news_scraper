@@ -1,5 +1,3 @@
-require 'terminal-table'
-
 module NewsScraper
   module Trainer
     class PresetSelector
@@ -38,6 +36,7 @@ module NewsScraper
       private
 
       def pattern_options(data_type)
+        require 'terminal-table'
         # Add valid options from the transformed results
         options = transform_results[data_type].each_with_object({}) do |(option, details), valid_options|
           next unless details['data'] && !details['data'].empty?
