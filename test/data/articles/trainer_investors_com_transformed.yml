@@ -1,3 +1,4 @@
+---
 author:
   class:
     method: css
@@ -68,11 +69,19 @@ keywords:
     method: xpath
     pattern: "//meta[@property='article:tag']/@content"
     data: ''
+  news_keywords:
+    method: xpath
+    pattern: "//meta[@name='news_keywords']/@content"
+    data: ''
 section:
   meta:
     method: xpath
     pattern: "//meta[@property='article:section']/@content"
     data: Technology
+  section:
+    method: xpath
+    pattern: "//meta[@name='section']/@content"
+    data: ''
 datetime:
   article_date_original:
     method: xpath
@@ -113,6 +122,18 @@ datetime:
   sailthru_date:
     method: xpath
     pattern: "//meta[@name='sailthru.date']/@content"
+    data: ''
+  time:
+    method: xpath
+    pattern: "//time/@datetime"
+    data: ''
+  date_published_datetime:
+    method: xpath
+    pattern: //meta[@itemprop="datePublished"]/@datetime
+    data: ''
+  date_published_content:
+    method: xpath
+    pattern: //meta[@itemprop="datePublished"]/@content
     data: ''
 title:
   html:
