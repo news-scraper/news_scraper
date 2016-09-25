@@ -28,7 +28,7 @@ module NewsScraper
         CLI.put_header("Determining information for #{data_type}")
         pattern = if NewsScraper.configuration.scrape_patterns['presets'][data_type].nil?
           CLI.log("No presets were found for #{data_type}. Skipping to next.")
-          selected_presets[data_type] = nil
+          nil
         else
           preset_selector.select(data_type)
         end

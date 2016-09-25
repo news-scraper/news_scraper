@@ -36,7 +36,6 @@ module NewsScraper
       private
 
       def pattern_options(data_type)
-        require 'terminal-table'
         # Add valid options from the transformed results
         options = transform_results[data_type].each_with_object({}) do |(option, details), valid_options|
           next unless details['data'] && !details['data'].empty?
@@ -62,12 +61,6 @@ module NewsScraper
           url: @url,
           payload: @payload
         ).transform
-      end
-
-      def blank_scrape_details
-        @blank_scrape_details ||= NewsScraper.configuration.scrape_patterns.each_with_object({}) do |data_type, hash|
-          hash[data_type] = nil
-        end
       end
     end
   end

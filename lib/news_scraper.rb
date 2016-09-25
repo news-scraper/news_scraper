@@ -1,5 +1,6 @@
 require 'httparty'
 require 'yaml'
+require 'terminal-table'
 
 require 'news_scraper/configuration'
 require 'news_scraper/uri_parser'
@@ -37,9 +38,11 @@ module NewsScraper
   # *Params*
   # - <code>query</code>: a keyword arugment specifying the query to train on
   #
+  # :nocov:
   def train(query:)
     Trainer.train(query: query)
   end
+  # :nocov:
 
   def configuration
     @configuration ||= Configuration.new

@@ -28,6 +28,30 @@ module NewsScraper
           YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains']['yolo.com']
       end
 
+      def test_train_with_improper_data_type_sets_to_todo
+        default_methods = NewsScraper.configuration.scrape_patterns.dup
+        bad_data_types = default_methods['data_types'] + ['bad_data_type']
+        NewsScraper.configuration.fetch_method = proc { default_methods.merge('data_types' => bad_data_types) }
+
+        PresetSelector.any_instance.stubs(:select).returns('pattern_mock' => 'pattern_mock')
+        expected_patterns = {
+          'author' => { 'pattern_mock' => 'pattern_mock' },
+          'body' => { 'pattern_mock' => 'pattern_mock' },
+          'description' => { 'pattern_mock' => 'pattern_mock' },
+          'keywords' => { 'pattern_mock' => 'pattern_mock' },
+          'section' => { 'pattern_mock' => 'pattern_mock' },
+          'datetime' => { 'pattern_mock' => 'pattern_mock' },
+          'title' => { 'pattern_mock' => 'pattern_mock' },
+          'bad_data_type' => { "method" => "<<<<< TODO >>>>>", "pattern" => "<<<<< TODO >>>>>" }
+        }
+
+        capture_subprocess_io do
+          Trainer::UrlTrainer.new('yolo.com').train
+        end
+        assert_equal expected_patterns,
+          YAML.load_file(NewsScraper.configuration.scrape_patterns_filepath)['domains']['yolo.com']
+      end
+
       def test_train_will_append_with_correct_yaml_anchors
         PresetSelector.any_instance.stubs(:select).returns('variable' => 'link_author')
         expected_output = <<EOF

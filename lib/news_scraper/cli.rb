@@ -6,14 +6,13 @@ module NewsScraper
 
     DEFAULT_COLOR = "\x1b[36m".freeze
 
-    def log(message, color: DEFAULT_COLOR, new_line: false)
-      message += "\n" if new_line
+    def log(message, color: DEFAULT_COLOR)
       $stdout.puts "#{color}┃\x1b[0m " + message
     end
 
-    def log_lines(message, color: DEFAULT_COLOR, new_line: false)
+    def log_lines(message, color: DEFAULT_COLOR)
       message.split("\n").each do |line|
-        log(line, color: color, new_line: new_line)
+        log(line, color: color)
       end
     end
 
@@ -49,8 +48,8 @@ module NewsScraper
       buf = -1
       available = (1..options.length).to_a
       until available.include?(buf.to_i)
-        begin
-          buf = Readline.readline("\x1b[34m┃ > \x1b[33m", true)
+        buf = begin
+          Readline.readline("\x1b[34m┃ > \x1b[33m", true)
         rescue Interrupt
           nil
         end
@@ -71,13 +70,15 @@ module NewsScraper
 
     ## Fancy Headers and Footers
 
-    def put_header(text = "", color = DEFAULT_COLOR)
+    def put_header(text = "", color: DEFAULT_COLOR)
       put_edge(color, "┏━━ ", text)
     end
 
-    def put_footer(color = DEFAULT_COLOR)
+    def put_footer(color: DEFAULT_COLOR)
       put_edge(color, "┗", "")
     end
+
+    private
 
     def put_edge(color, prefix, text)
       ptext = "#{color}#{prefix}#{text}"
