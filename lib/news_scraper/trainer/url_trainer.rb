@@ -11,8 +11,7 @@ module NewsScraper
         return if NewsScraper.configuration.scrape_patterns['domains'].key?(@root_domain)
 
         CLI.put_header(@root_domain)
-        CLI.log("There is no scrape pattern defined for #{@root_domain} in"\
-          " #{NewsScraper.configuration.scrape_patterns_filepath}")
+        CLI.log("There is no scrape pattern defined for #{@root_domain}")
         CLI.log "Fetching information..."
         CLI.put_footer
 
@@ -42,6 +41,8 @@ module NewsScraper
       end
 
       def save_selected_presets(selected_presets)
+        return unless NewsScraper.configuration.scrape_patterns_filepath
+
         current_content = File.read(NewsScraper.configuration.scrape_patterns_filepath).chomp
         new_content = "#{current_content}\n#{build_domain_yaml(selected_presets)}\n"
 

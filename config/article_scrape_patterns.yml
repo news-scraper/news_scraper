@@ -52,10 +52,16 @@ presets:
     article_tag: &article_tag_keywords
       method: "xpath"
       pattern: "//meta[@property='article:tag']/@content"
+    news_keywords: &news_keywords_keywords
+      method: "xpath"
+      pattern: "//meta[@name='news_keywords']/@content"
   section:
     meta: &meta_section
       method: "xpath"
       pattern: "//meta[@property='article:section']/@content"
+    section: &section_section
+      method: "xpath"
+      pattern: "//meta[@name='section']/@content"
   datetime:
     article_date_original: &article_date_original_datetime
       method: xpath
@@ -87,6 +93,15 @@ presets:
     sailthru_date: &sailthru_date_datetime
       method: xpath
       pattern: //meta[@name='sailthru.date']/@content
+    time: &time_datetime
+      method: xpath
+      pattern: //time/@datetime
+    date_published_datetime: &date_published_datetime_datetime
+      method: xpath
+      pattern: //meta[@itemprop="datePublished"]/@datetime
+    date_published_content: &date_published_content_datetime
+      method: xpath
+      pattern: //meta[@itemprop="datePublished"]/@content
   title:
     html: &html_title
       method: "xpath"

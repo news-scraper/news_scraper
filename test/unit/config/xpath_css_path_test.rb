@@ -94,10 +94,26 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
+  def test_keywords_news_keywords
+    assert_matches_spec(
+      spec: @presets['keywords']['news_keywords'],
+      input_html: "<meta name='news_keywords' content='keywords_1, keywords_2' />",
+      expected_result: 'keywords_1, keywords_2'
+    )
+  end
+
   def test_section_meta
     assert_matches_spec(
       spec: @presets['section']['meta'],
       input_html: "<meta property='article:section' content='section' />",
+      expected_result: 'section'
+    )
+  end
+
+  def test_section_section
+    assert_matches_spec(
+      spec: @presets['section']['section'],
+      input_html: "<meta name='section' content='section' />",
       expected_result: 'section'
     )
   end
@@ -126,10 +142,18 @@ class XpathCssPathTest < Minitest::Test
     )
   end
 
-  def test_datetime_date_published
+  def test_datetime_date_published_datetime
     assert_matches_spec(
-      spec: @presets['datetime']['date_published'],
+      spec: @presets['datetime']['date_published_datetime'],
       input_html: "<meta itemprop='datePublished' datetime='Sept 1, 2016' />",
+      expected_result: 'Sept 1, 2016'
+    )
+  end
+
+  def test_datetime_date_published_content
+    assert_matches_spec(
+      spec: @presets['datetime']['date_published_content'],
+      input_html: "<meta itemprop='datePublished' content='Sept 1, 2016' />",
       expected_result: 'Sept 1, 2016'
     )
   end
@@ -178,6 +202,14 @@ class XpathCssPathTest < Minitest::Test
     assert_matches_spec(
       spec: @presets['datetime']['sailthru_date'],
       input_html: "<meta name='sailthru.date' content='Sept 1, 2016' />",
+      expected_result: 'Sept 1, 2016'
+    )
+  end
+
+  def test_datetime_time_date
+    assert_matches_spec(
+      spec: @presets['datetime']['time'],
+      input_html: "<time datetime='Sept 1, 2016' />",
       expected_result: 'Sept 1, 2016'
     )
   end

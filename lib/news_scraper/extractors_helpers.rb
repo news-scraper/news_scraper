@@ -10,8 +10,7 @@ module NewsScraper
 
       CLI.put_header(url)
       CLI.log "Beginning HTTP request for #{url}"
-      agent = "news-scraper-#{NewsScraper::VERSION}"
-      response = HTTParty.get(url, headers: { "User-Agent" => agent })
+      response = HTTParty.get(url, headers: { "User-Agent" => "news-scraper-#{NewsScraper::VERSION}" })
 
       raise ResponseError.new(
         error_code: response.code,
