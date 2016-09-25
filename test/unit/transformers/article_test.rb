@@ -8,7 +8,7 @@ module NewsScraper
 
         supported_domains.each do |domain|
           raw_data = raw_data_fixture(domain)
-          transformer = Article.new(url: "#{domain}/some_article", payload: raw_data)
+          transformer = Article.new(url: "https://#{domain}/some_article", payload: raw_data)
 
           expected_transformation = transformation_fixture(domain)
           # Yaml has a hard time with new lines on a multi-line string
@@ -19,7 +19,7 @@ module NewsScraper
       end
 
       def test_transform_raises_scrape_pattern_not_defined_for_unsupported_domain
-        unsupported_url = 'unsupported-domain.com/article'
+        unsupported_url = 'https://unsupported-domain.com/article'
         unsupported_domain = 'unsupported-domain.com'
         transformer = Article.new(url: unsupported_url, payload: '')
 

@@ -7,7 +7,7 @@ module NewsScraper
         domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         raw_data = raw_data_fixture(domain)
         transformer = NewsScraper::Transformers::TrainerArticle.new(
-          url: "#{domain}/some_article",
+          url: "https://#{domain}/some_article",
           payload: raw_data
         )
 
