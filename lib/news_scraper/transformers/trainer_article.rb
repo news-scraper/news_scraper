@@ -24,7 +24,7 @@ module NewsScraper
             data_type_options[option] = scrape_details.merge('data' => data)
           end
         end
-        transformed_response.merge('uri' => @uri, 'root_domain' => @root_domain)
+        transformed_response.merge('url' => @url, 'root_domain' => @root_domain)
       end
     end
   end

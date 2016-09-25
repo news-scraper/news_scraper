@@ -50,7 +50,7 @@ How the `Scraper` extracts and parses for the information is determined by scrap
 
 Calling `NewsScraper::Scraper#scrape` with either the array or block notation will yield `transformed_data` hashes. [`article_scrape_patterns.yml`](https://github.com/richardwu/news_scraper/blob/master/config/article_scrape_patterns.yml) defines the data types that will be scraped for.
 
-In addition, the `uri` and `root_domain`(hostname) of the article will be returned in the hash too.
+In addition, the `url` and `root_domain`(hostname) of the article will be returned in the hash too.
 
 Example
 ```
@@ -62,7 +62,7 @@ Example
   section: 'technology',
   datetime: '1991-10-05T12:00:00+00:00',
   title: 'Linus Linux',
-  uri: 'linusworld.com/the-linux-kernel',
+  url: 'https://linusworld.com/the-linux-kernel',
   root_domain: 'linusworld.com'
 }
 ```

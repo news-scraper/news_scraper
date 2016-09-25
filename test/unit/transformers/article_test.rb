@@ -26,7 +26,7 @@ module NewsScraper
         err = assert_raises ScrapePatternNotDefined do
           transformer.transform
         end
-        assert_equal unsupported_url, err.uri
+        assert_equal unsupported_url, err.url
         assert_equal unsupported_domain, err.root_domain
       end
     end
