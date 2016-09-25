@@ -15,11 +15,11 @@ module NewsScraper
 
   module Transformers
     class ScrapePatternNotDefined < StandardError
-      attr_reader :root_domain, :uri
+      attr_reader :root_domain, :url
 
       def initialize(opts = {})
         @root_domain = opts[:root_domain]
-        @uri = opts[:uri]
+        @url = opts[:url]
         super
       end
     end

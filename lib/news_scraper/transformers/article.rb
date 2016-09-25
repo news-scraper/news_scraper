@@ -14,9 +14,8 @@ module NewsScraper
       # - <code>payload</code>: keyword arg - the result of the scrape
       #
       def initialize(url:, payload:)
-        uri_parser = URIParser.new(url)
-        @uri = uri_parser.without_scheme
-        @root_domain = uri_parser.host
+        @url = url
+        @root_domain = URIParser.new(url).host
         @payload = payload
       end
 
@@ -30,8 +29,8 @@ module NewsScraper
       #
       def transform
         scrape_details = NewsScraper.configuration.scrape_patterns['domains'][@root_domain]
-        raise ScrapePatternNotDefined.new(uri: @uri, root_domain: @root_domain) unless scrape_details
-        transformed_response(scrape_details).merge(uri: @uri, root_domain: @root_domain)
+        raise ScrapePatternNotDefined.new(url: @url, root_domain: @root_domain) unless scrape_details
+        transformed_response(scrape_details).merge(url: @url, root_domain: @root_domain)
       end
 
       private

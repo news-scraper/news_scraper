@@ -124,5 +124,5 @@ title:
     method: xpath
     pattern: "//meta[@property='og:title']/@content"
     data: Why Shopify Stock Deserves 'Premium Valuation,' Says Pacific Crest
-uri: investors.com/some_article
+url: https://investors.com/some_article
 root_domain: investors.com
