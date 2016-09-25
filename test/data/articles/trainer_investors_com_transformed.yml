@@ -1,0 +1,128 @@
+author:
+  class:
+    method: css
+    pattern: ".author"
+    data: BRIAN DEAGON BRIAN DEAGON | [email protected]/* &lt;![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return
+      t[e]}();if(t&amp;&amp;(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/*
+      ]]&gt; */ | @IBD_BDeagon
+  id:
+    method: css
+    pattern: "#author"
+    data: ''
+  name:
+    method: css
+    pattern: ".author-name"
+    data: ''
+  link:
+    method: xpath
+    pattern: "//a[contains(@href, 'author')]"
+    data: BRIAN DEAGON
+  meta:
+    method: xpath
+    pattern: "//meta[@name='author']/@content"
+    data: ''
+  rel_link:
+    method: xpath
+    pattern: "//a[@rel='author']"
+    data: BRIAN DEAGON
+  vcard:
+    method: css
+    pattern: ".vcard .fn"
+    data: ''
+body:
+  readability:
+    method: readability
+    pattern: ''
+    data: |-
+      <div>
+        <div>
+          <p>Shopify (<a href="">SHOP</a>) received a price target increase based on expectations that the e-commerce company's price increase on premium tiers could provide an upside to earnings estimates.</p>
+          <p>Pacific Crest Securities analyst Monika Garg raised her price target on Shopify to 43 from 40, writing in a research note late Sunday that Shopify has growth opportunities ahead.</p>
+          <p>"We believe Shopify is one of the best ways to invest in e-commerce growth," wrote Garg. "Given the company's ample growth opportunities, Shopify warrants a premium valuation, in our view."</p>
+          <p>Shopify stock climbed 9% on Aug. 3 after it reported Q2 earnings that showed a 93% jump in revenue to $86.7 million, year over year, topping views. The company also reported a wider loss, but that still beat analyst expectations.</p>
+          <p>Shopify says 53% of merchant orders were made via mobile devices in Q2. It said more than 300,000 small and medium-sized businesses use its e-commerce platform, up from 175,000 in the year-earlier period.</p>
+          <p>Shopify shares rose 0.2% to 42.49 in the stock market today.</p>
+          <p>IBD'S TAKE:  Shopify is extended beyond its buy point of 31.52 touched on July 11. It has a solid Relative Strength Rating of 79, meaning the stock has outperformed 79% of stocks in the past year. The RS is one way IBD can help investors find and evaluate stocks.</p>
+          <p>Merchants use Shopify's software to support sales channels over the web, mobile devices, social media and retail outlets.  Shopify targets businesses and other enterprises with less than 500 employees. Garg says there are 10 million such businesses, which she says means Shopify's penetration rate is in the low single digits for a total addressable market near $10 billion.</p>
+          <p>RELATED:</p>
+          <p>How Amazon, Microsoft Can Unlock Small-Business Market For SaaS</p>
+        </div>
+      </div>
+description:
+  meta:
+    method: xpath
+    pattern: "//meta[@name='description']/@content"
+    data: Shopify's price increase on premium tiers could provide an upside to earnings
+      estimates, an analyst said in hiking her price target.
+  og:
+    method: xpath
+    pattern: "//meta[@property='og:description']/@content"
+    data: Shopify's price increase on premium tiers could provide an upside to earnings
+      estimates, an analyst said in hiking her price target.
+keywords:
+  meta:
+    method: xpath
+    pattern: "//meta[@name='keywords']/@content"
+    data: shopify news,analyst reports on shopify. e-commerce companies,shopify earnings
+  article_tag:
+    method: xpath
+    pattern: "//meta[@property='article:tag']/@content"
+    data: ''
+section:
+  meta:
+    method: xpath
+    pattern: "//meta[@property='article:section']/@content"
+    data: Technology
+datetime:
+  article_date_original:
+    method: xpath
+    pattern: "//meta[@name='article_date_original']/@content"
+    data: ''
+  article_published_time:
+    method: xpath
+    pattern: "//meta[@property='article:published_time']/@content"
+    data: '2016-08-22T13:09:14+00:00'
+  date:
+    method: xpath
+    pattern: "//meta[@name='date']/@content"
+    data: 2016-08-22 13:09:14:-08:00
+  date_published:
+    method: xpath
+    pattern: "//*[@itemprop='datePublished']/@datetime"
+    data: ''
+  og_published_time:
+    method: xpath
+    pattern: "//meta[@property='og:published_time']/@content"
+    data: ''
+  original_publication_date:
+    method: xpath
+    pattern: "//meta[@name='OriginalPublicationDate']/@content"
+    data: ''
+  publication_date:
+    method: xpath
+    pattern: "//meta[@name='publication_date']/@content"
+    data: ''
+  publish_date:
+    method: xpath
+    pattern: "//meta[@name='PublishDate']/@content"
+    data: ''
+  rnews_date_published:
+    method: xpath
+    pattern: "//meta[@property='rnews:datePublished']/@content"
+    data: ''
+  sailthru_date:
+    method: xpath
+    pattern: "//meta[@name='sailthru.date']/@content"
+    data: ''
+title:
+  html:
+    method: xpath
+    pattern: "//title"
+    data: Shopify Price Target Increased, Supported By Upside To Earnings | Stock
+      News &amp; Stock Market Analysis - IBD
+  og:
+    method: xpath
+    pattern: "//meta[@property='og:title']/@content"
+    data: Why Shopify Stock Deserves 'Premium Valuation,' Says Pacific Crest
+uri: investors.com/some_article
+root_domain: investors.com
