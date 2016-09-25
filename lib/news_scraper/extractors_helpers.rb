@@ -10,9 +10,14 @@ module NewsScraper
 
       CLI.put_header(url)
       CLI.log "Beginning HTTP request for #{url}"
-      response = HTTParty.get(url)
+      agent = "news-scraper-#{NewsScraper::VERSION}"
+      response = HTTParty.get(url, headers: { "User-Agent" => agent })
 
-      raise ResponseError.new("#{response.code} - #{response.message}") unless response.code == 200
+      raise ResponseError.new(
+        error_code: response.code,
+        message: response.message,
+        url: url
+      ) unless response.code == 200
 
       CLI.log "#{response.code} - #{response.message}. Request successful for #{url}"
       CLI.put_footer

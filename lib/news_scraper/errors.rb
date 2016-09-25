@@ -1,15 +1,13 @@
 
 module NewsScraper
-  class ResponseError < StandardError; end
+  class ResponseError < StandardError
+    attr_reader :error_code, :message, :url
 
-  class ScrapePatternsFilePathDoesNotExist < StandardError
-    def new(file_path)
-      @file_path = file_path
+    def initialize(opts = {})
+      @error_code = opts[:error_code]
+      @message = opts[:message]
+      @url = opts[:url]
       super
-    end
-
-    def message
-      "Scrape Patterns File Path (#{@file_path}) did not exist"
     end
   end
 
