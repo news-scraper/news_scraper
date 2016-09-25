@@ -1,10 +1,36 @@
+require 'simplecov'
+
+if ENV['CIRCLE_ARTIFACTS']
+  dir = File.join(ENV['CIRCLE_ARTIFACTS'], "coverage")
+  SimpleCov.coverage_dir(dir)
+end
+
+threshold = 100
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+  if SimpleCov.result.covered_percent < threshold
+    puts "The coverage dipped below the acceptable threshold of #{threshold}. Failed."
+    exit(1)
+  end
+end
+
+SimpleCov.start do
+  add_group "Extractors",     "lib/news_scraper/extractors"
+  add_group "Trainer",        "lib/news_scraper/trainer"
+  add_group "Transformers",   "lib/news_scraper/transformers"
+  add_group "Root",           ["lib/news_scraper/.*.rb", "lib/news_scraper.rb"]
+
+  filters.clear
+  add_filter { |src| !(src.filename =~ %r{^#{SimpleCov.root}/lib/}) }
+  add_filter '/test/'
+end
+
 require 'news_scraper'
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'mocha/mini_test'
 require 'timecop'
 require 'pry'
-
 require_relative 'helpers/extractors_test_helpers'
 
 module MiniTest
