@@ -12,7 +12,9 @@ module NewsScraper
         )
 
         expected_transformation = trainer_transformation_fixture(domain)
-        assert_equal expected_transformation, transformer.transform
+        actual_transformation = transformer.transform
+        assert_equal expected_transformation, actual_transformation,
+          hash_diff_message(expected_transformation, actual_transformation)
       end
     end
   end

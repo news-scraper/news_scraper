@@ -45,6 +45,9 @@ presets:
     og: &og_description
       method: "xpath"
       pattern: "//meta[@property='og:description']/@content"
+    metainspector: &metainspector_description
+      method: 'metainspector'
+      pattern: :description
   keywords:
     meta: &meta_keywords
       method: "xpath"
@@ -55,6 +58,9 @@ presets:
     news_keywords: &news_keywords_keywords
       method: "xpath"
       pattern: "//meta[@name='news_keywords']/@content"
+    highscore: &highscore_keywords
+      method: highscore
+      pattern: ""
   section:
     meta: &meta_section
       method: "xpath"
@@ -109,6 +115,9 @@ presets:
     og: &og_title
       method: "xpath"
       pattern: "//meta[@property='og:title']/@content"
+    metainspector: &metainspector_title
+      method: 'metainspector'
+      pattern: :best_title
 
 domains:
   investors.com:

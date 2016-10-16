@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ArticleScrapePatternsTest < Minitest::Test
-  VALID_METHODS = %w(css xpath readability).freeze
+  VALID_METHODS = %w(css xpath readability metainspector highscore).freeze
 
   def setup
     super
