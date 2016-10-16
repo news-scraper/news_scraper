@@ -76,7 +76,7 @@ module NewsScraper
           page = MetaInspector.new(@url, document: @payload)
           page.respond_to?(scrape_pattern.to_sym) ? page.send(scrape_pattern.to_sym) : nil
         when :highscore
-          NewsScraper::Transformers::Helpers::HighScoreParser.parse(url: @url, payload: @payload)
+          NewsScraper::Transformers::Helpers::HighScoreParser.keywords(url: @url, payload: @payload)
         end
       end
     end
