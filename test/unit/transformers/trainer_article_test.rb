@@ -4,6 +4,7 @@ module NewsScraper
   module Transformers
     class TrainerArticleTest < Minitest::Test
       def test_transform_returns_full_preset_data
+        Helpers::HighScoreParser.expects(:parse).returns(%w(shopify company growth price businesses))
         domain = NewsScraper.configuration.scrape_patterns['domains'].keys.first
         raw_data = raw_data_fixture(domain)
         transformer = NewsScraper::Transformers::TrainerArticle.new(
