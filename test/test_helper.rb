@@ -58,9 +58,11 @@ module MiniTest
 
       messages = []
       diffs.each do |diff|
-        message = "The actual hash #{mapping[diff.first]} '#{diff[1]}' than the expected_hash."
         if diff.size > 3
+          message = "The actual hash #{mapping[diff.first]} '#{diff[1]}'."
           message += " The values were differing by actual: #{diff[2].inspect} // expected: #{diff[3].inspect}"
+        else
+          message = "The actual hash #{mapping[diff.first]} '#{diff[1]}' than the expected hash."
         end
         messages << message
       end

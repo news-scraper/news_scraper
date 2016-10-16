@@ -31,7 +31,8 @@ module NewsScraper
       def test_train_with_improper_data_type_sets_to_todo
         default_methods = NewsScraper.configuration.scrape_patterns.dup
         bad_data_types = default_methods['data_types'] + ['bad_data_type']
-        NewsScraper.configuration.scrape_patterns_fetch_method = proc { default_methods.merge('data_types' => bad_data_types) }
+        NewsScraper.configuration.scrape_patterns_fetch_method =
+          proc { default_methods.merge('data_types' => bad_data_types) }
 
         PresetSelector.any_instance.stubs(:select).returns('pattern_mock' => 'pattern_mock')
         expected_patterns = {
