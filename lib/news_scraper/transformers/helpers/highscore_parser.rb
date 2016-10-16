@@ -33,7 +33,7 @@ module NewsScraper
               set :long_words_threshold, 15
               set :ignore_case, true
             end
-            text.keywords.top(5).collect(&:text)
+            text.keywords.top(5).collect(&:text).join(',')
           end
 
           def stopwords(url, payload)
