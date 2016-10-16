@@ -30,9 +30,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sanitize', '~> 4.2', '>= 4.2.0'
   spec.add_dependency 'ruby-readability', '~> 0.7', '>= 0.7.0'
   spec.add_dependency 'htmlbeautifier', '~> 1.1', '>= 1.1.1'
-  spec.add_dependency 'terminal-table'
-  spec.add_dependency 'metainspector'
-  spec.add_dependency 'highscore'
+  spec.add_dependency 'terminal-table', '~> 1.7.0', '>= 1.7.0'
+  spec.add_dependency 'metainspector', '~> 5.3.0', '>= 5.3.0'
+  spec.add_dependency 'highscore', '~> 1.2.0', '>= 1.2.0'
 
   spec.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.0'
   spec.add_development_dependency 'rake', '~> 10.0', '>= 10.0.0'
