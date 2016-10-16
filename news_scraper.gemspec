@@ -1,3 +1,4 @@
+# rubocop:disable BlockLength
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
@@ -30,6 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'ruby-readability', '~> 0.7', '>= 0.7.0'
   spec.add_dependency 'htmlbeautifier', '~> 1.1', '>= 1.1.1'
   spec.add_dependency 'terminal-table'
+  spec.add_dependency 'metainspector'
+  spec.add_dependency 'highscore'
 
   spec.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.0'
   spec.add_development_dependency 'rake', '~> 10.0', '>= 10.0.0'

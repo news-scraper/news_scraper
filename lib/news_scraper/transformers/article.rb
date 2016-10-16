@@ -1,8 +1,11 @@
 require 'nokogiri'
 require 'sanitize'
+require 'news_scraper/transformers/nokogiri/functions'
+
 require 'readability'
 require 'htmlbeautifier'
-require 'news_scraper/transformers/nokogiri/functions'
+require 'metainspector'
+require 'news_scraper/transformers/helpers/highscore_parser'
 
 module NewsScraper
   module Transformers
@@ -69,6 +72,11 @@ module NewsScraper
           # Remove any newlines in the text
           content = content.squeeze("\n").strip
           HtmlBeautifier.beautify(content)
+        when :metainspector
+          page = MetaInspector.new(@url, document: @payload)
+          page.respond_to?(scrape_pattern.to_sym) ? page.send(scrape_pattern.to_sym) : nil
+        when :highscore
+          NewsScraper::Transformers::Helpers::HighScoreParser.keywords(url: @url, payload: @payload)
         end
       end
     end

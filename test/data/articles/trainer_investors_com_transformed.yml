@@ -60,6 +60,10 @@ description:
     pattern: "//meta[@property='og:description']/@content"
     data: Shopify's price increase on premium tiers could provide an upside to earnings
       estimates, an analyst said in hiking her price target.
+  metainspector:
+    method: metainspector
+    pattern: :description
+    data: Shopify's price increase on premium tiers could provide an upside to earnings estimates, an analyst said in hiking her price target.
 keywords:
   meta:
     method: xpath
@@ -73,6 +77,10 @@ keywords:
     method: xpath
     pattern: "//meta[@name='news_keywords']/@content"
     data: ''
+  highscore:
+    method: highscore
+    pattern: ''
+    data: ["shopify", "company", "growth", "price", "businesses"]
 section:
   meta:
     method: xpath
@@ -145,5 +153,9 @@ title:
     method: xpath
     pattern: "//meta[@property='og:title']/@content"
     data: Why Shopify Stock Deserves 'Premium Valuation,' Says Pacific Crest
+  metainspector:
+    method: metainspector
+    pattern: :best_title
+    data: Shopify Price Target Increased, Supported By Upside To Earnings | Stock News & Stock Market Analysis - IBD
 url: https://investors.com/some_article
 root_domain: investors.com

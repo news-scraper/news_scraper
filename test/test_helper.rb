@@ -32,6 +32,7 @@ require 'mocha/mini_test'
 require 'timecop'
 require 'pry'
 require_relative 'helpers/extractors_test_helpers'
+require 'hashdiff'
 
 module MiniTest
   class Test
@@ -49,6 +50,23 @@ module MiniTest
     def teardown
       FileUtils.rm_rf(scrape_patterns_path)
       super
+    end
+
+    def hash_diff_message(expected_hash, actual_hash)
+      diffs = HashDiff.diff(expected_hash, actual_hash)
+      mapping = { '~' => 'has a different entry for', '-' => 'did not have an entry for', '+' => 'had an entry for' }
+
+      messages = []
+      diffs.each do |diff|
+        if diff.size > 3
+          message = "The actual hash #{mapping[diff.first]} '#{diff[1]}'."
+          message += " The values were differing by actual: #{diff[2].inspect} // expected: #{diff[3].inspect}"
+        else
+          message = "The actual hash #{mapping[diff.first]} '#{diff[1]}' than the expected hash."
+        end
+        messages << message
+      end
+      messages.join("\n")
     end
 
     def scrape_patterns_path
