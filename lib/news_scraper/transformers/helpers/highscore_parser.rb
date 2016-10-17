@@ -19,7 +19,7 @@ module NewsScraper
           def keywords(url:, payload:)
             blacklist = Highscore::Blacklist.load(stopwords(url, payload))
             content = Readability::Document.new(payload, emove_empty_nodes: true, tags: [], attributes: []).content
-            highscore(content, blacklist)
+            highscore(force_utf8(content), blacklist)
           end
 
           private
@@ -34,6 +34,16 @@ module NewsScraper
               set :ignore_case, true
             end
             text.keywords.top(5).collect(&:text).join(',')
+          end
+
+          def force_utf8(content)
+            return content if content.encoding.name == 'UTF-8'
+
+            begin
+              content.encode("UTF-8")
+            rescue Encoding::UndefinedConversionError
+              content.force_encoding("UTF-8")
+            end
           end
 
           def stopwords(url, payload)
